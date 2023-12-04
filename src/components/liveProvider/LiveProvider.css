@@ -1,0 +1,281 @@
+
+.DD-slider {
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+  }
+  
+  .DD-slider .DD-controls {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    z-index: 2;
+  }
+  
+  .DD-slider .DD-controls > div {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .DD-slider .DD-controls > .DD-up:active {
+    transform: translateY(-10px);
+  }
+  
+  .DD-slider .DD-controls > .DD-down:active {
+    transform: translateY(10px);
+  }
+  
+  .DD-slider .DD-controls > .DD-up {
+    top: 0px;
+    right: 0px;
+    background: linear-gradient(#0cbaba, #380036);
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+  }
+  
+  .DD-slider .DD-controls > .DD-down {
+    bottom: 0px;
+    left: 0px;
+    background: linear-gradient(#0cbaba, #380036);
+    color: #fff;
+    border-radius: 5px 0 0 5px;
+  }
+  
+  .DD-slider .DD-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+  
+  .DD-slider .DD-wrapper .DD-left,
+  .DD-slider .DD-wrapper .DD-right {
+    width: 50%;
+    overflow: hidden;
+  }
+  
+  .DD-slider .DD-wrapper .DD-left > div,
+  .DD-slider .DD-wrapper .DD-right > div {
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s ease-in-out;
+    background: #282c34;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .DD-slider .DD-wrapper .DD-left .DD-divider {
+    width: 80%;
+    overflow: auto;
+    max-height: calc(100vh - 50px);
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .code-design {
+    white-space: pre-wrap;
+    overflow-wrap: break-word; 
+    word-wrap: break-word;
+    transition: all 0.5s ease-in-out;
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .DD-slider .DD-wrapper .DD-left > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 10px 0 10px;
+    overflow: scroll;
+  }
+  
+  .DD-slider .DD-wrapper .DD-left > div h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    background: -webkit-linear-gradient(90deg, #0cbaba, #380036);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .DD-slider .DD-wrapper .DD-left > div p {
+    font-size: 1.125rem;
+    font-weight: 300;
+    line-height: 25px;
+    color: #555;
+    text-align: justify;
+  }
+  
+  .DD-slider .DD-wrapper .DD-right > div img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .slider-wrapper.axis-horizontal > ul {
+      top: 0;
+      height: auto;
+      flex-direction: row;
+      justify-content: flex-start;
+      opacity: 1;
+      z-index: auto;
+    }
+  }
+  
+  @media (max-width: 700px) {
+    .animated {
+      top: auto;
+      left: auto;
+      height: auto;
+      align-items: initial;
+      justify-content: initial;
+      opacity: 1;
+      z-index: auto;
+      flex-direction: row;
+    }
+  
+    .DD-slider {
+      height: auto;
+    }
+  
+    .DD-slider .DD-wrapper {
+      flex-direction: column;
+      overflow: visible;
+      height: auto;
+    }
+  
+    .DD-slider .DD-wrapper .DD-left,
+    .DD-slider .DD-wrapper .DD-right {
+      width: 100%;
+      overflow: visible;
+      height: auto;
+    }
+  
+    .DD-slider .DD-wrapper .DD-right {
+      order: 2;
+    }
+
+    .DD-slider .DD-wrapper .DD-left .DD-divider {
+      width: 100%;
+      overflow: visible;
+      max-height: calc(100vh - 50px);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+  
+    /* .DD-slider .DD-wrapper .DD-left {
+      order: 1;
+    } */
+  
+    .DD-slider .DD-controls {
+      display: none;
+    }
+  
+    .carousel .thumb {
+      background-color: #fff;
+    }
+  
+    .thumbs-wrapper ul {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+    }
+  
+    .thumbs-wrapper li {
+      flex: 0 0 auto;
+      height: 100px;
+      margin: 0 10px 0 0;
+      list-style: none;
+      cursor: pointer;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+    }
+  
+    .thumbs-wrapper li img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  
+    .DD-slider .DD-wrapper .DD-left > div h2 {
+      font-size: 2rem;
+    }
+  
+    .carousel .slide img {
+      width: 100%;
+      object-fit: cover;
+    }
+  
+    .DD-slider .DD-wrapper .DD-left > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 0px 90px 0px 40px;
+      overflow: scroll;
+      padding-bottom: 20vh;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .DD-slider .DD-wrapper .DD-left > div h2 {
+      font-size: 1.6rem;
+    }
+  }
+  
+  @media screen and (max-width: 400px) {
+    .DD-slider .DD-wrapper .DD-left > div h2 {
+      font-size: 1.2rem;
+    }
+  
+    .carousel .slide img {
+      width: 100%;
+      object-fit: cover;
+    }
+  
+    .DD-slider .DD-wrapper .DD-left > div {
+      padding: 0 20px 0 20px;
+    }
+  
+    body {
+      background-color: #fff;
+    }
+  }
+  
+  @media screen and (min-width: 300px) {
+    .DD-image {
+      height: 80vh;
+      object-fit: contain;
+    }
+  }
+  
+  @media screen and (min-width: 200px) {
+    .DD-image {
+      height: 80vh;
+      object-fit: contain;
+    }
+  }
