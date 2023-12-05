@@ -13,20 +13,17 @@ const LiveProvider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % ComponentsCode.length);
+
   };
 
   const handlePrev = () => {
-    setCurrentIndex(
-      (prevIndex) =>
-        (prevIndex - 1 + ComponentsCode.length) % ComponentsCode.length
-    );
+
   };
 
   const currentComponent = ComponentsCode[currentIndex];
-  if (!currentComponent) {
-    return null;
-  }
+if (!currentComponent) {
+  return null;
+}
 
   return (
     <div className="DD-slider">
@@ -45,7 +42,7 @@ const LiveProvider = () => {
             <Typography variant="h2">Componenta {currentIndex + 1}</Typography>
             <Typography variant="h4">Surce Code</Typography>
             <div className="DD-divider">
-              <Carousel
+              <Carousel className="DD-carousel"
                 transitionTime={1000}
                 showArrows={false}
                 showStatus={true}
@@ -67,6 +64,40 @@ const LiveProvider = () => {
                 >
                   {currentComponent.JSXsourceCode}
                 </SyntaxHighlighter>
+                <SyntaxHighlighter
+                  className="code"
+                  language="css"
+                  style={nightOwlStyle}
+                  overflowWrap="break-word"
+                  wrapLines={true}
+                  lineProps={{ style: { wordBreak: "break-all", whiteSpace: "pre-wrap" } }}
+
+                >
+                  {currentComponent.CSSsourceCode}
+                </SyntaxHighlighter>
+                <SyntaxHighlighter
+                  className="code"
+                  language="html"
+                  style={nightOwlStyle}
+                  overflowWrap="break-word"
+                  wrapLines={true}
+                  lineProps={{ style: { wordBreak: "break-all", whiteSpace: "pre-wrap" } }}
+
+                >
+                  {currentComponent.HTMLsourceCode}
+                </SyntaxHighlighter>
+                <SyntaxHighlighter
+                  className="code"
+                  language="js"
+                  style={nightOwlStyle}
+                  overflowWrap="break-word"
+                  wrapLines={true}
+                  lineProps={{ style: { wordBreak: "break-all", whiteSpace: "pre-wrap" } }}
+
+                >
+                  {currentComponent.JSsourceCode}
+                </SyntaxHighlighter>
+                
               </Carousel>
             </div>
           </div>

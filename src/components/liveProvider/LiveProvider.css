@@ -96,6 +96,20 @@
   font-weight: 600;
 }
 
+.code {
+  height: 100%;
+  width: 100%;
+  background-color: #282c34;
+  color: #fff;
+  font-family: "Arial", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: auto;
+  max-height: calc(100vh - 50px);
+}
+
 .DD-slider .DD-wrapper .DD-left > div {
   display: flex;
   flex-direction: column;
@@ -120,6 +134,10 @@
   line-height: 25px;
   color: #555;
   text-align: justify;
+}
+
+.DD-carousel {
+
 }
 
 @media (max-width: 768px) {

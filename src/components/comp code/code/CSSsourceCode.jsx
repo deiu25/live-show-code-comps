@@ -1,0 +1,35 @@
+const CSSsourceCode = (codeName) => {
+    const codeExamples = {
+        BlueGlowButtonCode: `
+        .glow-blue-btn {
+            border: none;
+            outline: none;
+            color: #fff;
+            background: linear-gradient(to right, #007bff, #0056b3);
+            padding: 10px 50px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 600;
+            height: 44px;
+            margin: 10px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px 0 rgba(255, 235, 167, 0.2);
+          }
+          
+          .glow-blue-btn:hover {
+            box-shadow: 0 0 15px #fff;
+          }
+        `,
+        RedGlowButtonCode: `
+            
+        `,
+    };
+
+    return codeExamples[codeName];
+}
+
+export default CSSsourceCode;
