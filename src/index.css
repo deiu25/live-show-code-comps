@@ -24,6 +24,12 @@
   --color-light-grey: #f5f6fa;
 
   --colir-red: #ff0000;
+
+  --main-color: rgba(34, 166, 179, 0.2);
+	--secondary-color: rgba(126, 214, 223, 0.5);
+	--shadow-color: rgba(48, 51, 107, 1);
+	--white-lit-color: rgba(255,255,255,0.4);
+	--white-color: #fff;
 }
 
 * {
@@ -38,8 +44,8 @@ html {
 }
 
 body {
+  background: linear-gradient(to right, blue, rgb(245, 83, 110));
   font-family: var(--font-family);
-  background-color: var(--color-grey);
 }
 
 section {
