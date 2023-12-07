@@ -1,4 +1,9 @@
 /* PreLoeader Style */
+.links {
+ color: #fff;
+ text-decoration: none;
+}
+
 .lds-ripple {
     display: inline-block;
     position: relative;

@@ -1,9 +1,10 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Home } from './pages/home/Home';
-import LiveProvider from './components/liveProvider/LiveProvider';
+
 import { HomeAllPosts } from './components/home/home-posts/HomeAllPosts';
 import { About } from './pages/about/About';
+import { Contact } from './pages/contact/Contact';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/posts" element={<HomeAllPosts />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </BrowserRouter>
     </>

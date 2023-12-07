@@ -7,6 +7,7 @@ import { HomeCurentSection } from "../../components/home/home-curent-section/Hom
 import { HomeFooter } from "../../components/home/home-footer/HomeFooter";
 import { HomeAllPosts } from "../../components/home/home-posts/HomeAllPosts";
 import { About } from "../about/About";
+import { Contact } from "../contact/Contact";
 
 export const Home = ({ children }) => {
   const [currentTab, setCurrentTab] = useState("home");
@@ -23,7 +24,8 @@ export const Home = ({ children }) => {
         return <HomeAllPosts />;
       case "about":
         return <About />;
-      // Adăugați cazurile pentru celelalte tab-uri aici
+      case "contact":
+        return <Contact />;
       default:
         return <HomeCurentSection />;
     }
@@ -37,7 +39,6 @@ export const Home = ({ children }) => {
           <HomeSidebar onTabChange={handleTabChange} currentTab={currentTab} />
           <div className="col-md-9">
             <div id="main-area">
-              <HomeHeader />
               {renderCurrentTab()}
               <HomeFooter />
             </div>

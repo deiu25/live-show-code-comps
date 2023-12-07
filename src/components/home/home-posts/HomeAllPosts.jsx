@@ -1,8 +1,11 @@
 import React from 'react'
 import Card from '../post-card/PostCard';
+import { PostsHeader } from '../posts-header/PostsHeader';
 
 export const HomeAllPosts = () => {
   return (
+    <>
+    <PostsHeader />
     <div className="content-section">
       <div className="section-heading">
         <h2 className="display-4">
@@ -21,5 +24,6 @@ export const HomeAllPosts = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }

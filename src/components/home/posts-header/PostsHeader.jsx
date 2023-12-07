@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react'
 
-export const HomeHeader = () => {
+export const PostsHeader = () => {
   return (
     <div className="header-section">
       <ul className="nav justify-content-center">
         <li className="nav-item">
           <a className="nav-link" href="category.html">
-          React
+          Newest
           </a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="category.html">
-            Design
+            Most Viewed
           </a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="category.html">
-            Ai
+            Top Rated
           </a>
         </li>
         <li className="nav-item dropdown">
@@ -29,18 +29,18 @@ export const HomeHeader = () => {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Category
+            Components
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">
             <a className="dropdown-item" href="#">
-              one
+              Button
             </a>
             <a className="dropdown-item" href="#">
-              two
+              Navibar
             </a>
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">
-              three
+              Dropdown
             </a>
           </div>
         </li>
@@ -54,5 +54,5 @@ export const HomeHeader = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
