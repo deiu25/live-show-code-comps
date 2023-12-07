@@ -5,18 +5,18 @@ export const HomeHeader = () => {
     <div className="header-section">
       <ul className="nav justify-content-center">
         <li className="nav-item">
-          <a className="nav-link active" href="category.html">
-            Category 1
+          <a className="nav-link" href="category.html">
+          Newest
           </a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="category.html">
-            Category 2
+            Most Viewed
           </a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="category.html">
-            Category 3
+            Top Rated
           </a>
         </li>
         <li className="nav-item dropdown">
@@ -29,18 +29,18 @@ export const HomeHeader = () => {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Dropdown
+            Category
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">
             <a className="dropdown-item" href="#">
-              Action
+              React
             </a>
             <a className="dropdown-item" href="#">
-              Another action
+              Desing
             </a>
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">
-              Something else here
+              Backend
             </a>
           </div>
         </li>

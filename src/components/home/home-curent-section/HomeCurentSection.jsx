@@ -15,13 +15,13 @@ export const HomeCurentSection = () => {
       </div>
       <div className="row">
         <div className="col-md-4">
-          <Card image="https://placekitten.com/300/300" description="Some quick example text to build on the card title." url="single.html" />
+          <Card image="https://res.cloudinary.com/dvstsvpyz/image/upload/f_auto,q_auto/v1/imgs-comps/xonyj7tn33lv6h9qoxhy" description="New Blue Glow Button" />
         </div>
         <div className="col-md-4">
-          <Card image="https://placekitten.com/300/300" description="Some quick example text to build on the card title." url="single.html" />
+          <Card image="https://res.cloudinary.com/dvstsvpyz/image/upload/f_auto,q_auto/v1/imgs-comps/xonyj7tn33lv6h9qoxhy" description="New Blue Glow Button" />
         </div>
         <div className="col-md-4">
-          <Card image="https://placekitten.com/300/300" description="Some quick example text to build on the card title." url="single.html" />
+          <Card image="https://res.cloudinary.com/dvstsvpyz/image/upload/f_auto,q_auto/v1/imgs-comps/xonyj7tn33lv6h9qoxhy" description="New Blue Glow Button" />
         </div>
       </div>
     </div>
