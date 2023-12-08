@@ -22,7 +22,7 @@ export const HomeSidebar = ({ onTabChange, currentTab }) => {
         </li>
         <li className={`nav-item ${currentTab === "contact" ? "" : ""}`}>
           <a className="nav-link" onClick={() => onTabChange("contact")}>
-            <i className="fal fa-info"></i> Contact
+            <i className="fal fa-address-card"></i> Contact
           </a>
         </li>
         <li className="nav-item">
