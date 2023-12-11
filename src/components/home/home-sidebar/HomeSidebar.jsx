@@ -1,39 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
+import classNames from 'classnames';
 
 export const HomeSidebar = ({ onTabChange, currentTab }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const sidebarClass = classNames({
+    'col-md-3': isSidebarOpen,
+    'col-md-1': !isSidebarOpen,
+    'sidebar': true
+  });
+
+  const logoClass = classNames({
+    'logo': true,
+    'logo-small': !isSidebarOpen
+  });
+
   return (
-    <div className="col-md-3" id="sidebar">
-      <div className="logo"></div>
+    <div className={sidebarClass} id="sidebar">
+      <div className="anchor far fa-chevron-double-left" onClick={toggleSidebar} />
+      <div className={logoClass} />
       <ul className="nav flex-column">
-        <li className={`nav-item ${currentTab === "home" ? "" : ""}`}>
+        <li key="home" className={`nav-item ${currentTab === "home" ? "active" : ""}`}>
           <a className="nav-link" onClick={() => onTabChange("home")}>
-            <i className="fal fa-home-alt"></i> Home
+            <i className="fas fa-home"></i>
+            {isSidebarOpen && <span className="nav-text"> Home</span>}
           </a>
         </li>
-        <li className={`nav-item ${currentTab === "posts" ? "" : ""}`}>
+        <li key="posts" className={`nav-item ${currentTab === "posts" ? "active" : ""}`}>
           <a className="nav-link" onClick={() => onTabChange("posts")}>
-            <i className="fal fa-tasks"></i> Posts
+            <i className="fas fa-tasks"></i>
+            {isSidebarOpen && <span className="nav-text"> Posts</span>}
           </a>
         </li>
-        <li className={`nav-item ${currentTab === "about" ? "" : ""}`}>
+        <li key="about" className={`nav-item ${currentTab === "about" ? "active" : ""}`}>
           <a className="nav-link" onClick={() => onTabChange("about")}>
-            <i className="fal fa-info"></i> About
-          </a>
-        </li>
-        <li className={`nav-item ${currentTab === "contact" ? "" : ""}`}>
-          <a className="nav-link" onClick={() => onTabChange("contact")}>
-            <i className="fal fa-address-card"></i> Contact
-          </a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="download.html">
-            <i className="fal fa-download"></i> Download
+            <i className="fas fa-info-circle"></i>
+            {isSidebarOpen && <span className="nav-text"> About</span>}
           </a>
         </li>
       </ul>
       <i className="far fa-ellipsis-v"></i>
       <div className="copyright">
-        <p>&copy; 2023</p>
+        <p>© 2023</p>
       </div>
     </div>
   );
