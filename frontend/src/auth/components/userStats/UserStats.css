@@ -1,0 +1,26 @@
+
+
+.user-summary .info-summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.card1 {
+  background-color: #b624ff;
+}
+
+.card2 {
+  background-color: #32963d;
+}
+
+.card3 {
+  background-color: #03a5fc;
+}
+
+.card4 {
+  background-color: #c41849;
+}

@@ -1,0 +1,94 @@
+.hover-effect {
+  transition: transform 0.3s ease-in-out;
+}
+
+.hover-effect:hover {
+  transform: scale(1.05);
+}
+
+.navList .navLink {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.navList .navLink a {
+  font-size: 1.5rem;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.2s, transform 0.3s ease-in-out;
+  padding: 8px 30px;
+  border-radius: 5px;
+}
+
+.navList .navLink a:hover,
+.navList .navLink a.active {
+  background-color: #fff;
+  color: #1f2029;
+  border-bottom: 2px solid rgb(61, 99, 202);
+}
+
+.hover-effect:hover {
+  transform: scale(1.05);
+}
+
+#icon1 svg {
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.navi {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  background-color: #1f2029;
+  padding: 15px 5%;
+}
+
+#icon1 svg:hover {
+  color: #fff;
+}
+
+#checkbox1,
+#icon1 {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .navList {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #1f2029;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    transition: 0.5s ease-in-out;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  .navList .navLink a {
+    font-size: 1.5rem;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.2s, transform 0.3s ease-in-out;
+    border-radius: 5px;
+  }
+
+  #icon1 {
+    display: block;
+    z-index: 2;
+  }
+
+  #checkbox1:checked ~ .navList {
+    opacity: 1;
+    z-index: 1;
+  }
+}
