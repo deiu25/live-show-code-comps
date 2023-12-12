@@ -45,14 +45,6 @@ export const HomeHeader = () => {
           </div>
         </li>
       </ul>
-      <div className="input-group col-md-6 offset-md-3 search-box">
-        <div className="input-group-prepend">
-          <i className="fal fa-search" id="searchPrepend"></i>
-        </div>
-        <div className="invalid-tooltip">
-          Please choose a unique and valid username.
-        </div>
-      </div>
     </div>
   );
 };

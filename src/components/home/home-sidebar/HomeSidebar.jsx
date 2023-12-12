@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import classNames from 'classnames';
+import { Link } from "react-router-dom";
 
 export const HomeSidebar = ({ onTabChange, currentTab }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [user, setUser] = useState(null);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -22,7 +24,15 @@ export const HomeSidebar = ({ onTabChange, currentTab }) => {
   return (
     <div className={sidebarClass} id="sidebar">
       <div className="anchor far fa-chevron-double-left" onClick={toggleSidebar} />
+      {!user && (<div className="auth">
+        <Link to="/auth">Auth</Link>
+      </div>)}
+      {user && (<div className="user">
       <div className={logoClass} />
+        <img src={user.avatar} />
+        <p>{user.name}</p>
+      </div>)}
+      
       <ul className="nav flex-column">
         <li key="home" className={`nav-item ${currentTab === "home" ? "active" : ""}`}>
           <a className="nav-link" onClick={() => onTabChange("home")}>

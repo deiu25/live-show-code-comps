@@ -5,6 +5,7 @@ import { Home } from './pages/home/Home';
 import { HomeAllPosts } from './components/home/home-posts/HomeAllPosts';
 import { About } from './pages/about/About';
 import { Contact } from './pages/contact/Contact';
+import { Login } from './pages/auth/Login';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/posts" element={<HomeAllPosts />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/auth" element={<Login />} />
       </Routes>
     </BrowserRouter>
     </>

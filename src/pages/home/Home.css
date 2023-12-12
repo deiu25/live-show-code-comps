@@ -107,12 +107,14 @@
   filter: blur(8px);
 }
 #wrapper #sidebar .anchor {
-  right: 0;
-  top: 10px;
+  right: -17px;
+  top: 0;
   position: absolute;
   color: var(--white-color);
   font-size: 20px;
   transition: 0.5s;
+  background-color: var(--secondary-color);
+  z-index: 1;
 }
 #wrapper #sidebar .anchor:hover {
   cursor: pointer;
