@@ -116,7 +116,7 @@ export const Signup = () => {
 
   return (
     <div id="login-container">
-      <form className="signup-form">
+      <form className="signup-form" onSubmit={registerUser}>
         <h3 id="login-lable">Sign Up</h3>
         <div className="input-container">
           <input
@@ -173,7 +173,7 @@ export const Signup = () => {
             onChange={handleInputChange}
           />
         </div>
-        <button type="submit" className="btn" onClick={registerUser}>
+        <button type="submit" className="btn">
           Sign Up
         </button>
         <p className="signup-txt">

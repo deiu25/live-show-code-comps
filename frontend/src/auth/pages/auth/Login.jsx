@@ -1,8 +1,82 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Auth.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { RESET, login, loginWithGoogle, sendLoginCode } from "../../redux/features/auth/authSlice";
+import { validateEmail } from "../../redux/features/auth/authService";
+import { useDispatch, useSelector } from "react-redux";
+import { GoogleLogin } from "@react-oauth/google";
+import { toast } from "react-toastify";
+
+const initialState = {
+  email: "",
+  password: "",
+};
 
 export const Login = () => {
+  const [formData, setFormData] = useState(initialState);
+  const { email, password } = formData;
+
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const handleResize = () => {
+    setWindowSize(window.innerWidth);
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isLoading, isLoggedIn, isSuccess, isError, twoFactor } = useSelector(
+    (state) => state.auth
+  );
+
+  const loginUser = async (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      return toast.error("Please fill in all fields");
+    }
+    if (!validateEmail(email)) {
+      return toast.error("Invalid email");
+    }
+
+    const userData = {
+      email,
+      password,
+    };
+
+    await dispatch(login(userData));
+  };
+
+  useEffect(() => {
+    if (isSuccess && isLoggedIn) {
+      navigate("/profile");
+    }
+
+    if (isError && twoFactor) {
+      dispatch(sendLoginCode(email));
+      navigate(`/loginWithCode/${email}`);
+    }
+
+    dispatch(RESET());
+  }, [isSuccess, isLoggedIn, isError, twoFactor, navigate, dispatch, email]);
+
+  const googleLogin = async (credentialResponse) => {
+    await dispatch(
+      loginWithGoogle({ userToken: credentialResponse.credential })
+    );
+  };
+
   return (
     <div id="login-container">
       <form className="login-form">
