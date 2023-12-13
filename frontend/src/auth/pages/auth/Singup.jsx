@@ -202,8 +202,8 @@ export const Signup = () => {
               x1="149.5"
               id="paint0_linear_8_3"
             >
-              <stop stop-color="#00E0FF"></stop>
-              <stop stop-opacity="0" stop-color="#65EDFF" offset="1"></stop>
+              <stop stopColor="#00E0FF"></stop>
+              <stop stopOpacity="0" stopColor="#65EDFF" offset="1"></stop>
             </linearGradient>
           </defs>
         </svg>
@@ -221,8 +221,8 @@ export const Signup = () => {
             <path
               fill="#2B2B2B"
               d="M80 27.9997C121.974 27.9997 156 22.4032 156 15.4996L156 40.4998C156 47.4034 121.974 52.9998 80 52.9998C38.0265 52.9998 4.00028 47.4034 4 40.4998V40.4998V15.51C4.0342 22.4089 38.0474 27.9997 80 27.9997Z"
-              clip-rule="evenodd"
-              fill-rule="evenodd"
+              clipRule="evenodd"
+              fillRule="evenodd"
             ></path>
           </g>
           <ellipse
@@ -236,21 +236,21 @@ export const Signup = () => {
             <path
               fill="#323232"
               d="M80 28.0002C121.974 28.0002 156 22.4037 156 15.5001C156 8.59648 121.974 3 80 3C38.0264 3 4 8.59648 4 15.5001C4 22.4037 38.0264 28.0002 80 28.0002ZM80.0001 20.308C96.1438 20.308 109.231 18.1555 109.231 15.5002C109.231 12.845 96.1438 10.6925 80.0001 10.6925C63.8564 10.6925 50.7693 12.845 50.7693 15.5002C50.7693 18.1555 63.8564 20.308 80.0001 20.308Z"
-              clip-rule="evenodd"
-              fill-rule="evenodd"
+              clipRule="evenodd"
+              fillRule="evenodd"
             ></path>
           </g>
           <g filter="url(#filter2_di_1_38)">
             <path
               fill="#378BA6"
               d="M106.725 17.4505C108.336 16.8543 109.231 16.1943 109.231 15.4999C109.231 12.8446 96.1438 10.6921 80.0001 10.6921C63.8564 10.6921 50.7693 12.8446 50.7693 15.4999C50.7693 16.1943 51.6645 16.8543 53.2752 17.4504C53.275 17.4414 53.2748 17.4323 53.2748 17.4232C53.2748 14.768 65.2401 12.6155 80.0001 12.6155C94.7601 12.6155 106.725 14.768 106.725 17.4232C106.725 17.4323 106.725 17.4414 106.725 17.4505Z"
-              clip-rule="evenodd"
-              fill-rule="evenodd"
+              clipRule="evenodd"
+              fillRule="evenodd"
             ></path>
           </g>
           <defs>
             <filter
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
               filterUnits="userSpaceOnUse"
               height="45.5002"
               width="160"
@@ -258,7 +258,7 @@ export const Signup = () => {
               x="0"
               id="filter0_di_1_38"
             >
-              <feFlood result="BackgroundImageFix" flood-opacity="0"></feFlood>
+              <feFlood result="BackgroundImageFix" floodOpacity="0"></feFlood>
               <feColorMatrix
                 result="hardAlpha"
                 values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
@@ -308,7 +308,7 @@ export const Signup = () => {
               ></feBlend>
             </filter>
             <filter
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
               filterUnits="userSpaceOnUse"
               height="25.0002"
               width="152"
@@ -316,7 +316,7 @@ export const Signup = () => {
               x="4"
               id="filter1_i_1_38"
             >
-              <feFlood result="BackgroundImageFix" flood-opacity="0"></feFlood>
+              <feFlood result="BackgroundImageFix" floodOpacity="0"></feFlood>
               <feBlend
                 result="shape"
                 in2="BackgroundImageFix"
@@ -354,7 +354,7 @@ export const Signup = () => {
               ></feBlend>
             </filter>
             <filter
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
               filterUnits="userSpaceOnUse"
               height="26.7583"
               width="78.4615"
@@ -362,7 +362,7 @@ export const Signup = () => {
               x="40.7693"
               id="filter2_di_1_38"
             >
-              <feFlood result="BackgroundImageFix" flood-opacity="0"></feFlood>
+              <feFlood result="BackgroundImageFix" floodOpacity="0"></feFlood>
               <feColorMatrix
                 result="hardAlpha"
                 values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
@@ -431,8 +431,8 @@ export const Signup = () => {
               cx="0"
               id="paint0_radial_1_38"
             >
-              <stop stop-color="#00FFF0"></stop>
-              <stop stop-color="#001AFF" offset="0.901042"></stop>
+              <stop stopColor="#00FFF0"></stop>
+              <stop stopColor="#001AFF" offset="0.901042"></stop>
             </radialGradient>
           </defs>
         </svg>
