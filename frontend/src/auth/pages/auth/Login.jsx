@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Auth.css";
 import { Link, useNavigate } from "react-router-dom";
-import { RESET, login, loginWithGoogle, sendLoginCode } from "../../redux/features/auth/authSlice";
+import {
+  RESET,
+  login,
+  loginWithGoogle,
+  sendLoginCode,
+} from "../../redux/features/auth/authSlice";
 import { validateEmail } from "../../redux/features/auth/authService";
 import { useDispatch, useSelector } from "react-redux";
 import { GoogleLogin } from "@react-oauth/google";
@@ -36,7 +41,7 @@ export const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isLoading, isLoggedIn, isSuccess, isError, twoFactor } = useSelector(
+  const { isLoggedIn, isSuccess, isError, twoFactor } = useSelector(
     (state) => state.auth
   );
 
@@ -79,14 +84,38 @@ export const Login = () => {
 
   return (
     <div id="login-container">
-      <form className="login-form">
+      <form className="login-form" onSubmit={loginUser}>
         <div id="login-lable">Login</div>
-        <input className="login-form-content" type="text" placeholder="Username" />
-        <input className="login-form-content" type="password" placeholder="Password" />
-        <button>LogIn</button>
-        <Link to="/forgot" className="auth-links" id="forgot">Forgot Password?</Link>
-        <Link to="/singup" className="auth-links" id="signup">Sign Up</Link>
-        <Link to="/" className="auth-links" >Home</Link>
+        <input
+          type="email"
+          name="email"
+          value={email}
+          className="login-form-content"
+          placeholder="Email"
+          id="email"
+          autoComplete="off"
+          required
+          onChange={handleInputChange}
+        />
+        <input
+          className="login-form-content"
+          id="loginPassword"
+          autoComplete="off"
+          placeholder="Password"
+          name="password"
+          value={password}
+          onChange={handleInputChange}
+        />
+        <button>Login</button>
+        <Link to="/forgot" className="auth-links" id="forgot">
+          Forgot Password?
+        </Link>
+        <Link to="/singup" className="auth-links" id="signup">
+          Sign Up
+        </Link>
+        <Link to="/" className="auth-links">
+          Home
+        </Link>
       </form>
 
       <div id="rays">

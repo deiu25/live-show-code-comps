@@ -96,7 +96,6 @@ export const Profile = () => {
 
   return (
     <>
-      {isLoading && <Loader />}
       {!profile.isVerified && <Notification />}
       <div className="profile-container">
         <div className="centered-row">

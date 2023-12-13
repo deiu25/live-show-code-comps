@@ -2,20 +2,17 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { validateEmail } from "../../redux/features/auth/authService";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { RESET, forgotPassword } from "../../redux/features/auth/authSlice";
-import { Loader } from "../../components/loader/Loader";
 import Button from "../../components/button/Button";
 
 export const Forgot = () => {
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
 
-  const { isLoading } = useSelector((state) => state.auth);
-
   const forgot = async (e) => {
     e.preventDefault();
-    
+
     if (!email) {
       return toast.error("Email is required");
     }
@@ -33,7 +30,6 @@ export const Forgot = () => {
   return (
     <div className="section full-bg">
       <div className="custom-container">
-        {isLoading && <Loader />}
         <div className="custom-row full-height">
           <div className="custom-div">
             <div className="custom-section">
@@ -58,9 +54,7 @@ export const Forgot = () => {
                             d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
                           ></path>
                         </svg>
-                        <h4 className="forgotTitle">
-                          Forgot Password
-                        </h4>
+                        <h4 className="forgotTitle">Forgot Password</h4>
                         <p className="forgotParagraph">
                           Enter your email to receive a password reset link.
                         </p>

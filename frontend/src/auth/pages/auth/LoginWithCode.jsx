@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RESET, loginWithCode, sendLoginCode } from "../../redux/features/auth/authSlice";
-import { Loader } from "../../components/loader/Loader";
-import './AuthStyle.css'
+
 import Button from "../../components/button/Button";
 
 export const LoginWithCode = () => {
@@ -13,7 +12,7 @@ export const LoginWithCode = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { isLoading, isLoggedIn, isSuccess } = useSelector(
+    const { isLoggedIn, isSuccess } = useSelector(
         (state) => state.auth
     );
 
@@ -51,7 +50,6 @@ export const LoginWithCode = () => {
   return (
     <div className="section full-bg">
       <div className="custom-container">
-        {isLoading && <Loader />}
         <div className="custom-row full-height">
           <div className="custom-div">
             <div className="custom-section">

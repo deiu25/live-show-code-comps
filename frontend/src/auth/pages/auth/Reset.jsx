@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PasswordInput } from "../../components/passwordInput/PasswordInput";
-import { Loader } from "../../components/loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { RESET, resetPassword } from "../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
-import './AuthStyle.css'
 import Button from "../../components/button/Button";
 
 const initialState = {
@@ -19,7 +17,7 @@ export const Reset = () => {
   const { resetToken } = useParams();
   console.log(resetToken);
 
-  const { isLoading, isSuccess, message } = useSelector((state) => state.auth);
+  const { isSuccess, message } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -107,7 +105,6 @@ export const Reset = () => {
   return (
     <div className="section full-bg">
     <div className="custom-container">
-      {isLoading && <Loader />}
       <div className="custom-row full-height">
         <div className="custom-div">
           <div className="custom-section">

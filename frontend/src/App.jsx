@@ -1,47 +1,97 @@
-import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Home } from './pages/home/Home';
-import axios from 'axios';
-import { HomeAllPosts } from './components/home/home-posts/HomeAllPosts';
-import { About } from './pages/about/About';
-import { Contact } from './pages/contact/Contact';
-import { Login } from './auth/pages/auth/Login';
-import { Signup } from './auth/pages/auth/Singup';
-import { useDispatch, useSelector } from 'react-redux';
-import { getLoginStatus, getUser, selectIsLoggedIn, selectUser } from './auth/redux/features/auth/authSlice';
-import { useEffect } from 'react';
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home } from "./pages/home/Home";
+import axios from "axios";
+import { HomeAllPosts } from "./components/home/home-posts/HomeAllPosts";
+import { About } from "./pages/about/About";
+import { Contact } from "./pages/contact/Contact";
+import { Login } from "./auth/pages/auth/Login";
+import { Signup } from "./auth/pages/auth/Singup";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getLoginStatus,
+  getUser,
+  selectIsLoggedIn,
+  selectUser,
+} from "./auth/redux/features/auth/authSlice";
+import { useEffect } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { ChangePassword } from "./auth/pages/changePassword/ChangePassword";
+import { Leyout } from "./auth/components/layout/Leyaout";
+import { Forgot } from "./auth/pages/auth/Forgot";
+import { Reset } from "./auth/pages/auth/Reset";
+import { LoginWithCode } from "./auth/pages/auth/LoginWithCode";
+import { Verify } from "./auth/pages/auth/Verify";
+import { Profile } from "./auth/pages/profile/Profile";
+import { UserList } from "./auth/pages/userList/UserList";
 
 axios.defaults.withCredentials = true;
 
 function App() {
-
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
 
   useEffect(() => {
-  dispatch(getLoginStatus());
-  if(isLoggedIn && user === null){
-    dispatch(getUser());
-  }
+    dispatch(getLoginStatus());
+    if (isLoggedIn && user === null) {
+      dispatch(getUser());
+    }
   }, [dispatch, isLoggedIn, user]);
 
   return (
     <>
-    <BrowserRouter>
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/posts" element={<HomeAllPosts />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/singup" element={<Signup />} />
-      </Routes>
-      </GoogleOAuthProvider>
-    </BrowserRouter>
+      <BrowserRouter>
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/posts" element={<HomeAllPosts />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/singup" element={<Signup />} />
+
+            <Route path="/forgot" element={<Forgot />} />
+            <Route path="/resetPassword/:resetToken" element={<Reset />} />
+            <Route path="/loginWithCode/:email" element={<LoginWithCode />} />
+
+            <Route
+              path="/verify/:verificationToken"
+              element={
+                <Leyout>
+                  <Verify />
+                </Leyout>
+              }
+            />
+
+            <Route
+              path="/profile"
+              element={
+                <Leyout>
+                  <Profile />
+                </Leyout>
+              }
+            />
+            <Route
+              path="/changePassword"
+              element={
+                <Leyout>
+                  <ChangePassword />
+                </Leyout>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <Leyout>
+                  <UserList />
+                </Leyout>
+              }
+            />
+          </Routes>
+        </GoogleOAuthProvider>
+      </BrowserRouter>
     </>
   );
 }

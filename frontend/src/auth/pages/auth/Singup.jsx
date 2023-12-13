@@ -24,9 +24,7 @@ export const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isLoggedIn, isSuccess } = useSelector(
-    (state) => state.auth
-  );
+  const { isLoggedIn, isSuccess } = useSelector((state) => state.auth);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -160,6 +158,11 @@ export const Signup = () => {
             placeholder="Password"
             value={password}
             onChange={handleInputChange}
+            onPaste={(e) => {
+              e.preventDefault();
+              toast.error("You can't paste here");
+              return false;
+            }}
           />
         </div>
         <div className="input-container">
@@ -171,13 +174,19 @@ export const Signup = () => {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={handleInputChange}
+            onPaste={(e) => {
+              e.preventDefault();
+              toast.error("You can't paste here");
+              return false;
+            }}
           />
         </div>
-        <button type="submit" className="btn">
-          Sign Up
-        </button>
+        <button type="submit">Sign Up</button>
         <p className="signup-txt">
-          Already have an account? <br></br> <Link className="signup-links" to="/login">Login</Link>
+          Already have an account? <br></br>{" "}
+          <Link className="signup-links" to="/login">
+            Login
+          </Link>
         </p>
       </form>
 
