@@ -8,7 +8,6 @@ import {
   selectUser,
   updateUser,
 } from "../../redux/features/auth/authSlice";
-import { Loader } from "../../components/loader/Loader";
 import { toast } from "react-toastify";
 import { Notification } from "../../components/notification/Notification";
 import Button from "../../components/button/Button";

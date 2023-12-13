@@ -95,6 +95,16 @@
   text-align: center;
   position: relative;
 }
+.sidebar-acc-logo {
+  width: auto;
+  height: auto;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s ease; 
+}
+.sidebar-acc-logo:hover {
+  transform: scale(1.2);
+}
 #wrapper #sidebar:before {
   content: "";
   width: 2%;

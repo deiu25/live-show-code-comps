@@ -21,7 +21,7 @@ export const Header = () => {
   const logoutUser = async () => {
     dispatch(RESET());
     await dispatch(logout());
-    navigate("/auth");
+    navigate("/login");
   };
 
   return (

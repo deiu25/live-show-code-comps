@@ -24,6 +24,8 @@ import { LoginWithCode } from "./auth/pages/auth/LoginWithCode";
 import { Verify } from "./auth/pages/auth/Verify";
 import { Profile } from "./auth/pages/profile/Profile";
 import { UserList } from "./auth/pages/userList/UserList";
+import { NewProject } from "./pages/newProject/NewProject";
+
 
 axios.defaults.withCredentials = true;
 
@@ -49,6 +51,7 @@ function App() {
             <Route path="/posts" element={<HomeAllPosts />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/NewProject" element={<NewProject />} />
             <Route path="/login" element={<Login />} />
             <Route path="/singup" element={<Signup />} />
 
@@ -89,6 +92,7 @@ function App() {
                 </Leyout>
               }
             />
+            
           </Routes>
         </GoogleOAuthProvider>
       </BrowserRouter>
