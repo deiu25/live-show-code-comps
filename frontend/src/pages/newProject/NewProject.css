@@ -8,6 +8,20 @@
   background-color: black;
 }
 
+.container-full {
+
+
+}
+
+.new-proj-header-left-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: black;
+  gap: 6px;
+}
+
 .split-sash-content {
   background-color: aliceblue;
 }

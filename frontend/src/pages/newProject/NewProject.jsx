@@ -27,6 +27,9 @@ export const NewProject = () => {
   const [cssCode, setCssCode] = useState("");
   const [jsCode, setJsCode] = useState("");
 
+  const [title, setTitle] = useState("")
+  const [isTitle, setIsTitle] = useState("");
+
   // Function to render the preview - you might need to implement sandboxing/security measures
   const createMarkup = () => {
     const blob = new Blob(
@@ -39,117 +42,136 @@ export const NewProject = () => {
   };
 
   return (
-    <div className="new-proj-container">
-      <SplitPane
-        split="horizontal"
-        sizes={horizontalSizes}
-        onChange={setHorizontalSizes}
-      >
+    <div className="container-full">
+      <div className="new-proj-header">
+        <div className="new-proj-header-left">
+          <div className="new-proj-header-left-title">
+            <h2 className="proj-nav-logo">Syntax</h2>
+            <input
+              type="text"
+              placeholder="Untitled"
+              value={isTitle}
+              onChange={(e) => setIsTitle(e.target.value)}
+            />
+          </div>
+          
+        </div>
+        <div className="new-proj-header-right">
+          
+        </div>
+      </div>
+      <div className="new-proj-container">
         <SplitPane
-          split="vertical"
-          sizes={verticalSizes}
-          onChange={setVerticalSizes}
-          minSize={50}
+          split="horizontal"
+          sizes={horizontalSizes}
+          onChange={setHorizontalSizes}
         >
-          <div style={layoutCSS}>
-            <div className="code-editor-head">
-              <div className="html-icon">
-                <HtmlIcon />
-                <p>HTML</p>
+          <SplitPane
+            split="vertical"
+            sizes={verticalSizes}
+            onChange={setVerticalSizes}
+            minSize={50}
+          >
+            <div style={layoutCSS}>
+              <div className="code-editor-head">
+                <div className="html-icon">
+                  <HtmlIcon />
+                  <p>HTML</p>
+                </div>
+                <div className="right-tools">
+                  <SetingsIcon />
+                  <AngleDown />
+                </div>
               </div>
-              <div className="right-tools">
-                <SetingsIcon />
-                <AngleDown />
-              </div>
-            </div>
-            <div className="code-editor">
-              <CodeMirror
-                value={htmlCode}
-                height="600px"
-                theme={"dark"}
-                extensions={[javascript({ jsx: true })]}
-                onChange={(value, viewUpdate) => {
-                  setHtmlCode(value);
-                }}
-              />
-            </div>
-          </div>
-          <div style={layoutCSS}>
-            <div className="code-editor-head">
-              <div className="html-icon">
-                <CssIcon />
-                <p>CSS</p>
-              </div>
-              <div className="right-tools">
-                <SetingsIcon />
-                <AngleDown />
+              <div className="code-editor">
+                <CodeMirror
+                  value={htmlCode}
+                  height="600px"
+                  theme={"dark"}
+                  extensions={[javascript({ jsx: true })]}
+                  onChange={(value, viewUpdate) => {
+                    setHtmlCode(value);
+                  }}
+                />
               </div>
             </div>
-            <div className="code-editor">
-              <CodeMirror
-                value={cssCode}
-                height="600px"
-                theme={"dark"}
-                extensions={[javascript({ jsx: true })]}
-                onChange={(value, viewUpdate) => {
-                  setCssCode(value);
-                }}
-              />
-            </div>
-          </div>
-          <div style={layoutCSS}>
-            <div className="code-editor-head">
-              <div className="html-icon">
-                <JsIcon />
-                <p>JS</p>
+            <div style={layoutCSS}>
+              <div className="code-editor-head">
+                <div className="html-icon">
+                  <CssIcon />
+                  <p>CSS</p>
+                </div>
+                <div className="right-tools">
+                  <SetingsIcon />
+                  <AngleDown />
+                </div>
               </div>
-              <div className="right-tools">
-                <SetingsIcon />
-                <AngleDown />
+              <div className="code-editor">
+                <CodeMirror
+                  value={cssCode}
+                  height="600px"
+                  theme={"dark"}
+                  extensions={[javascript({ jsx: true })]}
+                  onChange={(value, viewUpdate) => {
+                    setCssCode(value);
+                  }}
+                />
               </div>
             </div>
-            <div className="code-editor">
-              <CodeMirror
-                value={jsCode}
-                height="600px"
-                theme={"dark"}
-                extensions={[javascript({ jsx: true })]}
-                onChange={(value, viewUpdate) => {
-                  setJsCode(value);
-                }}
-              />
+            <div style={layoutCSS}>
+              <div className="code-editor-head">
+                <div className="html-icon">
+                  <JsIcon />
+                  <p>JS</p>
+                </div>
+                <div className="right-tools">
+                  <SetingsIcon />
+                  <AngleDown />
+                </div>
+              </div>
+              <div className="code-editor">
+                <CodeMirror
+                  value={jsCode}
+                  height="600px"
+                  theme={"dark"}
+                  extensions={[javascript({ jsx: true })]}
+                  onChange={(value, viewUpdate) => {
+                    setJsCode(value);
+                  }}
+                />
+              </div>
             </div>
-          </div>
-        </SplitPane>
+          </SplitPane>
 
-        <Pane initialSize="50%" minSize="20%">
-          <div>
-            <div className="output-section">
-              <iframe
-                title="preview"
-                src={createMarkup()}
-                overflow="auto"
-                style={{  height: "100%", width: "100%" }}
-              />
+          <Pane initialSize="50%" minSize="20%">
+            <div>
+              <div className="output-section">
+                <iframe
+                  title="preview"
+                  src={createMarkup()}
+                  overflow="auto"
+                  style={{ height: "100%", width: "100%" }}
+                />
+              </div>
+              <div className="output-footer-bar">
+                <div className="output-footer-bar-left">
+                  <button>Console</button>
+                  <button>Assets</button>
+                  <button>Comments</button>
+                  <button>Shortcuts</button>
+                </div>
+                <div className="output-footer-bar-center">
+                  <Link to="/">Home</Link>
+                </div>
+                <div className="output-footer-bar-right">
+                  <p>0 Errors</p>
+                  <p>0 Warnings</p>
+                </div>
+              </div>
             </div>
-            <div className="output-footer-bar">
-              <div className="output-footer-bar-left">
-                <button>Console</button>
-                <button>Assets</button>
-                <button>Comments</button>
-                <button>Shortcuts</button>
-              </div>
-              <div className="output-footer-bar-center">
-                <Link to="/">Home</Link>
-              </div>
-              <div className="output-footer-bar-right">
-                <p>0 Errors</p>
-                <p>0 Warnings</p>
-              </div>
-            </div>
-          </div>
-        </Pane>
-      </SplitPane>
+          </Pane>
+        </SplitPane>
+      </div>
     </div>
   );
 };
