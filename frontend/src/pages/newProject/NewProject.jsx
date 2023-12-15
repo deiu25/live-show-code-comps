@@ -8,18 +8,18 @@ import { ReactComponent as CssIcon } from "../../assets/icons/css.svg";
 import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
 import { ReactComponent as SetingsIcon } from "../../assets/icons/setings.svg";
 import { ReactComponent as AngleDown } from "../../assets/icons/down.svg";
+import { ReactComponent as Edit } from "../../assets/icons/edit.svg";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 
 export const NewProject = () => {
-  const [horizontalSizes, setHorizontalSizes] = useState(["23%", "11%"]);
+  const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
   const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
 
   // Styling for each pane
   const layoutCSS = {
     height: "100%",
-    overflow: "auto", // Allows scrolling if content exceeds the panel size
   };
 
   // State to hold the code for HTML, CSS, and JavaScript
@@ -27,7 +27,7 @@ export const NewProject = () => {
   const [cssCode, setCssCode] = useState("");
   const [jsCode, setJsCode] = useState("");
 
-  const [title, setTitle] = useState("")
+  const [title, setTitle] = useState("");
   const [isTitle, setIsTitle] = useState("");
 
   // Function to render the preview - you might need to implement sandboxing/security measures
@@ -43,33 +43,37 @@ export const NewProject = () => {
 
   return (
     <div className="container-full">
-      <div className="new-proj-header">
-        <div className="new-proj-header-left">
-          <div className="new-proj-header-left-title">
-            <h2 className="proj-nav-logo">Syntax</h2>
-            <input
-              type="text"
-              placeholder="Untitled"
-              value={isTitle}
-              onChange={(e) => setIsTitle(e.target.value)}
-            />
-          </div>
-          
-        </div>
-        <div className="new-proj-header-right">
-          
-        </div>
-      </div>
       <div className="new-proj-container">
+        <div className="new-proj-nav">
+          <div className="new-proj-nav-left">
+            <div className="new-proj-nav-left-logo">
+              <Link to="/">Live Show Code</Link>
+            </div>
+            <div className="new-proj-nav-title">
+              <input
+                type="text"
+                placeholder="Untitled"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <div className="new-proj-nav-title-icon">
+                <Edit />
+              </div>
+            </div>
+          </div>
+          <div className="new-proj-nav-right">
+            <button>Run</button>
+            <button>Acc</button>
+            <button>Options</button>
+          </div>
+        </div>
         <SplitPane
-          split="horizontal"
           sizes={horizontalSizes}
-          onChange={setHorizontalSizes}
         >
           <SplitPane
             split="vertical"
             sizes={verticalSizes}
-            onChange={setVerticalSizes}
+            onChange={sizes => setVerticalSizes(sizes)}
             minSize={50}
           >
             <div style={layoutCSS}>
@@ -86,7 +90,7 @@ export const NewProject = () => {
               <div className="code-editor">
                 <CodeMirror
                   value={htmlCode}
-                  height="600px"
+                  height="83vh"
                   theme={"dark"}
                   extensions={[javascript({ jsx: true })]}
                   onChange={(value, viewUpdate) => {
@@ -109,7 +113,7 @@ export const NewProject = () => {
               <div className="code-editor">
                 <CodeMirror
                   value={cssCode}
-                  height="600px"
+                  height="83vh"
                   theme={"dark"}
                   extensions={[javascript({ jsx: true })]}
                   onChange={(value, viewUpdate) => {
@@ -132,7 +136,7 @@ export const NewProject = () => {
               <div className="code-editor">
                 <CodeMirror
                   value={jsCode}
-                  height="600px"
+                  height="83vh"
                   theme={"dark"}
                   extensions={[javascript({ jsx: true })]}
                   onChange={(value, viewUpdate) => {
@@ -143,33 +147,31 @@ export const NewProject = () => {
             </div>
           </SplitPane>
 
-          <Pane initialSize="50%" minSize="20%">
-            <div>
-              <div className="output-section">
-                <iframe
-                  title="preview"
-                  src={createMarkup()}
-                  overflow="auto"
-                  style={{ height: "100%", width: "100%" }}
-                />
+          <div>
+            <div className="output-footer-bar">
+              <div className="output-footer-bar-left">
+                <button>Console</button>
+                <button>Assets</button>
+                <button>Comments</button>
+                <button>Shortcuts</button>
               </div>
-              <div className="output-footer-bar">
-                <div className="output-footer-bar-left">
-                  <button>Console</button>
-                  <button>Assets</button>
-                  <button>Comments</button>
-                  <button>Shortcuts</button>
-                </div>
-                <div className="output-footer-bar-center">
-                  <Link to="/">Home</Link>
-                </div>
-                <div className="output-footer-bar-right">
-                  <p>0 Errors</p>
-                  <p>0 Warnings</p>
-                </div>
+              <div className="output-footer-bar-center">
+                <Link to="/">Home</Link>
+              </div>
+              <div className="output-footer-bar-right">
+                <p>0 Errors</p>
+                <p>0 Warnings</p>
               </div>
             </div>
-          </Pane>
+            <div className="output-section">
+              <iframe
+                title="preview"
+                src={createMarkup()}
+                overflow="auto"
+                style={{ height: "83vh", width: "100%", border: "none" }}
+              />
+            </div>
+          </div>
         </SplitPane>
       </div>
     </div>

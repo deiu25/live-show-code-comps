@@ -52,9 +52,9 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/NewProject" element={<NewProject />} />
+            
             <Route path="/login" element={<Login />} />
             <Route path="/singup" element={<Signup />} />
-
             <Route path="/forgot" element={<Forgot />} />
             <Route path="/resetPassword/:resetToken" element={<Reset />} />
             <Route path="/loginWithCode/:email" element={<LoginWithCode />} />
