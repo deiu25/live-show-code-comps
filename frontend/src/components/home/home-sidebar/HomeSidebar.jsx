@@ -48,7 +48,8 @@ export const HomeSidebar = ({ onTabChange, currentTab }) => {
       )}
       <ShowOnLogout>
         <Link to="/login">
-          <i className="far fa-user"></i> Auth
+          <i className="far fa-user"></i>
+          {isSidebarOpen && <span className="nav-text"> Auth</span>}
         </Link>
       </ShowOnLogout>
       <ShowOnLogin>

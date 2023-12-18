@@ -9,6 +9,13 @@ import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
 import { ReactComponent as SetingsIcon } from "../../assets/icons/setings.svg";
 import { ReactComponent as AngleDown } from "../../assets/icons/down.svg";
 import { ReactComponent as Edit } from "../../assets/icons/edit.svg";
+import { ReactComponent as Terminal } from "../../assets/icons/terminal.svg";
+import { ReactComponent as Assets } from "../../assets/icons/assets.svg";
+import { ReactComponent as Coments } from "../../assets/icons/coments.svg";
+import { ReactComponent as Shortcut } from "../../assets/icons/shortcut.svg";
+import { ReactComponent as Home } from "../../assets/icons/home.svg";
+import { ReactComponent as Errors } from "../../assets/icons/errors.svg";
+import { ReactComponent as Warnings } from "../../assets/icons/warnings.svg";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
@@ -150,17 +157,19 @@ export const NewProject = () => {
           <div>
             <div className="output-footer-bar">
               <div className="output-footer-bar-left">
-                <button>Console</button>
-                <button>Assets</button>
-                <button>Comments</button>
-                <button>Shortcuts</button>
+                <Terminal />
+                <Assets />
+                <Coments />
+                <Shortcut />
               </div>
               <div className="output-footer-bar-center">
-                <Link to="/">Home</Link>
+                <Link to="/"><Home /></Link>
               </div>
               <div className="output-footer-bar-right">
-                <p>0 Errors</p>
-                <p>0 Warnings</p>
+                <Errors />
+                <p>0</p>
+                <Warnings />
+                <p>0</p>
               </div>
             </div>
             <div className="output-section">
@@ -168,7 +177,7 @@ export const NewProject = () => {
                 title="preview"
                 src={createMarkup()}
                 overflow="auto"
-                style={{ height: "83vh", width: "100%", border: "none" }}
+                style={{ height: "83vh", width: "100%", border: "none", backgroundColor: "#282c34" }}
               />
             </div>
           </div>

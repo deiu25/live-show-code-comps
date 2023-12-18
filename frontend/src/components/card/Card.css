@@ -15,7 +15,7 @@ body {
     background: #36454F;
 }
 
-.container {
+.container-card {
     position: relative;
     display: flex;
     justify-content: center;
@@ -25,7 +25,7 @@ body {
     padding: 100px 50px;
 }
 
-.container .card {
+.container-card .card {
     position: relative;
     display: flex;
     justify-content: center;
@@ -39,11 +39,11 @@ body {
     box-shadow: 0 35px 80px rgba(0, 0, 0, 0.15);
 }
 
-.container .card:hover {
+.container-card .card:hover {
     height: 400px;
 }
 
-.container .card .img-box {
+.container-card .card .img-box {
     position: absolute;
     top: 20px;
     width: 300px;
@@ -54,13 +54,13 @@ body {
     transition: 0.5s;
 }
 
-.container .card:hover .img-box {
+.container-card .card:hover .img-box {
     top: -100px;
     scale: 0.75;
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
 }
 
-.container .card .img-box img {
+.container-card .card .img-box img {
     position: absolute;
     top: 0;
     left: 0;
@@ -69,7 +69,7 @@ body {
     object-fit: cover;
 }
 
-.container .card .content {
+.container-card .card .content {
     position: absolute;
     top: 252px;
     width: 100%;
@@ -80,22 +80,22 @@ body {
     transition: 0.5s;
 }
 
-.container .card:hover .content {
+.container-card .card:hover .content {
     top: 130px;
     height: 250px;
 }
 
-.container .card .content h2 {
+.container-card .card .content h2 {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--clr);
 }
 
-.container .card .content p {
+.container-card .card .content p {
     color: #333;
 }
 
-.container .card .content a {
+.container-card .card .content a {
     position: relative;
     top: 15px;
     display: inline-block;
@@ -106,26 +106,26 @@ body {
     font-weight: 500;
 }
 
-.container .card .content a:hover {
+.container-card .card .content a:hover {
     opacity: 0.8;
 }
 
 @media (max-width: 480px) {
-    .container .card {
+    .container-card .card {
         width: 230px;
         border-radius: 15px;
     }
 
-    .container .card .img-box {
+    .container-card .card .img-box {
         width: 185px;
         border-radius: 10px;
     }
 
-    .container .card .content p {
+    .container-card .card .content p {
         font-size: 0.8rem;
     }
 
-    .container .card .content a {
+    .container-card .card .content a {
         font-size: 0.9rem;
     }
 }

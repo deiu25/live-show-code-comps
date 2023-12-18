@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Home.css";
 import { HomeSidebar } from "../../components/home/home-sidebar/HomeSidebar";
-import { HomeHeader } from "../../components/home/home-header/HomeHeader";
 import { HomeCurentSection } from "../../components/home/home-curent-section/HomeCurentSection";
 
 import { HomeFooter } from "../../components/home/home-footer/HomeFooter";
@@ -34,7 +33,7 @@ export const Home = ({ children }) => {
   return (
     <>
       {children}
-      <div className="container" id="wrapper">
+      <div className=" home-container" id="wrapper">
         <div className="row">
           <HomeSidebar onTabChange={handleTabChange} currentTab={currentTab} />
           <div className="col-md-9">

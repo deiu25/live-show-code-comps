@@ -2,7 +2,7 @@ import React from 'react'
 
 export const Card = () => {
   return (
-    <div className="container">
+    <div className="container-card">
         <div className="card" style="--clr: #009688">
             <div className="img-box">
                 

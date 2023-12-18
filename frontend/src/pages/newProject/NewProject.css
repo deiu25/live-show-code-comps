@@ -161,3 +161,39 @@
   color: white;
   margin-right: 4px;
 }
+
+/* Output */
+
+.output-footer-bar-left svg {
+  width: 25px; 
+  height: 25px; 
+  background-color: #282c34;
+  margin: 2.4px 5px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.output-footer-bar-center svg {
+  width: 25px; 
+  height: 25px; 
+  background-color: #282c34;
+  margin: 0 5px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.output-footer-bar-right svg {
+  width: 25px; 
+  height: 25px; 
+  background-color: #282c34;
+  margin: 0 5px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.output-footer-bar-right p {
+  color: white;
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+}
