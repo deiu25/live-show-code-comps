@@ -30,5 +30,6 @@
     "nodemailer-express-handlebars": "^6.1.0",
     "nodemon": "^3.0.1",
     "ua-parser-js": "^1.0.35"
-  }
+  },
+  "type": "module"
 }

@@ -7,7 +7,6 @@ const snippetSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
   },
   date: {
     type: Date,
@@ -28,7 +27,6 @@ const snippetSchema = new mongoose.Schema({
   },
   javascript: {
     type: String,
-    required: true,
   },
   categories: [
     {
@@ -37,16 +35,16 @@ const snippetSchema = new mongoose.Schema({
       required: true,
     },
   ],
-  comments: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Comment",
-    },
-  ],
   tags: [
     {
       type: mongoose.Types.ObjectId,
       ref: "Tag",
+    },
+  ],
+  comments: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Comment",
     },
   ],
   likes: [

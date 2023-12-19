@@ -81,7 +81,7 @@ export const NewProject = () => {
             split="vertical"
             sizes={verticalSizes}
             onChange={sizes => setVerticalSizes(sizes)}
-            minSize={50}
+            minsize={50}
           >
             <div style={layoutCSS}>
               <div className="code-editor-head">

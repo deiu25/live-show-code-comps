@@ -1,9 +1,11 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const userRoute = require("./routes/userRoute");
-const cors = require('cors');
-const errorHandler = require("./middleware/errorMiddleware");
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+
+import userRoute from './routes/userRoute.js';
+import postRouter from './routes/postRoute.js';
+import errorHandler from './middleware/errorMiddleware.js';
 
 const app = express();
 
@@ -20,10 +22,12 @@ app.use(
 
 // Routes
 app.use("/api/users", userRoute);
+app.use("/api/posts", postRouter);
 app.get("/", (req, res) => {
   res.send("Home Page");
 });
 
+// Error handler middleware
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

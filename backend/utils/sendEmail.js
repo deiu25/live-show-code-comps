@@ -1,7 +1,13 @@
-require('dotenv').config();
-const nodemailer = require("nodemailer");
-const hbs = require("nodemailer-express-handlebars");
-const path = require("path");
+import 'dotenv/config';
+import nodemailer from 'nodemailer';
+import hbs from 'nodemailer-express-handlebars';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// __dirname is not available in ES6 modules, so you have to create it
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const sendEmail = async (
   subject,
@@ -25,19 +31,19 @@ const sendEmail = async (
     },
   });
 
-  const handlearOptions = {
+  const handlebarOptions = {
     viewEngine: {
       extName: ".handlebars",
-      partialsDir: path.resolve("./views"),
+      partialsDir: path.resolve(__dirname, "./views"),
       defaultLayout: false,
     },
-    viewPath: path.resolve("./views"),
+    viewPath: path.resolve(__dirname, "./views"),
     extName: ".handlebars",
   };
 
-  transporter.use("compile", hbs(handlearOptions));
+  transporter.use("compile", hbs(handlebarOptions));
 
-  // Options f0r sending email
+  // Options for sending email
   const options = {
     from: sent_from,
     to: send_to,
@@ -51,13 +57,12 @@ const sendEmail = async (
   };
 
   // Send Email
-  transporter.sendMail(options, function (err, info) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(info);
-    }
-  });
+  try {
+    const info = await transporter.sendMail(options);
+    console.log(info);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-module.exports = sendEmail;
+export default sendEmail;

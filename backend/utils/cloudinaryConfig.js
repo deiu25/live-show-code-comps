@@ -1,6 +1,6 @@
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const multer = require('multer');
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import multer from 'multer';
 
 // Cloudinary Config
 cloudinary.config({
@@ -25,7 +25,6 @@ const storage = new CloudinaryStorage({
   },
 });
 
-
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
     cb(null, true);
@@ -39,4 +38,4 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-module.exports = upload;
+export default upload;

@@ -1,22 +1,22 @@
-require("dotenv").config();
-const asyncHandler = require("express-async-handler");
-const User = require("../models/userModel");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const sendEmail = require("../utils/sendEmail");
-const { generateToken, hashToken } = require("../utils");
-var parser = require("ua-parser-js");
-const Token = require("../models/tokenModel");
-const crypto = require("crypto");
-const Cryptr = require("cryptr");
-const { OAuth2Client } = require("google-auth-library");
-const cloudinary = require("cloudinary").v2;
-const cryptr = new Cryptr(process.env.CRYPTR_KEY);
+import 'dotenv/config';
+import asyncHandler from 'express-async-handler';
+import User from '../models/userModel.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import sendEmail from '../utils/sendEmail.js';
+import { generateToken, hashToken } from '../utils/index.js';
+import parser from 'ua-parser-js';
+import Token from '../models/tokenModel.js';
+import crypto from 'crypto';
+import Cryptr from 'cryptr';
+import { OAuth2Client } from 'google-auth-library';
+import { v2 as cloudinary } from 'cloudinary';
 
+const cryptr = new Cryptr(process.env.CRYPTR_KEY);
 const client = new OAuth2Client(process.env.CLIENT_ID);
 
 // Register User
-const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
   
   const { firstname, lastname, email, password } = req.body;
 
@@ -96,7 +96,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 // Login User
-const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   //   Validation
@@ -194,7 +194,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 // Logout User
-const logoutUser = asyncHandler(async (req, res) => {
+export const logoutUser = asyncHandler(async (req, res) => {
   res.cookie("token", "", {
     path: "/",
     httpOnly: true,
@@ -206,7 +206,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 // Get User
-const getUser = asyncHandler(async (req, res) => {
+export const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
@@ -240,7 +240,7 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 // Update User
-const updateUser = asyncHandler(async (req, res) => {
+export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   const oldPhotoUrl = user.photo;
   // Trim .jpg from end
@@ -287,7 +287,7 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 // Delete User
-const deleteUser = asyncHandler(async (req, res) => {
+export const deleteUser = asyncHandler(async (req, res) => {
   const result = await User.deleteOne({ _id: req.params.id });
 
   if (result.deletedCount === 0) {
@@ -301,7 +301,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 // Get Users
-const getUsers = asyncHandler(async (req, res) => {
+export const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find().sort("-createdAt").select("-password");
   if (!users) {
     res.status(500);
@@ -311,7 +311,7 @@ const getUsers = asyncHandler(async (req, res) => {
 });
 
 // Get Login Status
-const loginStatus = asyncHandler(async (req, res) => {
+export const loginStatus = asyncHandler(async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
     return res.json(false);
@@ -327,7 +327,7 @@ const loginStatus = asyncHandler(async (req, res) => {
 });
 
 // Change User Role
-const upgradeUser = asyncHandler(async (req, res) => {
+export const upgradeUser = asyncHandler(async (req, res) => {
   const { role, id } = req.body;
 
   const user = await User.findById(id);
@@ -346,7 +346,7 @@ const upgradeUser = asyncHandler(async (req, res) => {
 });
 
 // Send Automated emails
-const sendAutomatedEmail = asyncHandler(async (req, res) => {
+export const sendAutomatedEmail = asyncHandler(async (req, res) => {
   const { subject, send_to, reply_to, template, url } = req.body;
 
   if (!subject || !send_to || !reply_to || !template) {
@@ -384,7 +384,7 @@ const sendAutomatedEmail = asyncHandler(async (req, res) => {
 });
 
 // Send Verification Email
-const sendVerificationEmail = asyncHandler(async (req, res) => {
+export const sendVerificationEmail = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (!user) {
@@ -445,7 +445,7 @@ const sendVerificationEmail = asyncHandler(async (req, res) => {
 });
 
 // Verify User
-const verifyUser = asyncHandler(async (req, res) => {
+export const verifyUser = asyncHandler(async (req, res) => {
   const { verificationToken } = req.params;
 
   const hashedToken = hashToken(verificationToken);
@@ -476,7 +476,7 @@ const verifyUser = asyncHandler(async (req, res) => {
 });
 
 // Forgot Password
-const forgotPassword = asyncHandler(async (req, res) => {
+export const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
   const user = await User.findOne({ email });
@@ -535,7 +535,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 // Reset Password
-const resetPassword = asyncHandler(async (req, res) => {
+export const resetPassword = asyncHandler(async (req, res) => {
   const { resetToken } = req.params;
   const { password } = req.body;
   console.log(resetToken);
@@ -563,7 +563,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 });
 
 // Change Password
-const changePassword = asyncHandler(async (req, res) => {
+export const changePassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const user = await User.findById(req.user._id);
 
@@ -595,7 +595,7 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 // Send Login Code
-const sendLoginCode = asyncHandler(async (req, res) => {
+export const sendLoginCode = asyncHandler(async (req, res) => {
   const { email } = req.params;
   const user = await User.findOne({ email });
 
@@ -645,7 +645,7 @@ const sendLoginCode = asyncHandler(async (req, res) => {
 });
 
 // Login With Code
-const loginWithCode = asyncHandler(async (req, res) => {
+export const loginWithCode = asyncHandler(async (req, res) => {
   const { email } = req.params;
   const { loginCode } = req.body;
 
@@ -708,7 +708,7 @@ const loginWithCode = asyncHandler(async (req, res) => {
 });
 
 // Login With Google
-const loginWithGoogle = asyncHandler(async (req, res) => {
+export const loginWithGoogle = asyncHandler(async (req, res) => {
   const { userToken } = req.body;
 
   const ticket = await client.verifyIdToken({
@@ -820,24 +820,3 @@ const loginWithGoogle = asyncHandler(async (req, res) => {
     });
   }
 });
-
-module.exports = {
-  registerUser,
-  loginUser,
-  logoutUser,
-  getUser,
-  updateUser,
-  deleteUser,
-  getUsers,
-  loginStatus,
-  upgradeUser,
-  sendAutomatedEmail,
-  sendVerificationEmail,
-  verifyUser,
-  forgotPassword,
-  resetPassword,
-  changePassword,
-  sendLoginCode,
-  loginWithCode,
-  loginWithGoogle,
-};

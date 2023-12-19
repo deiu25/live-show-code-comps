@@ -25,7 +25,7 @@ export const addPost = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      post,
+      data:post,
     });
   } catch (error) {
     res.status(500).json({
