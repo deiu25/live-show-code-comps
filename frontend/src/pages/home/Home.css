@@ -326,7 +326,8 @@ a.active {
   box-shadow: 0 0 10px 3px var(--shadow-color);
   cursor: pointer;
   transition: 0.5s;
-  margin-bottom: 10px;
+  width: 50%;
+  margin: 0 auto;
 }
 #wrapper #main-area .content-section .card:hover {
   box-shadow: 0 0 15px 5px var(--shadow-color);

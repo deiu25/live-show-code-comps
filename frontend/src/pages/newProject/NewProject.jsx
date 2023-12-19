@@ -177,7 +177,7 @@ export const NewProject = () => {
                 title="preview"
                 src={createMarkup()}
                 overflow="auto"
-                style={{ height: "83vh", width: "100%", border: "none", backgroundColor: "#282c34" }}
+                style={{minHeight:"83vh", height: "auto", width: "100%", border: "none", backgroundColor: "#282c34" }}
               />
             </div>
           </div>
