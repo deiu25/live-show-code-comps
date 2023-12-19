@@ -28,19 +28,13 @@ const snippetSchema = new mongoose.Schema({
   javascript: {
     type: String,
   },
-  categories: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Category",
-      required: true,
-    },
-  ],
-  tags: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Tag",
-    },
-  ],
+  // tags: [
+  //   {
+  //     type: mongoose.Types.ObjectId,
+  //     ref: "Tag",
+  //     required: true,
+  //   },
+  // ],
   comments: [
     {
       type: mongoose.Types.ObjectId,

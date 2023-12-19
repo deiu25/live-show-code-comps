@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import SplitPane, { Pane } from "split-pane-react";
+import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import "./NewProject.css";
 import { ReactComponent as HtmlIcon } from "../../assets/icons/html.svg";
@@ -19,8 +19,24 @@ import { ReactComponent as Warnings } from "../../assets/icons/warnings.svg";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
+import { useDispatch, useSelector } from "react-redux";
+import { getLoginStatus, getUser, selectIsLoggedIn, selectUser } from "../../auth/redux/features/auth/authSlice";
+import { addNewPost } from "../../post-redux/features/postSlice";
 
 export const NewProject = () => {
+  const dispatch = useDispatch();
+
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
+
+  useEffect(() => {
+    dispatch(getLoginStatus());
+    if (isLoggedIn && user === null) {
+      dispatch(getUser());
+    }
+  }, [dispatch, isLoggedIn, user]);
+
+
   const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
   const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
 
@@ -48,6 +64,24 @@ export const NewProject = () => {
     return URL.createObjectURL(blob);
   };
 
+
+  const handleSubmit = async () => {
+    if (!title || !htmlCode || !cssCode || !jsCode) {
+      console.error('All fields are required');
+      return;
+    }
+
+    const newPost = {
+      title,
+      html: htmlCode,
+      css: cssCode,
+      javascript: jsCode,
+      user: user._id,
+    };
+
+    dispatch(addNewPost(newPost));
+  };
+
   return (
     <div className="container-full">
       <div className="new-proj-container">
@@ -66,6 +100,8 @@ export const NewProject = () => {
               <div className="new-proj-nav-title-icon">
                 <Edit />
               </div>
+
+              <button onClick={handleSubmit}>Save</button>
             </div>
           </div>
           <div className="new-proj-nav-right">
@@ -177,7 +213,7 @@ export const NewProject = () => {
                 title="preview"
                 src={createMarkup()}
                 overflow="auto"
-                style={{minHeight:"83vh", height: "auto", width: "100%", border: "none", backgroundColor: "#282c34" }}
+                className="output-iframe"
               />
             </div>
           </div>
