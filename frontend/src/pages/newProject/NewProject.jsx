@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import "./NewProject.css";
@@ -19,22 +19,22 @@ import { ReactComponent as Warnings } from "../../assets/icons/warnings.svg";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
+import { css } from "@codemirror/lang-css";
+import { html } from "@codemirror/lang-html";
 import { useDispatch, useSelector } from "react-redux";
-import { getLoginStatus, getUser, selectIsLoggedIn, selectUser } from "../../auth/redux/features/auth/authSlice";
-import { addNewPost } from "../../post-redux/features/postSlice";
+import { savePost } from "../../redux/features/posts/postSlice";
 
 export const NewProject = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const user = useSelector(selectUser);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    dispatch(getLoginStatus());
-    if (isLoggedIn && user === null) {
-      dispatch(getUser());
-    }
-  }, [dispatch, isLoggedIn, user]);
+  const [title, setTitle] = useState('');
+  const [htmlCode, setHtmlCode] = useState('');
+  const [cssCode, setCssCode] = useState('');
+  const [jsCode, setJsCode] = useState('');
 
 
   const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
@@ -44,14 +44,6 @@ export const NewProject = () => {
   const layoutCSS = {
     height: "100%",
   };
-
-  // State to hold the code for HTML, CSS, and JavaScript
-  const [htmlCode, setHtmlCode] = useState("");
-  const [cssCode, setCssCode] = useState("");
-  const [jsCode, setJsCode] = useState("");
-
-  const [title, setTitle] = useState("");
-  const [isTitle, setIsTitle] = useState("");
 
   // Function to render the preview - you might need to implement sandboxing/security measures
   const createMarkup = () => {
@@ -64,23 +56,24 @@ export const NewProject = () => {
     return URL.createObjectURL(blob);
   };
 
-
-  const handleSubmit = async () => {
-    if (!title || !htmlCode || !cssCode || !jsCode) {
-      console.error('All fields are required');
-      return;
-    }
-
-    const newPost = {
-      title,
-      html: htmlCode,
-      css: cssCode,
-      javascript: jsCode,
-      user: user._id,
+  const handleSave = () => {
+    const content = {
+      htmlCode,
+      cssCode,
+      jsCode,
     };
-
-    dispatch(addNewPost(newPost));
-  };
+    const post = {
+      title: title || "Untitled",
+      content, 
+    };
+    if (isLoggedIn) {
+      console.log(post);
+      dispatch(savePost(post));
+      navigate("/");
+    } else {
+      setError("You must be logged in to save a snippet");
+    }
+  }
 
   return (
     <div className="container-full">
@@ -100,8 +93,8 @@ export const NewProject = () => {
               <div className="new-proj-nav-title-icon">
                 <Edit />
               </div>
-
-              <button onClick={handleSubmit}>Save</button>
+              <button onClick={handleSave}>Save</button>
+              {error && <div className="error-message">{error}</div>}
             </div>
           </div>
           <div className="new-proj-nav-right">
@@ -110,13 +103,11 @@ export const NewProject = () => {
             <button>Options</button>
           </div>
         </div>
-        <SplitPane
-          sizes={horizontalSizes}
-        >
+        <SplitPane sizes={horizontalSizes}>
           <SplitPane
             split="vertical"
             sizes={verticalSizes}
-            onChange={sizes => setVerticalSizes(sizes)}
+            onChange={(sizes) => setVerticalSizes(sizes)}
             minsize={50}
           >
             <div style={layoutCSS}>
@@ -135,7 +126,7 @@ export const NewProject = () => {
                   value={htmlCode}
                   height="83vh"
                   theme={"dark"}
-                  extensions={[javascript({ jsx: true })]}
+                  extensions={[html()]}
                   onChange={(value, viewUpdate) => {
                     setHtmlCode(value);
                   }}
@@ -158,7 +149,7 @@ export const NewProject = () => {
                   value={cssCode}
                   height="83vh"
                   theme={"dark"}
-                  extensions={[javascript({ jsx: true })]}
+                  extensions={[css()]}
                   onChange={(value, viewUpdate) => {
                     setCssCode(value);
                   }}
@@ -181,7 +172,7 @@ export const NewProject = () => {
                   value={jsCode}
                   height="83vh"
                   theme={"dark"}
-                  extensions={[javascript({ jsx: true })]}
+                  extensions={[javascript()]}
                   onChange={(value, viewUpdate) => {
                     setJsCode(value);
                   }}
@@ -199,7 +190,9 @@ export const NewProject = () => {
                 <Shortcut />
               </div>
               <div className="output-footer-bar-center">
-                <Link to="/"><Home /></Link>
+                <Link to="/">
+                  <Home />
+                </Link>
               </div>
               <div className="output-footer-bar-right">
                 <Errors />

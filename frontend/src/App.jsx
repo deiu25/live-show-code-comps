@@ -8,12 +8,7 @@ import { Contact } from "./pages/contact/Contact";
 import { Login } from "./auth/pages/auth/Login";
 import { Signup } from "./auth/pages/auth/Singup";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getLoginStatus,
-  getUser,
-  selectIsLoggedIn,
-  selectUser,
-} from "./auth/redux/features/auth/authSlice";
+import {getLoginStatus, getUser, selectIsLoggedIn, selectUser } from "./auth/redux/features/auth/authSlice";
 import { useEffect } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ChangePassword } from "./auth/pages/changePassword/ChangePassword";
@@ -51,8 +46,11 @@ function App() {
             <Route path="/posts" element={<HomeAllPosts />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/NewProject" element={<NewProject />} />
-            
+            {isLoggedIn && (
+              <>
+              <Route path="/NewProject" element={<NewProject />} />
+              </>
+            )}
             <Route path="/login" element={<Login />} />
             <Route path="/singup" element={<Signup />} />
             <Route path="/forgot" element={<Forgot />} />

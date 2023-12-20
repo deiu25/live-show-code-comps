@@ -2,35 +2,45 @@ import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
 
 // Add Post
-export const addPost = async (req, res) => {
+export const addPost = async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  
   try {
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
+    const { title, content } = req.body;
 
-    if (!req.body.title || !req.body.content) {
+    if (!title || !content) {
       return res.status(400).json({
         success: false,
         message: "Title and content are required.",
       });
     }
 
-    req.body.user = user._id;
+    // Crearea unui nou obiect Post cu title și content
+    const post = new Post({
+      title,
+      htmlCode: content.htmlCode,
+      cssCode: content.cssCode,
+      jsCode: content.jsCode,
+      user: req.user._id,
+    });
 
-    const post = await Post.create(req.body);
+    // Salvarea postului în baza de date
+    await post.save();
 
     res.status(201).json({
       success: true,
-      data:post,
+      data: post,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "An error occurred while creating the post.",
+      message: "An error occurred while adding the post.",
       error: error.message,
     });
   }

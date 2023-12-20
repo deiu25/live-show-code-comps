@@ -79,13 +79,6 @@ export const Signup = () => {
   const [sChar, setSChar] = useState(false);
   const [passLength, setPassLength] = useState(false);
 
-  const timesIcon = <i className="uil uil-times"></i>;
-  const checkIcon = <i className="uil uil-check"></i>;
-
-  const switchIcon = (condition) => {
-    return condition ? checkIcon : timesIcon;
-  };
-
   useEffect(() => {
     if (password.length > 5) {
       setPassLength(true);

@@ -17,15 +17,15 @@ const snippetSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  html: {
+  htmlCode: {
     type: String,
     required: true,
   },
-  css: {
+  cssCode: {
     type: String,
     required: true,
   },
-  javascript: {
+  jsCode: {
     type: String,
   },
   // tags: [
