@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { validateEmail } from "../../redux/features/auth/authService";
+import { validateEmail } from "../../../redux/features/auth/authService";
 import { useDispatch, useSelector } from "react-redux";
 import {
   register,
   RESET,
   sendVerificationEmail,
-} from "../../redux/features/auth/authSlice";
+} from "../../../redux/features/auth/authSlice";
 
 const initialState = {
   firstname: "",

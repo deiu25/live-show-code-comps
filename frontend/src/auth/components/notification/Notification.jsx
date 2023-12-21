@@ -1,7 +1,7 @@
 import React from "react";
 import "./Notification.css";
 import { useDispatch } from "react-redux";
-import { RESET, sendVerificationEmail } from "../../redux/features/auth/authSlice";
+import { RESET, sendVerificationEmail } from "../../../redux/features/auth/authSlice";
 
 export const Notification = () => {
 

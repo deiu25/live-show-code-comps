@@ -41,10 +41,8 @@ const getPosts = async () => {
     }
 
     const data = await response.json();
-    console.log('Data:', data); // Log the data
     return data;
   } catch (err) {
-    console.error('Error fetching posts:', err); // Log any errors
     throw err;
   }
 };

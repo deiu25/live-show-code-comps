@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { validateEmail } from "../../redux/features/auth/authService";
+import { validateEmail } from "../../../redux/features/auth/authService";
 import { useDispatch } from "react-redux";
-import { RESET, forgotPassword } from "../../redux/features/auth/authSlice";
+import { RESET, forgotPassword } from "../../../redux/features/auth/authSlice";
 import Button from "../../components/button/Button";
 
 export const Forgot = () => {

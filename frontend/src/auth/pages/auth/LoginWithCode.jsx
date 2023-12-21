@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { RESET, loginWithCode, sendLoginCode } from "../../redux/features/auth/authSlice";
+import { RESET, loginWithCode, sendLoginCode } from "../../../redux/features/auth/authSlice";
 
 import Button from "../../components/button/Button";
 

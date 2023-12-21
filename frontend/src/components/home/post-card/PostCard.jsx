@@ -19,10 +19,7 @@ function PostCard({ title, htmlCode, cssCode, jsCode }) {
       <iframe
         title={title}
         src={createMarkup()}
-        className="card-img-top"
-        sandbox="allow-scripts"
-        height={200}
-        width={200}
+        className="card-body"
       ></iframe>
       <div className="card-footer">
         <p className="card-text text-truncate">{title}</p>

@@ -6,8 +6,8 @@ import {
   login,
   loginWithGoogle,
   sendLoginCode,
-} from "../../redux/features/auth/authSlice";
-import { validateEmail } from "../../redux/features/auth/authService";
+} from "../../../redux/features/auth/authSlice";
+import { validateEmail } from "../../../redux/features/auth/authService";
 import { useDispatch, useSelector } from "react-redux";
 import { GoogleLogin } from "@react-oauth/google";
 import { toast } from "react-toastify";

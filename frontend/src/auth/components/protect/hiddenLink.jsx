@@ -2,7 +2,7 @@ const { useSelector } = require("react-redux");
 const {
   selectIsLoggedIn,
   selectUser,
-} = require("../../redux/features/auth/authSlice");
+} = require("../../../redux/features/auth/authSlice");
 
 export const ShowOnLogin = ({ children }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import authService from "../redux/features/auth/authService";
+import authService from "../../redux/features/auth/authService";
 
 export const useRedirectLoggedOutUser = (path) => {
   const navigate = useNavigate();

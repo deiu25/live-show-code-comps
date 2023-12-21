@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { getUsers, upgradeUser } from "../../redux/features/auth/authSlice";
+import { getUsers, upgradeUser } from "../../../redux/features/auth/authSlice";
 import {
   EMAIL_RESET,
   sendAutomatedEmail,
-} from "../../redux/features/email/emailSlice";
+} from "../../../redux/features/email/emailSlice";
 import "./ChangeRole.css";
 import Button from "../button/Button";
 

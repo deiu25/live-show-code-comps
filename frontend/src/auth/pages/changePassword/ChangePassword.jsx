@@ -8,9 +8,9 @@ import {
   RESET,
   changePassword,
   logout,
-} from "../../redux/features/auth/authSlice";
+} from "../../../redux/features/auth/authSlice";
 import { Spinner } from "../../components/loader/Loader";
-import { sendAutomatedEmail } from "../../redux/features/email/emailSlice";
+import { sendAutomatedEmail } from "../../../redux/features/email/emailSlice";
 import "./ChangePassword.css";
 import Button from "../../components/button/Button";
 

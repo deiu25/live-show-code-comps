@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   CALC_SUSPENDED_USER,
   CALC_VERIFIED_USER,
-} from "../../redux/features/auth/authSlice";
+} from "../../../redux/features/auth/authSlice";
 
 const icon1 = <FaUsers size={40} color="#fff" />;
 const icon2 = <BiUserCheck size={40} color="#fff" />;

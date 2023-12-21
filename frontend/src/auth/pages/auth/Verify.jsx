@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { RESET, verifyUser } from "../../redux/features/auth/authSlice";
+import { RESET, verifyUser } from "../../../redux/features/auth/authSlice";
 import { useParams } from "react-router-dom";
 import Button from "../../components/button/Button";
 

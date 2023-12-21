@@ -9,11 +9,10 @@ export const HomeCurentSection = () => {
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.posts)?.data ?? [];
-
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
-  
+
   return (
     <>
       <HomeHeader />
@@ -27,17 +26,16 @@ export const HomeCurentSection = () => {
           </a>
         </div>
         <div className="row">
-          <div className="col-md-4">
-            {data.map((post) => (
+          {data.map((post) => (
+            <div className="col-md-4" key={post._id}>
               <Card
-                key={post._id}
                 title={post.title}
                 htmlCode={post.htmlCode}
                 cssCode={post.cssCode}
                 jsCode={post.jsCode}
               />
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </>

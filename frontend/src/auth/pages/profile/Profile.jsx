@@ -7,7 +7,7 @@ import {
   getUser,
   selectUser,
   updateUser,
-} from "../../redux/features/auth/authSlice";
+} from "../../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
 import { Notification } from "../../components/notification/Notification";
 import Button from "../../components/button/Button";

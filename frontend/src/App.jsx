@@ -8,7 +8,7 @@ import { Contact } from "./pages/contact/Contact";
 import { Login } from "./auth/pages/auth/Login";
 import { Signup } from "./auth/pages/auth/Singup";
 import { useDispatch, useSelector } from "react-redux";
-import {getLoginStatus, getUser, selectIsLoggedIn, selectUser } from "./auth/redux/features/auth/authSlice";
+import {getLoginStatus, getUser, selectIsLoggedIn, selectUser } from "./redux/features/auth/authSlice";
 import { useEffect } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ChangePassword } from "./auth/pages/changePassword/ChangePassword";

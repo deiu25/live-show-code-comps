@@ -1,7 +1,7 @@
 import React from "react";
 import "./Header.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import { RESET, logout } from "../../redux/features/auth/authSlice";
+import { RESET, logout } from "../../../redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { ShowOnLogin, ShowOnLogout } from "../protect/hiddenLink";
 import { UserName } from "../../pages/profile/Profile";

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PasswordInput } from "../../components/passwordInput/PasswordInput";
 import { useDispatch, useSelector } from "react-redux";
-import { RESET, resetPassword } from "../../redux/features/auth/authSlice";
+import { RESET, resetPassword } from "../../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
 import Button from "../../components/button/Button";
 
