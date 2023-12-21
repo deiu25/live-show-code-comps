@@ -1,5 +1,4 @@
 // HomeCurentSection.jsx
-
 import React, { useEffect } from "react";
 import Card from "../post-card/PostCard";
 import { HomeHeader } from "../home-header/HomeHeader";
@@ -14,7 +13,7 @@ export const HomeCurentSection = () => {
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
-
+  
   return (
     <>
       <HomeHeader />
