@@ -1,7 +1,8 @@
+//postService.js
 const BACKEND_URL = "http://localhost:5000";
 const API_URL = `${BACKEND_URL}/api/posts/`;
 
-// postService.js
+// create post
 const createPost = async (post) => {
   try {
     const response = await fetch(API_URL, {
@@ -24,8 +25,33 @@ const createPost = async (post) => {
   }
 };
 
+// get all posts
+const getPosts = async () => {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok, status code: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Data:', data); // Log the data
+    return data;
+  } catch (err) {
+    console.error('Error fetching posts:', err); // Log any errors
+    throw err;
+  }
+};
+
 const postService = {
   createPost,
+  getPosts,
 };
 
 export default postService;

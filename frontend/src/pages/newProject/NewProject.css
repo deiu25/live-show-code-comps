@@ -29,6 +29,24 @@
   font-weight: 600;
   margin-left: 10px;
 }
+.logo {
+  width: 200px; 
+  height: 100px; 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.logo p {
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+}
 .new-proj-nav-logo svg {
   width: 40px; 
   height: 40px; 
@@ -49,19 +67,50 @@
   color: white;
   font-size: 1.5rem;
   font-weight: 600;
-  margin-left: 10px;
+  margin-left: 15vh;
+}
+.new-proj-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 3vh;
 }
 .new-proj-nav-title input {
   background-color: rgb(61, 61, 61);
   color: white;
   outline: none;
-  font-size: 1rem;
-  font-weight: 400;
-  margin-left: 4px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 5px;
+  padding: 3px;
 }
 .new-proj-nav-title-icon svg {
-  width: 30px; 
-  height: 30px; 
+  width: 35px; 
+  height: 35px; 
+}
+.new-proj-nav-title-icon:hover {
+  cursor: pointer;
+}
+.save-proj-button {
+  background-color: black;
+  color: white;
+  outline: none;
+  font-size: 1.1rem;
+  font-weight: 400;
+  border-radius: 5px;
+  padding: 4px;
+  margin-left: 3vh;
+  cursor: pointer;
+  border: #ddd 1.8px solid;
+}
+.new-proj-acc-logo {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.new-proj-acc-logo:hover {
+  cursor: pointer;
 }
 /* code */
 .split-sash-content {
@@ -105,7 +154,6 @@
   align-items: center;
   justify-content: end;
   gap: 5px;
-  margin-right: 20px;
 }
 
 .right-tools svg {
@@ -118,6 +166,10 @@
   justify-content: center;
   gap: 5px;
   padding: 2px;
+}
+
+.right-tools svg:hover {
+  cursor: pointer;
 }
 
 .code-editor {

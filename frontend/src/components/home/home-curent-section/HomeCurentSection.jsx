@@ -1,8 +1,20 @@
-import React from "react";
+// HomeCurentSection.jsx
+
+import React, { useEffect } from "react";
 import Card from "../post-card/PostCard";
 import { HomeHeader } from "../home-header/HomeHeader";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPosts } from "../../../redux/features/posts/postSlice";
 
 export const HomeCurentSection = () => {
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.posts)?.data ?? [];
+
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
+
   return (
     <>
       <HomeHeader />
@@ -17,22 +29,15 @@ export const HomeCurentSection = () => {
         </div>
         <div className="row">
           <div className="col-md-4">
-            <Card
-              image="https://res.cloudinary.com/dvstsvpyz/image/upload/f_auto,q_auto/v1/imgs-comps/xonyj7tn33lv6h9qoxhy"
-              description="New Blue Glow Button"
-            />
-          </div>
-          <div className="col-md-4">
-            <Card
-              image="https://res.cloudinary.com/dvstsvpyz/image/upload/f_auto,q_auto/v1/imgs-comps/xonyj7tn33lv6h9qoxhy"
-              description="New Blue Glow Button"
-            />
-          </div>
-          <div className="col-md-4">
-            <Card
-              image="https://res.cloudinary.com/dvstsvpyz/image/upload/f_auto,q_auto/v1/imgs-comps/xonyj7tn33lv6h9qoxhy"
-              description="New Blue Glow Button"
-            />
+            {data.map((post) => (
+              <Card
+                key={post._id}
+                title={post.title}
+                htmlCode={post.htmlCode}
+                cssCode={post.cssCode}
+                jsCode={post.jsCode}
+              />
+            ))}
           </div>
         </div>
       </div>

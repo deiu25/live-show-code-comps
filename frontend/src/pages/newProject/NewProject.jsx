@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import "./NewProject.css";
@@ -16,6 +16,8 @@ import { ReactComponent as Shortcut } from "../../assets/icons/shortcut.svg";
 import { ReactComponent as Home } from "../../assets/icons/home.svg";
 import { ReactComponent as Errors } from "../../assets/icons/errors.svg";
 import { ReactComponent as Warnings } from "../../assets/icons/warnings.svg";
+import { ReactComponent as SaveTitle } from "../../assets/icons/check-circle.svg";
+import { ReactComponent as Save } from "../../assets/icons/save-project.svg";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
@@ -23,22 +25,32 @@ import { css } from "@codemirror/lang-css";
 import { html } from "@codemirror/lang-html";
 import { useDispatch, useSelector } from "react-redux";
 import { savePost } from "../../redux/features/posts/postSlice";
+import {
+  ShowOnLogin,
+  ShowOnLogout,
+} from "../../auth/components/protect/hiddenLink";
 
 export const NewProject = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.auth);
-
+  const { user } = useSelector((state) => state.auth);
   const [error, setError] = useState("");
 
-  const [title, setTitle] = useState('');
-  const [htmlCode, setHtmlCode] = useState('');
-  const [cssCode, setCssCode] = useState('');
-  const [jsCode, setJsCode] = useState('');
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [tempTitle, setTempTitle] = useState(""); // Temporary title state
 
+  const [title, setTitle] = useState("");
+  const [htmlCode, setHtmlCode] = useState("");
+  const [cssCode, setCssCode] = useState("");
+  const [jsCode, setJsCode] = useState("");
 
   const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
   const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
+
+  const goProfile = () => {
+    navigate("/profile");
+  };
 
   // Styling for each pane
   const layoutCSS = {
@@ -56,24 +68,40 @@ export const NewProject = () => {
     return URL.createObjectURL(blob);
   };
 
+  // title editing
+  const handleTitleEdit = () => {
+    setTempTitle(title);
+    setIsEditingTitle(true);
+  };
+  const handleTitleSave = () => {
+    setTitle(tempTitle);
+    setIsEditingTitle(false);
+  };
+
   const handleSave = () => {
+    if (!isLoggedIn) {
+      setError("You must be logged in to save a snippet");
+      return;
+    }
+    if (!htmlCode.trim() || !cssCode.trim()) {
+      setError("Both HTML and CSS code must be filled out to save");
+      return;
+    }
+
     const content = {
       htmlCode,
       cssCode,
       jsCode,
     };
     const post = {
-      title: title || "Untitled",
-      content, 
+      title: title,
+      content,
     };
-    if (isLoggedIn) {
-      console.log(post);
-      dispatch(savePost(post));
-      navigate("/");
-    } else {
-      setError("You must be logged in to save a snippet");
-    }
-  }
+
+    console.log(post);
+    dispatch(savePost(post));
+    navigate("/");
+  };
 
   return (
     <div className="container-full">
@@ -81,26 +109,61 @@ export const NewProject = () => {
         <div className="new-proj-nav">
           <div className="new-proj-nav-left">
             <div className="new-proj-nav-left-logo">
-              <Link to="/">Live Show Code</Link>
+              <Link to="/" className="logo">
+                <p>LiveShow Code</p>
+              </Link>
             </div>
             <div className="new-proj-nav-title">
-              <input
-                type="text"
-                placeholder="Untitled"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-              <div className="new-proj-nav-title-icon">
-                <Edit />
-              </div>
-              <button onClick={handleSave}>Save</button>
-              {error && <div className="error-message">{error}</div>}
+              {!isEditingTitle ? (
+                <>
+                  <h5 className="new-proj-title">{title || "Untitled"}</h5>
+                  <div
+                    onClick={handleTitleEdit}
+                    className="new-proj-nav-title-icon"
+                  >
+                    <Edit />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    value={tempTitle}
+                    onChange={(e) => setTempTitle(e.target.value)}
+                    autoFocus
+                  />
+                  <div
+                    onClick={handleTitleSave}
+                    className="new-proj-nav-title-icon"
+                  >
+                    <SaveTitle />
+                  </div>
+                </>
+              )}
+              <button onClick={handleSave} className="save-proj-button">
+                <Save /> Save
+              </button>
+              {error && (
+                <div className="create-proj-error-message">{error}</div>
+              )}
             </div>
           </div>
           <div className="new-proj-nav-right">
-            <button>Run</button>
-            <button>Acc</button>
-            <button>Options</button>
+            <ShowOnLogout>
+              <Link to="/login">
+                {" "}
+                <button>Auth</button>
+              </Link>
+            </ShowOnLogout>
+            <ShowOnLogin>
+              <div className="new-proj-logo-login" onClick={goProfile}>
+                <img
+                  className="new-proj-acc-logo"
+                  src={user ? user.photo : "https://www.gravatar.com/av"}
+                  alt="logo"
+                />
+              </div>
+            </ShowOnLogin>
           </div>
         </div>
         <SplitPane sizes={horizontalSizes}>

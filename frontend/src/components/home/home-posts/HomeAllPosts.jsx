@@ -13,9 +13,7 @@ export const HomeAllPosts = () => {
         </h2>
       </div>
       <div className="row">
-        <div className="col-md-4">
-          <Card image="https://res.cloudinary.com/dvstsvpyz/image/upload/f_auto,q_auto/v1/imgs-comps/xonyj7tn33lv6h9qoxhy" description="Blue Glow Button" />
-        </div>
+       
         <div className="col-md-4">
           <Card image="https://res.cloudinary.com/dvstsvpyz/image/upload/f_auto,q_auto/v1/imgs-comps/xonyj7tn33lv6h9qoxhy" description="Blue Glow Button" />
         </div>
