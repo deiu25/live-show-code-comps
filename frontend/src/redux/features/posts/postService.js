@@ -47,9 +47,33 @@ const getPosts = async () => {
   }
 };
 
+//get post by id
+const getPostById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok, status code: ${response.status}`);
+    }
+     console.log(response);
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const postService = {
   createPost,
   getPosts,
+  getPostById,
 };
 
 export default postService;

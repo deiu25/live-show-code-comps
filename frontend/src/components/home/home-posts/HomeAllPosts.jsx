@@ -12,7 +12,7 @@ export const HomeAllPosts = () => {
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
-  
+
   return (
     <>
     <PostsHeader />
@@ -27,7 +27,7 @@ export const HomeAllPosts = () => {
         </div>
         <div className="row">
           {data.map((post) => (
-            <div className="col-md-4" key={post._id}>
+            <div className="col-md-4 mb-5" key={post._id}>
               <Card
                 title={post.title}
                 htmlCode={post.htmlCode}

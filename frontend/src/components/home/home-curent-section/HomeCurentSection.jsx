@@ -13,6 +13,8 @@ export const HomeCurentSection = () => {
     dispatch(fetchPosts());
   }, [dispatch]);
 
+  const latestPosts = data.slice(-3);
+
   return (
     <>
       <HomeHeader />
@@ -26,7 +28,7 @@ export const HomeCurentSection = () => {
           </a>
         </div>
         <div className="row">
-          {data.map((post) => (
+          {latestPosts.map((post) => (
             <div className="col-md-4" key={post._id}>
               <Card
                 title={post.title}

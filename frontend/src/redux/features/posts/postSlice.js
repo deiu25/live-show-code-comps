@@ -6,6 +6,7 @@ import postService from "./postService";
 const initialState = {
   posts: [],
   data: [],
+  post: null,
   isLoading: false,
   error: null,
   title: "",
@@ -26,6 +27,15 @@ export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, thunkAPI) => {
     const response = await postService.getPosts();
+    return response;
+  }
+);
+
+// Create the async thunk for fetching a post by id
+export const fetchPostById = createAsyncThunk(
+  "posts/fetchPostById",
+  async (id, thunkAPI) => {
+    const response = await postService.getPostById(id);
     return response;
   }
 );
@@ -62,6 +72,20 @@ const postSlice = createSlice({
         state.data = action.payload.data;
       })  
       .addCase(fetchPosts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
+
+    // Tratează stările pentru fetchPostById
+    builder
+      .addCase(fetchPostById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchPostById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.post = action.payload.data;
+      })
+      .addCase(fetchPostById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

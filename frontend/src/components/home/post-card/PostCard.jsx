@@ -1,8 +1,9 @@
 // PostCard.jsx
 import React from "react";
 import "./PostCard.css";
+import { Link } from "react-router-dom";
 
-function PostCard({ title, htmlCode, cssCode, jsCode }) {
+function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
   // Functia pentru a crea un URL blob din codul HTML, CSS si JavaScript
   const createMarkup = () => {
     const blob = new Blob(
@@ -21,6 +22,9 @@ function PostCard({ title, htmlCode, cssCode, jsCode }) {
       </div>
       <div className="post-card-footer">
         <p className="post-card-title text-truncate">{title}</p>
+        <Link to={`/post/${id}`} className="btn btn-primary">
+          View
+        </Link>
       </div>
     </>
   );

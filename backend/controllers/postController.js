@@ -66,11 +66,11 @@ export const getAllPosts = async (req, res, next) => {
 // Get post by id
 export const getPostById = async (req, res, next) => {
   try {
-    const post = await Post.findById(req.params.id).populate("user", "username");
+    const post = await Post.findById(req.params.id).populate("user", "lastname");
     if (!post) {
       return res.status(404).json({
         success: false,
-        message: "Post not found",
+        message: "Post not found.",
       });
     }
     res.status(200).json({
