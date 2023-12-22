@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Auth.css";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  RESET,
-  login,
-  loginWithGoogle,
-  sendLoginCode,
-} from "../../../redux/features/auth/authSlice";
+import { RESET, login, loginWithGoogle, sendLoginCode } from "../../../redux/features/auth/authSlice";
 import { validateEmail } from "../../../redux/features/auth/authService";
 import { useDispatch, useSelector } from "react-redux";
 import { GoogleLogin } from "@react-oauth/google";

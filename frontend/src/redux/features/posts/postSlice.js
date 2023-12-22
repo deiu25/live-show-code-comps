@@ -1,13 +1,15 @@
 //postSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import postService from "../../service/postService";
+import postService from "./postService";
 
 // Define the initial state of the slice
 const initialState = {
-  posts: {},
+  posts: [],
   data: [],
   isLoading: false,
-  error: null
+  error: null,
+  title: "",
+  content: "",
 }
 
 // Create the async thunk for fetching all posts

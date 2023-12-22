@@ -31,6 +31,7 @@ import {
 } from "../../auth/components/protect/hiddenLink";
 
 export const NewProject = () => {
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -38,7 +39,7 @@ export const NewProject = () => {
   const [error, setError] = useState("");
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [tempTitle, setTempTitle] = useState(""); // Temporary title state
+  const [tempTitle, setTempTitle] = useState(""); 
 
   const [title, setTitle] = useState("");
   const [htmlCode, setHtmlCode] = useState("");
@@ -94,7 +95,7 @@ export const NewProject = () => {
       jsCode,
     };
     const post = {
-      title: title,
+      title: title || "Untitled",
       content,
     };
 
