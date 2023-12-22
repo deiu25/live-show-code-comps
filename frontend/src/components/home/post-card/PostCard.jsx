@@ -15,16 +15,14 @@ function PostCard({ title, htmlCode, cssCode, jsCode }) {
   };
 
   return (
-    <div className="card">
-      <iframe
-        title={title}
-        src={createMarkup()}
-        className="card-body"
-      ></iframe>
-      <div className="card-footer">
-        <p className="card-text text-truncate">{title}</p>
+    <>
+      <div className="card-body">
+        <iframe title={title} src={createMarkup()} className="iframe"></iframe>
       </div>
-    </div>
+      <div className="post-card-footer">
+        <p className="post-card-title text-truncate">{title}</p>
+      </div>
+    </>
   );
 }
 
