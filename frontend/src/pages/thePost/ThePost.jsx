@@ -24,35 +24,51 @@ import { javascript } from "@codemirror/lang-javascript";
 import { css } from "@codemirror/lang-css";
 import { html } from "@codemirror/lang-html";
 import { useDispatch, useSelector } from "react-redux";
-import { savePost } from "../../redux/features/posts/postSlice";
 import {
   ShowOnLogin,
   ShowOnLogout,
 } from "../../auth/components/protect/hiddenLink";
+import { updatePost } from "../../redux/features/posts/postSlice";
+import { fetchPostDetails } from "../../redux/features/posts/postSlice";
+
 
 export const ThePost = () => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.auth);
-  const [error, setError] = useState("");
+  const { post, isLoading, error } = useSelector((state) => state.posts);
 
-  const title = useSelector(state => state.posts.title);
-  const htmlCode = useSelector(state => state.posts.htmlCode);  
-  const cssCode = useSelector(state => state.posts.cssCode);
-  const jsCode = useSelector(state => state.posts.jsCode);
-
+  const [title, setTitle] = useState(post?.title);
+  const [tempTitle, setTempTitle] = useState(post?.title);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [tempTitle, setTempTitle] = useState("");
 
-  const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
-  const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
+  const [htmlCode, setHtmlCode] = useState(post?.htmlCode);
+  const [cssCode, setCssCode] = useState(post?.cssCode);
+  const [jsCode, setJsCode] = useState(post?.jsCode);
+
+  useEffect(() => {
+    dispatch(fetchPostDetails());
+  }, [dispatch]);
+
+  const handleTitleEdit = () => {
+    setIsEditingTitle(true);
+  };
 
   const goProfile = () => {
     navigate("/profile");
   };
+
+  const saveTitle = () => {
+    dispatch(updatePost({ title: tempTitle }));
+    setIsEditingTitle(false);
+  };
+
   
+  // Split pane sizes
+  const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
+  const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
 
 
   // Styling for each pane
@@ -60,7 +76,7 @@ export const ThePost = () => {
     height: "100%",
   };
 
-  // Function to render the preview - you might need to implement sandboxing/security measures
+  // Function to render the preview iframe with the HTML, CSS and JavaScript code from the editors 
   const createMarkup = () => {
     const blob = new Blob(
       [
@@ -71,40 +87,7 @@ export const ThePost = () => {
     return URL.createObjectURL(blob);
   };
 
-  // title editing
-  const handleTitleEdit = () => {
-    setTempTitle(title);
-    setIsEditingTitle(true);
-  };
-  const handleTitleSave = () => {
-    title(tempTitle);
-    setIsEditingTitle(false);
-  };
 
-  const handleUpdate = () => {
-    if (!isLoggedIn) {
-      setError("You must be logged in to save a snippet");
-      return;
-    }
-    if (!htmlCode.trim() || !cssCode.trim()) {
-      setError("Both HTML and CSS code must be filled out to save");
-      return;
-    }
-
-    const content = {
-      htmlCode,
-      cssCode,
-      jsCode,
-    };
-    const post = {
-      title: title || "Untitled",
-      content,
-    };
-
-    console.log(post);
-    dispatch(savePost(post));
-    navigate("/");
-  };
 
   return (
     <div className="container-full">
@@ -136,14 +119,14 @@ export const ThePost = () => {
                     autoFocus
                   />
                   <div
-                    onClick={handleTitleSave}
+                   
                     className="new-proj-nav-title-icon"
                   >
                     <SaveTitle />
                   </div>
                 </>
               )}
-              <button onClick={handleUpdate} className="save-proj-button">
+              <button className="save-proj-button">
                 <Save /> Save
               </button>
               {error && (

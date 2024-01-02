@@ -9,6 +9,7 @@ export const HomeCurentSection = () => {
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.posts)?.data ?? [];
+  
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
@@ -35,6 +36,7 @@ export const HomeCurentSection = () => {
                 htmlCode={post.htmlCode}
                 cssCode={post.cssCode}
                 jsCode={post.jsCode}
+                id={post._id}
               />
             </div>
           ))}

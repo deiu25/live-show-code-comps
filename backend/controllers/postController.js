@@ -85,3 +85,73 @@ export const getPostById = async (req, res, next) => {
     });
   }
 };
+
+//Get post details
+export const getPostDetails = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id).populate("user", "lastname");
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found.",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: post,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while getting the post.",
+      error: error.message,
+    });
+  }
+};
+
+// Update post
+export const updatePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found.",
+      });
+    }
+
+    if (post.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to update this post.",
+      });
+    }
+
+    const { title, content } = req.body;
+
+    if (!title || !content) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and content are required.",
+      });
+    }
+
+    post.title = title;
+    post.htmlCode = content.htmlCode;
+    post.cssCode = content.cssCode;
+    post.jsCode = content.jsCode;
+
+    await post.save();
+
+    res.status(200).json({
+      success: true,
+      data: post,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the post.",
+      error: error.message,
+    });
+  }
+};
