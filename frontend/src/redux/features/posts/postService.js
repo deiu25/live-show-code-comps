@@ -70,58 +70,10 @@ const getPostById = async (id) => {
   }
 };
 
-//get post details
-const getPostDetails = async (id) => {
-  try {
-    const response = await fetch(`${API_URL}${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Network response was not ok, status code: ${response.status}`);
-    }
-     console.log(response);
-    const data = await response.json();
-    console.log("data", data);
-    return data;
-  } catch (err) {
-    throw err;
-  }
-};
-
-//update post
-const updatePost = async (id, post) => {
-  try {
-    const response = await fetch(`${API_URL}${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(post),
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Network response was not ok, status code: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    throw err;
-  }
-};
-
 const postService = {
   createPost,
   getPosts,
   getPostById,
-  getPostDetails,
-  updatePost,
 };
 
 export default postService;

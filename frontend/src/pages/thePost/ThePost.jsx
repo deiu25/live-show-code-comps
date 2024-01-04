@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import "./ThePost.css";
+
 import { ReactComponent as HtmlIcon } from "../../assets/icons/html.svg";
 import { ReactComponent as CssIcon } from "../../assets/icons/css.svg";
 import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
@@ -23,34 +26,55 @@ import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { css } from "@codemirror/lang-css";
 import { html } from "@codemirror/lang-html";
-import { useDispatch, useSelector } from "react-redux";
 import {
   ShowOnLogin,
   ShowOnLogout,
 } from "../../auth/components/protect/hiddenLink";
-import { updatePost } from "../../redux/features/posts/postSlice";
-import { fetchPostDetails } from "../../redux/features/posts/postSlice";
-
+import { fetchPostById } from "../../redux/features/posts/postSlice";
 
 export const ThePost = () => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { id } = useParams();
   const { user } = useSelector((state) => state.auth);
-  const { post, isLoading, error } = useSelector((state) => state.posts);
+  const { data } = useSelector((state) => state.posts);
+  const { post } = useSelector((state) => state.posts);
 
-  const [title, setTitle] = useState(post?.title);
-  const [tempTitle, setTempTitle] = useState(post?.title);
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [title, setTitle] = useState("");
+  const [htmlCode, setHtmlCode] = useState("");
+  const [cssCode, setCssCode] = useState("");
+  const [jsCode, setJsCode] = useState("");
 
-  const [htmlCode, setHtmlCode] = useState(post?.htmlCode);
-  const [cssCode, setCssCode] = useState(post?.cssCode);
-  const [jsCode, setJsCode] = useState(post?.jsCode);
+  // Fetch the post data when the component mounts or the id changes
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchPostById(id));
+    }
+  }, [dispatch, id]);
+
+  // Update the local state when the fetched data changes
+  useEffect(() => {
+    if (data) {
+      setTitle(data.title);
+      setHtmlCode(data.htmlCode);
+      setCssCode(data.cssCode);
+      setJsCode(data.jsCode);
+      // Update tempTitle here to ensure it has the latest value
+      setTempTitle(data.title);
+    }
+  }, [data]);
 
   useEffect(() => {
-    dispatch(fetchPostDetails());
-  }, [dispatch]);
+    if (post) {
+      setTitle(post.title);
+      setHtmlCode(post.htmlCode);
+      setCssCode(post.cssCode);
+      setJsCode(post.jsCode);
+    }
+  }, [post]);
+
+  const [tempTitle, setTempTitle] = useState(data?.title);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
 
   const handleTitleEdit = () => {
     setIsEditingTitle(true);
@@ -60,23 +84,34 @@ export const ThePost = () => {
     navigate("/profile");
   };
 
-  const saveTitle = () => {
-    dispatch(updatePost({ title: tempTitle }));
-    setIsEditingTitle(false);
+  const updateHtmlCode = (value) => {
+    setHtmlCode(value);
   };
 
-  
+  const updateCssCode = (value) => {
+    setCssCode(value);
+  };
+
+  const updateJsCode = (value) => {
+    setJsCode(value);
+  };
+
+  const saveTitle = () => {
+  };
+
+  const handleSavePost = () => {
+  };
+
   // Split pane sizes
   const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
   const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
-
 
   // Styling for each pane
   const layoutCSS = {
     height: "100%",
   };
 
-  // Function to render the preview iframe with the HTML, CSS and JavaScript code from the editors 
+  // Function to render the preview iframe with the HTML, CSS and JavaScript code from the editors
   const createMarkup = () => {
     const blob = new Blob(
       [
@@ -86,8 +121,6 @@ export const ThePost = () => {
     );
     return URL.createObjectURL(blob);
   };
-
-
 
   return (
     <div className="container-full">
@@ -118,20 +151,14 @@ export const ThePost = () => {
                     onChange={(e) => setTempTitle(e.target.value)}
                     autoFocus
                   />
-                  <div
-                   
-                    className="new-proj-nav-title-icon"
-                  >
+                  <div className="new-proj-nav-title-icon">
                     <SaveTitle />
                   </div>
                 </>
               )}
-              <button className="save-proj-button">
+              <button className="save-proj-button" onClick={handleSavePost}>
                 <Save /> Save
               </button>
-              {error && (
-                <div className="create-proj-error-message">{error}</div>
-              )}
             </div>
           </div>
           <div className="new-proj-nav-right">
@@ -176,8 +203,8 @@ export const ThePost = () => {
                   height="83vh"
                   theme={"dark"}
                   extensions={[html()]}
-                  onChange={(value, viewUpdate) => {
-                    htmlCode(value);
+                  onChange={(value) => {
+                    updateHtmlCode(value);
                   }}
                 />
               </div>
@@ -199,8 +226,8 @@ export const ThePost = () => {
                   height="83vh"
                   theme={"dark"}
                   extensions={[css()]}
-                  onChange={(value, viewUpdate) => {
-                    cssCode(value);
+                  onChange={(value) => {
+                    updateCssCode(value);
                   }}
                 />
               </div>
@@ -222,8 +249,8 @@ export const ThePost = () => {
                   height="83vh"
                   theme={"dark"}
                   extensions={[javascript()]}
-                  onChange={(value, viewUpdate) => {
-                    jsCode(value);
+                  onChange={(value) => {
+                    updateJsCode(value);
                   }}
                 />
               </div>
