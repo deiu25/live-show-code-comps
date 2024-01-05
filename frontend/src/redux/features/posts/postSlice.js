@@ -36,7 +36,15 @@ export const fetchPostById = createAsyncThunk(
   "posts/fetchPostById",
   async (id, thunkAPI) => {
     const response = await postService.getPostById(id);
-    console.log(response);
+    return response;
+  }
+);
+
+// Create the async thunk for updating a post
+export const updatePost = createAsyncThunk(
+  "posts/updatePost",
+  async ({ id, ...post }, thunkAPI) => { 
+    const response = await postService.updatePost(id, post);
     return response;
   }
 );
@@ -87,6 +95,24 @@ const postSlice = createSlice({
         state.post = action.payload.data;
       })
       .addCase(fetchPostById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
+
+    // Tratează stările pentru updatePost
+    builder
+      .addCase(updatePost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.post = action.payload.data;
+        const index = state.posts.findIndex(post => post.id === action.payload.data.id);
+        if (index !== -1) {
+          state.posts[index] = action.payload.data;
+        }
+      })
+      .addCase(updatePost.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

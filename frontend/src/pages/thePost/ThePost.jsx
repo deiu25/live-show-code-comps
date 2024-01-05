@@ -30,20 +30,24 @@ import {
   ShowOnLogin,
   ShowOnLogout,
 } from "../../auth/components/protect/hiddenLink";
-import { fetchPostById } from "../../redux/features/posts/postSlice";
+import { fetchPostById, updatePost } from "../../redux/features/posts/postSlice";
 
 export const ThePost = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useSelector((state) => state.auth);
-  const { data } = useSelector((state) => state.posts);
   const { post } = useSelector((state) => state.posts);
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const [error, setError] = useState("");
 
   const [title, setTitle] = useState("");
   const [htmlCode, setHtmlCode] = useState("");
   const [cssCode, setCssCode] = useState("");
   const [jsCode, setJsCode] = useState("");
+
+  const [projectTitle, setProjectTitle] = useState(post?.title);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
 
   // Fetch the post data when the component mounts or the id changes
   useEffect(() => {
@@ -51,18 +55,6 @@ export const ThePost = () => {
       dispatch(fetchPostById(id));
     }
   }, [dispatch, id]);
-
-  // Update the local state when the fetched data changes
-  useEffect(() => {
-    if (data) {
-      setTitle(data.title);
-      setHtmlCode(data.htmlCode);
-      setCssCode(data.cssCode);
-      setJsCode(data.jsCode);
-      // Update tempTitle here to ensure it has the latest value
-      setTempTitle(data.title);
-    }
-  }, [data]);
 
   useEffect(() => {
     if (post) {
@@ -72,13 +64,6 @@ export const ThePost = () => {
       setJsCode(post.jsCode);
     }
   }, [post]);
-
-  const [tempTitle, setTempTitle] = useState(data?.title);
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-
-  const handleTitleEdit = () => {
-    setIsEditingTitle(true);
-  };
 
   const goProfile = () => {
     navigate("/profile");
@@ -96,10 +81,40 @@ export const ThePost = () => {
     setJsCode(value);
   };
 
-  const saveTitle = () => {
+  const handleTitleEdit = () => {
+    setProjectTitle(title);
+    setIsEditingTitle(true);
+  };
+
+  const handleTitleSave = () => {
+    setIsEditingTitle(false);
+    setTitle(projectTitle);
   };
 
   const handleSavePost = () => {
+    if (!isLoggedIn) {
+      setError("You must be logged in to save a snippet");
+      return;
+    }
+    if (!htmlCode.trim() || !cssCode.trim()) {
+      setError("Both HTML and CSS code must be filled out to save");
+      return;
+    }
+
+    const content = {
+      htmlCode,
+      cssCode,
+      jsCode,
+    };
+    const postToUpdate  = {
+      id,
+      title,
+      content,
+    };
+
+    console.log(postToUpdate );
+    dispatch(updatePost(postToUpdate ));
+    navigate("/");
   };
 
   // Split pane sizes
@@ -135,7 +150,7 @@ export const ThePost = () => {
             <div className="new-proj-nav-title">
               {!isEditingTitle ? (
                 <>
-                  <h5 className="new-proj-title">{title || "Untitled"}</h5>
+                  <h5 className="new-proj-title">{title}</h5>
                   <div
                     onClick={handleTitleEdit}
                     className="new-proj-nav-title-icon"
@@ -147,11 +162,11 @@ export const ThePost = () => {
                 <>
                   <input
                     type="text"
-                    value={tempTitle}
-                    onChange={(e) => setTempTitle(e.target.value)}
+                    value={projectTitle}
+                    onChange={(e) => setProjectTitle(e.target.value)}
                     autoFocus
                   />
-                  <div className="new-proj-nav-title-icon">
+                  <div className="new-proj-nav-title-icon" onClick={handleTitleSave}>
                     <SaveTitle />
                   </div>
                 </>
@@ -159,6 +174,9 @@ export const ThePost = () => {
               <button className="save-proj-button" onClick={handleSavePost}>
                 <Save /> Save
               </button>
+              {error && (
+                <div className="create-proj-error-message">{error}</div>
+              )}
             </div>
           </div>
           <div className="new-proj-nav-right">

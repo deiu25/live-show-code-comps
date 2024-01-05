@@ -1,43 +1,16 @@
-import { PostsHeader } from '../posts-header/PostsHeader';
-import React, { useEffect } from "react";
-import Card from "../post-card/PostCard";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPosts } from "../../../redux/features/posts/postSlice";
+// HomeAllPosts.jsx
+import React from "react";
+import { PostsHeader } from "../posts-header/PostsHeader";
+import { PostsMap } from "../posts-map/PostsMap";
+import { usePosts } from "../posts-map/usePosts";
 
 export const HomeAllPosts = () => {
-
-  const dispatch = useDispatch();
-
-  const data = useSelector((state) => state.posts)?.data ?? [];
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
+  const posts = usePosts((state) => state.posts?.data ?? []);
 
   return (
     <>
-    <PostsHeader />
-    <div className="content-section">
-        <div className="section-heading">
-          <h2 className="display-4">
-            Latest Posts <i className="fal fa-play small"></i>
-          </h2>
-          <a href="videos.html">
-            <i className="fal fa-list"></i> All
-          </a>
-        </div>
-        <div className="row">
-          {data.map((post) => (
-            <div className="col-md-4 mb-5" key={post._id}>
-              <Card
-                title={post.title}
-                htmlCode={post.htmlCode}
-                cssCode={post.cssCode}
-                jsCode={post.jsCode}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      <PostsHeader />
+      <PostsMap posts={posts} title="All Posts" />
     </>
-  )
-}
+  );
+};

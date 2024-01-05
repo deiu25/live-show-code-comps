@@ -1,47 +1,16 @@
 // HomeCurentSection.jsx
-import React, { useEffect } from "react";
-import Card from "../post-card/PostCard";
+import React from "react";
 import { HomeHeader } from "../home-header/HomeHeader";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPosts } from "../../../redux/features/posts/postSlice";
+import { PostsMap } from "../posts-map/PostsMap";
+import { usePosts } from "../posts-map/usePosts";
 
 export const HomeCurentSection = () => {
-  const dispatch = useDispatch();
-
-  const data = useSelector((state) => state.posts)?.data ?? [];
-  
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
-
-  const latestPosts = data.slice(-3);
+  const posts = usePosts((state) => state.posts?.data?.slice(-6) ?? []);
 
   return (
     <>
       <HomeHeader />
-      <div className="content-section">
-        <div className="section-heading">
-          <h2 className="display-4">
-            Latest Posts <i className="fal fa-play small"></i>
-          </h2>
-          <a href="videos.html">
-            <i className="fal fa-list"></i> All
-          </a>
-        </div>
-        <div className="row">
-          {latestPosts.map((post) => (
-            <div className="col-md-4" key={post._id}>
-              <Card
-                title={post.title}
-                htmlCode={post.htmlCode}
-                cssCode={post.cssCode}
-                jsCode={post.jsCode}
-                id={post._id}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      <PostsMap posts={posts} title="Latest Posts" />
     </>
   );
 };
