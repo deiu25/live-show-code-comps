@@ -1,5 +1,5 @@
 import "./ThePost.css";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,6 +9,7 @@ import {
 } from "../../redux/features/posts/postSlice";
 import { PostNavigation } from "../../components/thePost/PostNavigation";
 import { CodeEditorContainer } from "../../components/thePost/CodeEditorContainer";
+import useProjectTitle from "../../customHooks/useProjectTitle";
 
 export const ThePost = () => {
   const dispatch = useDispatch();
@@ -18,13 +19,16 @@ export const ThePost = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const [error, setError] = useState("");
 
-  const [title, setTitle] = useState("");
-  const [htmlCode, setHtmlCode] = useState("");
-  const [cssCode, setCssCode] = useState("");
-  const [jsCode, setJsCode] = useState("");
+  const {
+    title,
+    tempTitle,
+    isEditingTitle,
+    setProjectTitle,
+    handleTitleEdit,
+    handleTitleSave,
+  } = useProjectTitle(post?.title);
 
-  const [projectTitle, setProjectTitle] = useState(post?.title);
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [code, setCode] = useState({ html: "", css: "", js: "" });
 
   // Fetch the post data when the component mounts or the id changes
   useEffect(() => {
@@ -34,52 +38,40 @@ export const ThePost = () => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (post) {
-      setTitle(post.title);
-      setHtmlCode(post.htmlCode);
-      setCssCode(post.cssCode);
-      setJsCode(post.jsCode);
-    } else {
-    }
-  }, [post]);
+    if (post && post.title) {
+      setProjectTitle(post.title);
+      setCode({
+        html: post.htmlCode || "",
+        css: post.cssCode || "",
+        js: post.jsCode || "",
+      });
+    } 
+  }, [post, setProjectTitle]);
 
-  const updateHtmlCode = (value) => {
-    setHtmlCode(value);
-  };
+  const updateCode = useCallback((language, value) => {
+    setCode((prevCode) => ({
+      ...prevCode,
+      [language]: value,
+    }));
+  }, []);
 
-  const updateCssCode = (value) => {
-    setCssCode(value);
-  };
-
-  const updateJsCode = (value) => {
-    setJsCode(value);
-  };
-
-  const handleTitleEdit = () => {
-    setProjectTitle(title);
-    setIsEditingTitle(true);
-  };
-
-  const handleTitleSave = () => {
-    setIsEditingTitle(false);
-    setTitle(projectTitle);
-  };
 
   const handleSavePost = () => {
     if (!isLoggedIn) {
       setError("You must be logged in to save a snippet");
       return;
     }
-    if (!htmlCode.trim() || !cssCode.trim()) {
+    if (!code.html.trim() || !code.css.trim()) {
       setError("Both HTML and CSS code must be filled out to save");
       return;
     }
 
     const content = {
-      htmlCode,
-      cssCode,
-      jsCode,
+      htmlCode: code.html,
+      cssCode: code.css,
+      jsCode: code.js,
     };
+
     const postToUpdate = {
       id,
       title,
@@ -94,22 +86,22 @@ export const ThePost = () => {
     <div className="container-full">
       <div className="new-proj-container">
         <PostNavigation
-          title={title}
+          title={title || "Untitled"}
           isEditingTitle={isEditingTitle}
           handleTitleEdit={handleTitleEdit}
-          projectTitle={projectTitle}
+          projectTitle={tempTitle}
           setProjectTitle={setProjectTitle}
           handleTitleSave={handleTitleSave}
           handleSavePost={handleSavePost}
           error={error}
         />
         <CodeEditorContainer
-          initialHtml={htmlCode}
-          initialCss={cssCode}
-          initialJs={jsCode}
-          onHtmlChange={updateHtmlCode}
-          onCssChange={updateCssCode}
-          onJsChange={updateJsCode}
+          initialHtml={code.html}
+          initialCss={code.css}
+          initialJs={code.js}
+          onHtmlChange={(value) => updateCode("html", value)}
+          onCssChange={(value) => updateCode("css", value)}
+          onJsChange={(value) => updateCode("js", value)}
         />
       </div>
     </div>
