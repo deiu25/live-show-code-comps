@@ -11,7 +11,6 @@ import { ReactComponent as CssIcon } from "../../assets/icons/css.svg";
 import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
 import { ReactComponent as SetingsIcon } from "../../assets/icons/setings.svg";
 import { ReactComponent as AngleDown } from "../../assets/icons/down.svg";
-import { ReactComponent as Edit } from "../../assets/icons/edit.svg";
 import { ReactComponent as Terminal } from "../../assets/icons/terminal.svg";
 import { ReactComponent as Assets } from "../../assets/icons/assets.svg";
 import { ReactComponent as Coments } from "../../assets/icons/coments.svg";
@@ -19,24 +18,21 @@ import { ReactComponent as Shortcut } from "../../assets/icons/shortcut.svg";
 import { ReactComponent as Home } from "../../assets/icons/home.svg";
 import { ReactComponent as Errors } from "../../assets/icons/errors.svg";
 import { ReactComponent as Warnings } from "../../assets/icons/warnings.svg";
-import { ReactComponent as SaveTitle } from "../../assets/icons/check-circle.svg";
-import { ReactComponent as Save } from "../../assets/icons/save-project.svg";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { css } from "@codemirror/lang-css";
 import { html } from "@codemirror/lang-html";
 import {
-  ShowOnLogin,
-  ShowOnLogout,
-} from "../../auth/components/protect/hiddenLink";
-import { fetchPostById, updatePost } from "../../redux/features/posts/postSlice";
+  fetchPostById,
+  updatePost,
+} from "../../redux/features/posts/postSlice";
+import { PostNavigation } from "../../components/thePost/PostNavigation";
 
 export const ThePost = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user } = useSelector((state) => state.auth);
   const { post } = useSelector((state) => state.posts);
   const { isLoggedIn } = useSelector((state) => state.auth);
   const [error, setError] = useState("");
@@ -64,10 +60,6 @@ export const ThePost = () => {
       setJsCode(post.jsCode);
     }
   }, [post]);
-
-  const goProfile = () => {
-    navigate("/profile");
-  };
 
   const updateHtmlCode = (value) => {
     setHtmlCode(value);
@@ -106,14 +98,14 @@ export const ThePost = () => {
       cssCode,
       jsCode,
     };
-    const postToUpdate  = {
+    const postToUpdate = {
       id,
       title,
       content,
     };
 
-    console.log(postToUpdate );
-    dispatch(updatePost(postToUpdate ));
+    console.log(postToUpdate);
+    dispatch(updatePost(postToUpdate));
     navigate("/");
   };
 
@@ -140,63 +132,16 @@ export const ThePost = () => {
   return (
     <div className="container-full">
       <div className="new-proj-container">
-        <div className="new-proj-nav">
-          <div className="new-proj-nav-left">
-            <div className="new-proj-nav-left-logo">
-              <Link to="/" className="logo">
-                <p>LiveShow Code</p>
-              </Link>
-            </div>
-            <div className="new-proj-nav-title">
-              {!isEditingTitle ? (
-                <>
-                  <h5 className="new-proj-title">{title}</h5>
-                  <div
-                    onClick={handleTitleEdit}
-                    className="new-proj-nav-title-icon"
-                  >
-                    <Edit />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <input
-                    type="text"
-                    value={projectTitle}
-                    onChange={(e) => setProjectTitle(e.target.value)}
-                    autoFocus
-                  />
-                  <div className="new-proj-nav-title-icon" onClick={handleTitleSave}>
-                    <SaveTitle />
-                  </div>
-                </>
-              )}
-              <button className="save-proj-button" onClick={handleSavePost}>
-                <Save /> Save
-              </button>
-              {error && (
-                <div className="create-proj-error-message">{error}</div>
-              )}
-            </div>
-          </div>
-          <div className="new-proj-nav-right">
-            <ShowOnLogout>
-              <Link to="/login">
-                {" "}
-                <button>Auth</button>
-              </Link>
-            </ShowOnLogout>
-            <ShowOnLogin>
-              <div className="new-proj-logo-login" onClick={goProfile}>
-                <img
-                  className="new-proj-acc-logo"
-                  src={user ? user.photo : "https://www.gravatar.com/av"}
-                  alt="logo"
-                />
-              </div>
-            </ShowOnLogin>
-          </div>
-        </div>
+        <PostNavigation
+          title={title}
+          isEditingTitle={isEditingTitle}
+          handleTitleEdit={handleTitleEdit}
+          projectTitle={projectTitle}
+          setProjectTitle={setProjectTitle}
+          handleTitleSave={handleTitleSave}
+          handleSavePost={handleSavePost}
+          error={error}
+        />
         <SplitPane sizes={horizontalSizes}>
           <SplitPane
             split="vertical"

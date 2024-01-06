@@ -8,7 +8,6 @@ import { ReactComponent as CssIcon } from "../../assets/icons/css.svg";
 import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
 import { ReactComponent as SetingsIcon } from "../../assets/icons/setings.svg";
 import { ReactComponent as AngleDown } from "../../assets/icons/down.svg";
-import { ReactComponent as Edit } from "../../assets/icons/edit.svg";
 import { ReactComponent as Terminal } from "../../assets/icons/terminal.svg";
 import { ReactComponent as Assets } from "../../assets/icons/assets.svg";
 import { ReactComponent as Coments } from "../../assets/icons/coments.svg";
@@ -16,8 +15,6 @@ import { ReactComponent as Shortcut } from "../../assets/icons/shortcut.svg";
 import { ReactComponent as Home } from "../../assets/icons/home.svg";
 import { ReactComponent as Errors } from "../../assets/icons/errors.svg";
 import { ReactComponent as Warnings } from "../../assets/icons/warnings.svg";
-import { ReactComponent as SaveTitle } from "../../assets/icons/check-circle.svg";
-import { ReactComponent as Save } from "../../assets/icons/save-project.svg";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
@@ -25,21 +22,16 @@ import { css } from "@codemirror/lang-css";
 import { html } from "@codemirror/lang-html";
 import { useDispatch, useSelector } from "react-redux";
 import { savePost } from "../../redux/features/posts/postSlice";
-import {
-  ShowOnLogin,
-  ShowOnLogout,
-} from "../../auth/components/protect/hiddenLink";
+import { PostNavigation } from "../../components/thePost/PostNavigation";
 
 export const NewProject = () => {
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.auth);
   const [error, setError] = useState("");
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [tempTitle, setTempTitle] = useState(""); 
+  const [tempTitle, setProjectTitle] = useState("");
 
   const [title, setTitle] = useState("");
   const [htmlCode, setHtmlCode] = useState("");
@@ -48,10 +40,6 @@ export const NewProject = () => {
 
   const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
   const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
-
-  const goProfile = () => {
-    navigate("/profile");
-  };
 
   // Styling for each pane
   const layoutCSS = {
@@ -71,7 +59,7 @@ export const NewProject = () => {
 
   // title editing
   const handleTitleEdit = () => {
-    setTempTitle(title);
+    setProjectTitle(title);
     setIsEditingTitle(true);
   };
   const handleTitleSave = () => {
@@ -79,7 +67,7 @@ export const NewProject = () => {
     setIsEditingTitle(false);
   };
 
-  const handleSave = () => {
+  const handleSavePost = () => {
     if (!isLoggedIn) {
       setError("You must be logged in to save a snippet");
       return;
@@ -107,66 +95,16 @@ export const NewProject = () => {
   return (
     <div className="container-full">
       <div className="new-proj-container">
-        <div className="new-proj-nav">
-          <div className="new-proj-nav-left">
-            <div className="new-proj-nav-left-logo">
-              <Link to="/" className="logo">
-                <p>LiveShow Code</p>
-              </Link>
-            </div>
-            <div className="new-proj-nav-title">
-              {!isEditingTitle ? (
-                <>
-                  <h5 className="new-proj-title">{title || "Untitled"}</h5>
-                  <div
-                    onClick={handleTitleEdit}
-                    className="new-proj-nav-title-icon"
-                  >
-                    <Edit />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <input
-                    type="text"
-                    value={tempTitle}
-                    onChange={(e) => setTempTitle(e.target.value)}
-                    autoFocus
-                  />
-                  <div
-                    onClick={handleTitleSave}
-                    className="new-proj-nav-title-icon"
-                  >
-                    <SaveTitle />
-                  </div>
-                </>
-              )}
-              <button onClick={handleSave} className="save-proj-button">
-                <Save /> Save
-              </button>
-              {error && (
-                <div className="create-proj-error-message">{error}</div>
-              )}
-            </div>
-          </div>
-          <div className="new-proj-nav-right">
-            <ShowOnLogout>
-              <Link to="/login">
-                {" "}
-                <button>Auth</button>
-              </Link>
-            </ShowOnLogout>
-            <ShowOnLogin>
-              <div className="new-proj-logo-login" onClick={goProfile}>
-                <img
-                  className="new-proj-acc-logo"
-                  src={user ? user.photo : "https://www.gravatar.com/av"}
-                  alt="logo"
-                />
-              </div>
-            </ShowOnLogin>
-          </div>
-        </div>
+        <PostNavigation
+          title={title || "Untitled"}
+          isEditingTitle={isEditingTitle}
+          handleTitleEdit={handleTitleEdit}
+          projectTitle={tempTitle}
+          setProjectTitle={setProjectTitle}
+          handleTitleSave={handleTitleSave}
+          handleSavePost={handleSavePost}
+          error={error}
+        />
         <SplitPane sizes={horizontalSizes}>
           <SplitPane
             split="vertical"
