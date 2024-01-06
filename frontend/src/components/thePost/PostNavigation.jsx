@@ -10,11 +10,9 @@ import {
   ShowOnLogout,
 } from "../../auth/components/protect/hiddenLink";
 
-
-
 export const PostNavigation = ({ title, isEditingTitle, handleTitleEdit, projectTitle, setProjectTitle, handleTitleSave, handleSavePost, error }) => {
     const navigate = useNavigate();
-    const { user, isLoggedIn } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.auth);
   
     const goProfile = () => {
       navigate("/profile");
