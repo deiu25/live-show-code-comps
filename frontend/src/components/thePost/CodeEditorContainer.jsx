@@ -1,25 +1,13 @@
-// CodeEditorContainer.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import CodeMirror from "@uiw/react-codemirror";
-import { javascript } from "@codemirror/lang-javascript";
-import { css } from "@codemirror/lang-css";
-import { html } from "@codemirror/lang-html";
 
 import { ReactComponent as HtmlIcon } from "../../assets/icons/html.svg";
 import { ReactComponent as CssIcon } from "../../assets/icons/css.svg";
 import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
-import { ReactComponent as SetingsIcon } from "../../assets/icons/setings.svg";
-import { ReactComponent as AngleDown } from "../../assets/icons/down.svg";
-import { ReactComponent as Terminal } from "../../assets/icons/terminal.svg";
-import { ReactComponent as Assets } from "../../assets/icons/assets.svg";
-import { ReactComponent as Coments } from "../../assets/icons/coments.svg";
-import { ReactComponent as Shortcut } from "../../assets/icons/shortcut.svg";
-import { ReactComponent as Home } from "../../assets/icons/home.svg";
-import { ReactComponent as Errors } from "../../assets/icons/errors.svg";
-import { ReactComponent as Warnings } from "../../assets/icons/warnings.svg";
-import { Link } from "react-router-dom";
+
+import { CodeEditorToolbar } from "./CodeEditorToolbar";
+import EditorComponent from "./EditorComponent";
 
 export const CodeEditorContainer = ({
   initialHtml,
@@ -37,13 +25,7 @@ export const CodeEditorContainer = ({
   const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
   const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
 
-  // Styling for each pane
-  const layoutCSS = {
-    height: "100%",
-  };
-
-  // Function to render the preview iframe with the HTML, CSS and JavaScript code from the editors
-  const createMarkup = () => {
+  const iframeSrc = useMemo(() => {
     const blob = new Blob(
       [
         `<html><head><style>${cssCode}</style></head><body>${htmlCode}<script>${jsCode}</script></body></html>`,
@@ -51,6 +33,19 @@ export const CodeEditorContainer = ({
       { type: "text/html" }
     );
     return URL.createObjectURL(blob);
+  }, [htmlCode, cssCode, jsCode]);
+
+  const handleCodeChange = (language, newCode) => {
+    if (language === "html") {
+      setHtmlCode(newCode);
+      onHtmlChange(newCode);
+    } else if (language === "css") {
+      setCssCode(newCode);
+      onCssChange(newCode);
+    } else if (language === "js") {
+      setJsCode(newCode);
+      onJsChange(newCode);
+    }
   };
 
   useEffect(() => {
@@ -58,23 +53,6 @@ export const CodeEditorContainer = ({
     setCssCode(initialCss);
     setJsCode(initialJs);
   }, [initialHtml, initialCss, initialJs]);
-
-  const handleHtmlChange = (value) => {
-    setHtmlCode(value);
-    onHtmlChange(value);
-  };
-
-  // onChange pentru CodeMirror
-
-  const handleCssChange = (value) => {
-    setCssCode(value);
-    onCssChange(value);
-  };
-
-  const handleJsChange = (value) => {
-    setJsCode(value);
-    onJsChange(value);
-  };
 
   return (
     <SplitPane
@@ -87,101 +65,32 @@ export const CodeEditorContainer = ({
         onChange={(sizes) => setVerticalSizes(sizes)}
         minSize={50}
       >
-        <div style={layoutCSS}>
-          <div className="code-editor-head">
-            <div className="html-icon">
-              <HtmlIcon />
-              <p>HTML</p>
-            </div>
-            <div className="right-tools">
-              <SetingsIcon />
-              <AngleDown />
-            </div>
-          </div>
-          <div className="code-editor">
-            <CodeMirror
-              value={htmlCode}
-              height="83vh"
-              theme={"dark"}
-              extensions={[html()]}
-              onChange={(value) => {
-                handleHtmlChange(value);
-              }}
-            />
-          </div>
-        </div>
-        <div style={layoutCSS}>
-          <div className="code-editor-head">
-            <div className="html-icon">
-              <CssIcon />
-              <p>CSS</p>
-            </div>
-            <div className="right-tools">
-              <SetingsIcon />
-              <AngleDown />
-            </div>
-          </div>
-          <div className="code-editor">
-            <CodeMirror
-              value={cssCode}
-              height="83vh"
-              theme={"dark"}
-              extensions={[css()]}
-              onChange={(value) => {
-                handleCssChange(value);
-              }}
-            />
-          </div>
-        </div>
-        <div style={layoutCSS}>
-          <div className="code-editor-head">
-            <div className="html-icon">
-              <JsIcon />
-              <p>JS</p>
-            </div>
-            <div className="right-tools">
-              <SetingsIcon />
-              <AngleDown />
-            </div>
-          </div>
-          <div className="code-editor">
-            <CodeMirror
-              value={jsCode}
-              height="83vh"
-              theme={"dark"}
-              extensions={[javascript()]}
-              onChange={(value) => {
-                handleJsChange(value);
-              }}
-            />
-          </div>
-        </div>
+        <EditorComponent
+          language="html"
+          icon={HtmlIcon}
+          value={htmlCode}
+          onChange={(newCode) => handleCodeChange("html", newCode)}
+        />
+        <EditorComponent
+          language="css"
+          icon={CssIcon}
+          value={cssCode}
+          onChange={(newCode) => handleCodeChange("css", newCode)}
+        />
+        <EditorComponent
+          language="js"
+          icon={JsIcon}
+          value={jsCode}
+          onChange={(newCode) => handleCodeChange("js", newCode)}
+        />
       </SplitPane>
 
       <div>
-        <div className="output-footer-bar">
-          <div className="output-footer-bar-left">
-            <Terminal />
-            <Assets />
-            <Coments />
-            <Shortcut />
-          </div>
-          <div className="output-footer-bar-center">
-            <Link to="/">
-              <Home />
-            </Link>
-          </div>
-          <div className="output-footer-bar-right">
-            <Errors />
-            <p>0</p>
-            <Warnings />
-            <p>0</p>
-          </div>
-        </div>
+        <CodeEditorToolbar />
         <div className="output-section">
           <iframe
             title="preview"
-            src={createMarkup()}
+            src={iframeSrc}
             overflow="auto"
             className="output-iframe"
           />

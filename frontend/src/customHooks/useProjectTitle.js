@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function useProjectTitle(initialTitle = '') {
   const [title, setTitle] = useState(initialTitle);
   const [tempTitle, setProjectTitle] = useState(initialTitle);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+
+  useEffect(() => {
+    setTitle(initialTitle);
+    setProjectTitle(initialTitle);
+  }, [initialTitle]);
 
   const handleTitleEdit = () => {
     setIsEditingTitle(true);

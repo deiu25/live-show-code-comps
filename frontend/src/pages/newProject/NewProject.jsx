@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+//NewProject.jsx
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-
 import "./NewProject.css";
-
 import { useDispatch, useSelector } from "react-redux";
 import { savePost } from "../../redux/features/posts/postSlice";
 import { PostNavigation } from "../../components/thePost/PostNavigation";
@@ -12,9 +11,8 @@ import useProjectTitle from "../../customHooks/useProjectTitle";
 export const NewProject = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [error, setError] = useState("");
-
   const [code, setCode] = useState({ html: "", css: "", js: "" });
 
   const {
@@ -26,30 +24,32 @@ export const NewProject = () => {
     handleTitleSave,
   } = useProjectTitle();
 
-  const handleSavePost = () => {
+  const handleErrors = useCallback(() => {
     if (!isLoggedIn) {
-      setError("You must be logged in to save a snippet");
-      return;
+      return "You must be logged in to save a snippet";
     }
     if (!code.html.trim() || !code.css.trim()) {
-      setError("Both HTML and CSS code must be filled out to save");
+      return "Both HTML and CSS code must be filled out to save";
+    }
+    return "";
+  }, [isLoggedIn, code.html, code.css]);
+
+  const handleSavePost = useCallback(() => {
+    const errorMsg = handleErrors();
+    if (errorMsg) {
+      setError(errorMsg);
       return;
     }
-
-    const content = {
-      htmlCode: code.html,
-      cssCode: code.css,
-      jsCode: code.js,
-    };
-    const post = {
+    dispatch(savePost({
       title: title || "Untitled",
-      content,
-    };
-
-    console.log(post);
-    dispatch(savePost(post));
+      content: {
+        htmlCode: code.html,
+        cssCode: code.css,
+        jsCode: code.js,
+      },
+    }));
     navigate("/");
-  };
+  }, [dispatch, navigate, code, title, handleErrors]);
 
   const updateCode = (type, value) => {
     setCode((prevCode) => ({

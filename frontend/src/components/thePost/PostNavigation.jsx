@@ -10,13 +10,26 @@ import {
   ShowOnLogout,
 } from "../../auth/components/protect/hiddenLink";
 
-export const PostNavigation = ({ title, isEditingTitle, handleTitleEdit, projectTitle, setProjectTitle, handleTitleSave, handleSavePost, error }) => {
-    const navigate = useNavigate();
-    const { user } = useSelector((state) => state.auth);
-  
-    const goProfile = () => {
+export const PostNavigation = ({
+  title,
+  isEditingTitle,
+  handleTitleEdit,
+  projectTitle,
+  setProjectTitle,
+  handleTitleSave,
+  handleSavePost,
+  error
+}) => {
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+
+  const goProfile = () => {
       navigate("/profile");
-    };
+  };
+
+  const handleProjectTitleChange = (e) => {
+      setProjectTitle(e.target.value);
+  };
 
     return (
         <div className="new-proj-nav">
@@ -30,10 +43,7 @@ export const PostNavigation = ({ title, isEditingTitle, handleTitleEdit, project
               {!isEditingTitle ? (
                 <>
                   <h5 className="new-proj-title">{title}</h5>
-                  <div
-                    onClick={handleTitleEdit}
-                    className="new-proj-nav-title-icon"
-                  >
+                  <div onClick={handleTitleEdit} className="new-proj-nav-title-icon" aria-label="Edit title">
                     <Edit />
                   </div>
                 </>
@@ -42,8 +52,9 @@ export const PostNavigation = ({ title, isEditingTitle, handleTitleEdit, project
                   <input
                     type="text"
                     value={projectTitle}
-                    onChange={(e) => setProjectTitle(e.target.value)}
+                    onChange={handleProjectTitleChange}
                     autoFocus
+                    aria-label="Project title"
                   />
                   <div className="new-proj-nav-title-icon" onClick={handleTitleSave}>
                     <SaveTitle />

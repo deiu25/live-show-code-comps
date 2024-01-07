@@ -1,3 +1,4 @@
+//ThePost.jsx
 import "./ThePost.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,33 +21,32 @@ export const ThePost = () => {
   const [error, setError] = useState("");
 
   const {
+    title: initialTitle,
+    htmlCode: initialHtml = "",
+    cssCode: initialCss = "",
+    jsCode: initialJs = "",
+  } = post || {};
+
+  const {
     title,
     tempTitle,
     isEditingTitle,
     setProjectTitle,
     handleTitleEdit,
     handleTitleSave,
-  } = useProjectTitle(post?.title);
+  } = useProjectTitle(initialTitle);
 
-  const [code, setCode] = useState({ html: "", css: "", js: "" });
+  const [code, setCode] = useState({
+    html: initialHtml,
+    css: initialCss,
+    js: initialJs,
+  });
 
-  // Fetch the post data when the component mounts or the id changes
   useEffect(() => {
     if (id) {
       dispatch(fetchPostById(id));
     }
   }, [dispatch, id]);
-
-  useEffect(() => {
-    if (post && post.title) {
-      setProjectTitle(post.title);
-      setCode({
-        html: post.htmlCode || "",
-        css: post.cssCode || "",
-        js: post.jsCode || "",
-      });
-    } 
-  }, [post, setProjectTitle]);
 
   const updateCode = useCallback((language, value) => {
     setCode((prevCode) => ({
@@ -55,6 +55,15 @@ export const ThePost = () => {
     }));
   }, []);
 
+  useEffect(() => {
+    if (post) {
+      setCode({
+        html: post.htmlCode || "",
+        css: post.cssCode || "",
+        js: post.jsCode || "",
+      });
+    }
+  }, [post]);
 
   const handleSavePost = () => {
     if (!isLoggedIn) {
