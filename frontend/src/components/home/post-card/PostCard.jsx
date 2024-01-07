@@ -1,24 +1,31 @@
 // PostCard.jsx
-import React from "react";
-import "./PostCard.css";
+import React, { useMemo, useEffect } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import "./PostCard.css";
 
 function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
-  // Functia pentru a crea un URL blob din codul HTML, CSS si JavaScript
-  const createMarkup = () => {
+  const markupUrl = useMemo(() => {
     const blob = new Blob(
       [
         `<html><head><style>${cssCode}</style></head><body>${htmlCode}<script>${jsCode}</script></body></html>`,
       ],
       { type: "text/html" }
     );
-    return URL.createObjectURL(blob);
-  };
+    const url = URL.createObjectURL(blob);
+    return url;
+  }, [htmlCode, cssCode, jsCode]);
+
+  useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(markupUrl);
+    };
+  }, [markupUrl]);
 
   return (
     <>
       <div className="card-body">
-        <iframe title={title} src={createMarkup()} className="iframe"></iframe>
+        <iframe title={title} src={markupUrl} className="iframe" />
       </div>
       <div className="post-card-footer">
         <p className="post-card-title text-truncate">{title}</p>
@@ -30,4 +37,12 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
   );
 }
 
-export default PostCard;
+PostCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  htmlCode: PropTypes.string.isRequired,
+  cssCode: PropTypes.string.isRequired,
+  jsCode: PropTypes.string.isRequired,
+};
+
+export default React.memo(PostCard);
