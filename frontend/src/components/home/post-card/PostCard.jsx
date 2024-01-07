@@ -32,6 +32,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
         <Link to={`/post/${id}`} className="btn btn-primary">
           View
         </Link>
+        <button className="btn btn-danger">Delete</button>
       </div>
     </>
   );

@@ -11,7 +11,7 @@ const initialState = {
   error: null,
   title: "",
   content: "",
-}
+};
 
 // Create the async thunk for fetching all posts
 export const savePost = createAsyncThunk(
@@ -43,8 +43,17 @@ export const fetchPostById = createAsyncThunk(
 // Create the async thunk for updating a post
 export const updatePost = createAsyncThunk(
   "posts/updatePost",
-  async ({ id, ...post }, thunkAPI) => { 
+  async ({ id, ...post }, thunkAPI) => {
     const response = await postService.updatePost(id, post);
+    return response;
+  }
+);
+
+// Create the async thunk for deleting a post
+export const deletePost = createAsyncThunk(
+  "posts/deletePost",
+  async (id, thunkAPI) => {
+    const response = await postService.deletePost(id);
     return response;
   }
 );
@@ -79,7 +88,7 @@ const postSlice = createSlice({
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload.data;
-      })  
+      })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
@@ -107,12 +116,30 @@ const postSlice = createSlice({
       .addCase(updatePost.fulfilled, (state, action) => {
         state.isLoading = false;
         state.post = action.payload.data;
-        const index = state.posts.findIndex(post => post.id === action.payload.data.id);
+        const index = state.posts.findIndex(
+          (post) => post.id === action.payload.data.id
+        );
         if (index !== -1) {
           state.posts[index] = action.payload.data;
         }
       })
       .addCase(updatePost.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
+
+    // Tratează stările pentru deletePost
+    builder
+      .addCase(deletePost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts = state.posts.filter(
+          (post) => post.id !== action.payload.data.id
+        );
+      })
+      .addCase(deletePost.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

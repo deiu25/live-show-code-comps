@@ -1,95 +1,44 @@
+import { fetchWithCredentials } from "../helper/fetchWithCredentials ";
+
 //postService.js
 const BACKEND_URL = "http://localhost:5000";
 const API_URL = `${BACKEND_URL}/api/posts/`;
 
 // create post
-const createPost = async (post) => {
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(post),
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Network response was not ok, status code: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    throw err;
-  }
+const createPost = (post) => {
+  return fetchWithCredentials(API_URL, {
+    method: 'POST',
+    body: JSON.stringify(post),
+  });
 };
 
 // get all posts
-const getPosts = async () => {
-  try {
-    const response = await fetch(API_URL, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Network response was not ok, status code: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    throw err;
-  }
+const getPosts = () => {
+  return fetchWithCredentials(API_URL, {
+    method: 'GET',
+  });
 };
 
 //get post by id
 const getPostById = async (id) => {
-  try {
-    const response = await fetch(`${API_URL}${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Network response was not ok, status code: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    throw err;
-  }
+  return fetchWithCredentials(`${API_URL}${id}`, {
+    method: 'GET',
+  });
 };
 
 //update post
-const updatePost = async (id, post) => {
-  try {
-    const response = await fetch(`${API_URL}${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(post),
-      credentials: 'include',
-    });
+const updatePost = (id, post) => {
+  return fetchWithCredentials(`${API_URL}${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(post),
+  });
+};
 
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Network response was not ok, status code: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    throw err;
-  }
+//delete post
+const deletePost = (id) => {
+  return fetchWithCredentials(`${API_URL}${id}`, {
+    method: 'DELETE',
+  });
 };
 
 const postService = {
@@ -97,6 +46,7 @@ const postService = {
   getPosts,
   getPostById,
   updatePost,
+  deletePost,
 };
 
 export default postService;
