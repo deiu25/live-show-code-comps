@@ -1,3 +1,4 @@
+//HomeCurentSection.jsx
 import React, { useState, useEffect } from 'react';
 import { PostsMap } from '../posts-map/PostsMap';
 import { usePosts } from '../posts-map/usePosts';

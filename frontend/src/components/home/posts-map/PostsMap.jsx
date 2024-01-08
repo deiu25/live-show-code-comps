@@ -1,5 +1,8 @@
+//PostsMap.jsx
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import Card from "../post-card/PostCard";
+import { useDispatch } from 'react-redux';
+import { deletePost } from "../../../redux/features/posts/postSlice";
 
 // Componentă separată pentru heading
 const SectionHeading = memo(({ title }) => (
@@ -9,7 +12,7 @@ const SectionHeading = memo(({ title }) => (
 ));
 
 // Componentă pentru randarea listei de postări
-const PostList = memo(({ posts }) => (
+const PostList = memo(({ posts, onPostDelete  }) => (
   <div className="row">
     {posts.map((post) => (
       <div className="col-md-4" key={post._id}>
@@ -19,6 +22,7 @@ const PostList = memo(({ posts }) => (
           cssCode={post.cssCode}
           jsCode={post.jsCode}
           id={post._id}
+          onPostDelete={onPostDelete}
         />
       </div>
     ))}
@@ -58,14 +62,22 @@ const useLazyLoad = (posts, loadMoreRef) => {
   return visiblePosts;
 };
 
-export const PostsMap = memo(({ posts, title }) => {
+export const PostsMap = memo(({ posts, title, onPostDelete }) => {
+  const dispatch = useDispatch();
   const loadMoreRef = useRef(null);
   const visiblePosts = useLazyLoad(posts, loadMoreRef);
+
+  const handlePostDelete = useCallback((id) => {
+    dispatch(deletePost(id));
+    if (onPostDelete) {
+      onPostDelete();
+    }
+  }, [dispatch, onPostDelete]); 
 
   return (
     <div className="content-section">
       {title && <SectionHeading title={title} />}
-      <PostList posts={visiblePosts} />
+      <PostList posts={visiblePosts} onPostDelete={handlePostDelete} />
       <div ref={loadMoreRef} style={{ height: '20px', margin: '10px 0' }}>
       </div>
     </div>
