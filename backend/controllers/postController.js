@@ -1,5 +1,6 @@
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
+import mongoose from "mongoose";
 
 // Add Post
 export const addPost = async (req, res, next) => {
@@ -10,7 +11,7 @@ export const addPost = async (req, res, next) => {
       message: "User not found",
     });
   }
-  
+
   try {
     const { title, content } = req.body;
 
@@ -66,7 +67,10 @@ export const getAllPosts = async (req, res, next) => {
 // Get post by id
 export const getPostById = async (req, res, next) => {
   try {
-    const post = await Post.findById(req.params.id).populate("user", "lastname");
+    const post = await Post.findById(req.params.id).populate(
+      "user",
+      "lastname"
+    );
     if (!post) {
       return res.status(404).json({
         success: false,
@@ -128,6 +132,44 @@ export const updatePost = async (req, res, next) => {
     res.status(500).json({
       success: false,
       message: "An error occurred while updating the post.",
+      error: error.message,
+    });
+  }
+};
+
+// Delete post
+export const deletePost = async (req, res, next) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).send(`No post with id: ${req.params.id}`);
+    }
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found.",
+      });
+    }
+
+    if (post.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this post.",
+      });
+    }
+
+    // Use findByIdAndDelete to delete the post.
+    await Post.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      data: {},
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while deleting the post.",
       error: error.message,
     });
   }

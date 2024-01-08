@@ -126,7 +126,8 @@
   height: 30px;
 }
 .html-icon {
-  width: 90px; 
+  min-width: min-content;
+  width: 90px;
   height: 30px; 
   background-color: #282c34;
   display: flex;
@@ -135,6 +136,7 @@
   justify-content: center;
   gap: 5px;
   border-top: 3px solid dimgrey;
+  padding: 0 15px;
 }
 
 .html-icon p {

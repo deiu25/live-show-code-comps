@@ -26,12 +26,19 @@ export const CodeEditorContainer = ({
   const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
 
   const iframeSrc = useMemo(() => {
-    const blob = new Blob(
-      [
-        `<html><head><style>${cssCode}</style></head><body>${htmlCode}<script>${jsCode}</script></body></html>`,
-      ],
-      { type: "text/html" }
-    );
+    const blob = new Blob([
+      `<!DOCTYPE html>
+      <html>
+      <head>
+        <style>${cssCode}</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      </head>
+      <body>
+        ${htmlCode}
+        <script>${jsCode}</script>
+      </body>
+      </html>`
+    ], { type: 'text/html' });
     return URL.createObjectURL(blob);
   }, [htmlCode, cssCode, jsCode]);
 
@@ -42,7 +49,7 @@ export const CodeEditorContainer = ({
     } else if (language === "css") {
       setCssCode(newCode);
       onCssChange(newCode);
-    } else if (language === "js") {
+    } else if (language === "javascript") {
       setJsCode(newCode);
       onJsChange(newCode);
     }
@@ -63,7 +70,7 @@ export const CodeEditorContainer = ({
         split="vertical"
         sizes={verticalSizes}
         onChange={(sizes) => setVerticalSizes(sizes)}
-        minSize={50}
+        minsize={50}
       >
         <EditorComponent
           language="html"
@@ -78,7 +85,7 @@ export const CodeEditorContainer = ({
           onChange={(newCode) => handleCodeChange("css", newCode)}
         />
         <EditorComponent
-          language="js"
+          language="javascript"
           icon={JsIcon}
           value={jsCode}
           onChange={(newCode) => handleCodeChange("js", newCode)}
