@@ -3,32 +3,12 @@ import React, { useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./PostCard.css";
-import { useDispatch } from "react-redux";
-import { deletePost } from "../../../redux/features/posts/postSlice";
 import { confirmAlert } from "react-confirm-alert";
+import { useDispatch } from "react-redux";
+import { deletePost, fetchPosts } from "../../../redux/features/posts/postSlice";
 
-function PostCard({ id, title, htmlCode, cssCode, jsCode, onPostDelete }) {
+function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
   const dispatch = useDispatch();
-
-  const handleDelete = (id) => {
-    onPostDelete(id); 
-  };
-  const confirmDelete = (id) => {
-    confirmAlert({
-      title: "Confirm to delete",
-      message: "Are you sure you want to delete this post?",
-      buttons: [
-        {
-          label: "Delete",
-          onClick: () => handleDelete(id),
-        },
-        {
-          label: "Cancel",
-          onClick: () => alert("Click No"),
-        },
-      ],
-    });
-  };
 
   const markupUrl = useMemo(() => {
     const blob = new Blob([
@@ -53,6 +33,28 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, onPostDelete }) {
     };
   }, [markupUrl]);
 
+  const handleDelete = async (id) => {
+    await dispatch(deletePost(id));
+    dispatch(fetchPosts());
+  };
+
+  const confirmDelete = (id) => {
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure you want to delete this post?",
+      buttons: [
+        {
+          label: "Delete",
+          onClick: () => handleDelete(id),
+        },
+        {
+          label: "Cancel",
+          onClick: () => alert("Click No"),
+        },
+      ],
+    });
+  };
+
   return (
     <>
       <div className="card-body">
@@ -63,7 +65,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, onPostDelete }) {
         <Link to={`/post/${id}`} className="btn btn-primary">
           View
         </Link>
-        <button onClick={() => confirmDelete(id)} className="btn btn-danger">Delete</button>
+        <button onClick={() => confirmDelete(id)} className="btn btn-danger"> Delete </button>
       </div>
     </>
   );
@@ -75,7 +77,6 @@ PostCard.propTypes = {
   htmlCode: PropTypes.string.isRequired,
   cssCode: PropTypes.string.isRequired,
   jsCode: PropTypes.string.isRequired,
-  onPostDelete: PropTypes.func,
 };
 
 export default React.memo(PostCard);
