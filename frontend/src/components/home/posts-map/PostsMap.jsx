@@ -1,8 +1,6 @@
 //PostsMap.jsx
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import React, { memo } from "react";
 import Card from "../post-card/PostCard";
-import { useDispatch } from 'react-redux';
-import { deletePost } from "../../../redux/features/posts/postSlice";
 
 // Componentă separată pentru heading
 const SectionHeading = memo(({ title }) => (
@@ -28,56 +26,13 @@ const PostList = memo(({ posts, onPostDelete  }) => (
     ))}
   </div>
 ));
-
-// Componenta principală refăcută cu lazy loading
-const useLazyLoad = (posts, loadMoreRef) => {
-  const [visiblePosts, setVisiblePosts] = useState([]);
-
-  const loadMorePosts = useCallback(() => {
-    setVisiblePosts(prevPosts => [
-      ...prevPosts,
-      ...posts.slice(prevPosts.length, prevPosts.length + 6)
-    ]);
-  }, [posts]);
-
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        loadMorePosts();
-      }
-    }, { threshold: 1.0 });
-
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [loadMorePosts, loadMoreRef]);
-
-  useEffect(() => {
-    setVisiblePosts(posts.slice(0, 6));
-  }, [posts]);
-
-  return visiblePosts;
-};
-
-export const PostsMap = memo(({ posts, title, onPostDelete }) => {
-  const dispatch = useDispatch();
-  const loadMoreRef = useRef(null);
-  const visiblePosts = useLazyLoad(posts, loadMoreRef);
-
-  const handlePostDelete = useCallback((id) => {
-    dispatch(deletePost(id));
-    if (onPostDelete) {
-      onPostDelete();
-    }
-  }, [dispatch, onPostDelete]); 
+  
+export const PostsMap = memo(({ posts, title, loadMoreRef }) => {
 
   return (
     <div className="content-section">
       {title && <SectionHeading title={title} />}
-      <PostList posts={visiblePosts} onPostDelete={handlePostDelete} />
+      <PostList posts={posts} />
       <div ref={loadMoreRef} style={{ height: '20px', margin: '10px 0' }}>
       </div>
     </div>
