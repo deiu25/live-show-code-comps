@@ -1,3 +1,15 @@
+.card {
+  height: 250px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
 .card-body {
   position: relative;
   height: 250px;
@@ -16,13 +28,105 @@
   opacity: 1;
 }
 
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+  gap: 10px;
+   display: none;
+}
+
+.card:hover .overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .post-card-footer {
   width: 250px;
   padding: 10px;
 }
 
-.post-card-title {
+.view-btn {
+  background-color: #007bff; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
   font-size: 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.view-btn:hover {
+  background-color: #0056b3; 
+}
+
+.view-btn:active {
+  background-color: #004085;
+}
+
+.view-btn:focus {
+  outline: none; 
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
+}
+
+.view-btn:disabled {
+  background-color: #007bff;
+  opacity: 0.65; 
+  pointer-events: none; 
+  cursor: not-allowed; 
+}
+
+.post-card-title {
+  font-size: 18px;
   font-weight: bold;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600; 
   margin: 0;
+  margin-bottom: 5px;
+  background: linear-gradient(to right, #162e61, #004ea1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+
+.post-card-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.number-of {
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  background-color: #5899df;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.soc-icons {
+  height: 20px;
+  width: 20px;
+}
+
+.soc-number {
+  font-size: 15px;
+  margin-left: 2px;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

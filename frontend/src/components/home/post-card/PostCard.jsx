@@ -1,18 +1,42 @@
 // PostCard.jsx
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./PostCard.css";
 import { confirmAlert } from "react-confirm-alert";
 import { useDispatch } from "react-redux";
-import { deletePost, fetchPosts } from "../../../redux/features/posts/postSlice";
+import {
+  deletePost,
+  fetchPosts,
+} from "../../../redux/features/posts/postSlice";
+import { ReactComponent as Coment } from "../../../assets/icons/coments.svg";
+import { ReactComponent as Like } from "../../../assets/icons/like-icon.svg";
+import { ReactComponent as Shortcut } from "../../../assets/icons/shortcut.svg";
+import { ReactComponent as EyeLook } from "../../../assets/icons/eye-look-icon.svg";
+import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-icon.svg";
+import { shortenText } from "../../../auth/pages/profile/Profile";
 
 function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
   const dispatch = useDispatch();
+  const [showOverlay, setShowOverlay] = useState(true);
+  const shortenedTitle = shortenText(title, 20);
+  const [showFullTitle, setShowFullTitle] = useState(false);
+
+  useEffect(() => {
+    function handleMouseMove() {
+      setShowOverlay(true);
+    }
+
+    document.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
 
   const markupUrl = useMemo(() => {
-    const blob = new Blob([
-      `<!DOCTYPE html>
+    const blob = new Blob(
+      [
+        `<!DOCTYPE html>
       <html>
       <head>
         <style>${cssCode}</style>
@@ -22,8 +46,10 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
         ${htmlCode}
         <script>${jsCode}</script>
       </body>
-      </html>`
-    ], { type: 'text/html' });
+      </html>`,
+      ],
+      { type: "text/html" }
+    );
     return URL.createObjectURL(blob);
   }, [htmlCode, cssCode, jsCode]);
 
@@ -49,25 +75,57 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
         },
         {
           label: "Cancel",
-          onClick: () => alert("Click No"),
         },
       ],
     });
   };
 
   return (
-    <>
-      <div className="card-body">
-        <iframe title={title} src={markupUrl} className="iframe" />
+    <div className="card">
+      <div
+        className="card-body"
+        onClick={() => setShowOverlay(false)}
+        onMouseMove={() => setShowOverlay(true)}
+      >
+        <iframe title={title} src={markupUrl} className="iframe"></iframe>
+        <div
+          className="overlay"
+          style={{ display: showOverlay ? "flex" : "none" }}
+        >
+          <Link to={`/post/${id}`} className="btn view-btn">
+            View
+          </Link>
+          <button onClick={() => confirmDelete(id)} className="btn btn-danger">
+            Delete
+          </button>
+          <p className="post-card-title text-truncate">
+            {showFullTitle ? title : shortenedTitle}
+          </p>
+          <div className="post-card-icons">
+            <div className="number-of">
+              <Like className="soc-icons" />
+              <span className="soc-number">0</span>
+            </div>
+            <div className="number-of">
+              <Coment className="soc-icons" />
+              <span className="soc-number">0</span>
+            </div>
+            <div className="number-of">
+              <Shortcut className="soc-icons" />
+              <span className="soc-number">0</span>
+            </div>
+            <div className="number-of">
+              <EyeLook className="soc-icons" />
+              <span className="soc-number">0</span>
+            </div>
+            <div className="number-of">
+              <Bookmark className="soc-icons" />
+              <span className="soc-number">0</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="post-card-footer">
-        <p className="post-card-title text-truncate">{title}</p>
-        <Link to={`/post/${id}`} className="btn btn-primary">
-          View
-        </Link>
-        <button onClick={() => confirmDelete(id)} className="btn btn-danger"> Delete </button>
-      </div>
-    </>
+    </div>
   );
 }
 
