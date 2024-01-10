@@ -27,20 +27,14 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
   const likes = useSelector(state => state.posts.likesMap[id]) || 0;
 
   useEffect(() => {
-    console.log('Getting likes for post with id:', id);
     dispatch(getLikesForPost(id));
-    console.log('Getting likes for post with id:', id);
   }, [dispatch, id]);
 
   const handleLike = async () => {
-    console.log(`Attempting to like post with id: ${id}`);
     try {
-      const response = await dispatch(likePost(id)).unwrap();
-      console.log('Post liked successfully:', response);
-      // Actualizați starea locală cu noua valoare a like-urilor
+      await dispatch(likePost(id)).unwrap();
       dispatch(getLikesForPost(id));
     } catch (err) {
-      console.error('Failed to like post:', err);
     }
   };
 

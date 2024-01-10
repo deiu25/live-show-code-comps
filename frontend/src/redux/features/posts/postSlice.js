@@ -193,17 +193,13 @@ const postSlice = createSlice({
       })
       .addCase(getLikesForPost.fulfilled, (state, action) => {
         state.isLoading = false;
-        // Assuming that the like count is equivalent to the length of the data array for a snippet
+        // Create a temporary map to store unique counts
+        const tempLikesMap = {};
         action.payload.data.forEach(like => {
           const snippetId = like.snippet;
-          if (snippetId in state.likesMap) {
-            state.likesMap[snippetId]++;
-          } else {
-            state.likesMap[snippetId] = 1;
-          }
+          tempLikesMap[snippetId] = (tempLikesMap[snippetId] || 0) + 1;
         });
-        // Log the updated likesMap for debugging purposes
-        console.log('Updated likesMap:', state.likesMap);
+        state.likesMap = tempLikesMap;
       })
       .addCase(getLikesForPost.rejected, (state, action) => {
         state.isLoading = false;
