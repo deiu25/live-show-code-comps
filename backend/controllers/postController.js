@@ -137,6 +137,53 @@ export const updatePost = async (req, res, next) => {
   }
 };
 
+// Like or unlike post
+export const likePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found.",
+      });
+    }
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    const isLiked = post.likes.some(
+      (like) => like.user.toString() === req.user._id.toString()
+    );
+
+    if (isLiked) {
+      post.likes = post.likes.filter(
+        (like) => like.user.toString() !== req.user._id.toString()
+      );
+    } else {
+      post.likes.push({ user: req.user._id });
+    }
+
+    await post.save();
+
+    res.status(200).json({
+      success: true,
+      data: post.likes,
+    });
+  } catch (error) {
+    console.error('Error in PUT /api/posts/:id/like:', error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while liking the post.",
+      error: error.message,
+    });
+  }
+};
+
 // Delete post
 export const deletePost = async (req, res, next) => {
   try {

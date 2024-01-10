@@ -58,6 +58,22 @@ export const deletePost = createAsyncThunk(
   }
 );
 
+// Create the async thunk for liking or unliking a post
+export const likePost = createAsyncThunk(
+  "posts/likePost",
+  async (id, thunkAPI) => {
+    console.log(`Sending like request for post with id: ${id}`); // Log before sending request
+    try {
+      const response = await postService.likePost(id);
+      console.log('Like request successful:', response); // Log successful response
+      return response;
+    } catch (error) {
+      console.error('Like request failed:', error); // Log error if request fails
+      throw error;
+    }
+  }
+);
+
 // Create the slice
 const postSlice = createSlice({
   name: "posts",
@@ -140,6 +156,29 @@ const postSlice = createSlice({
         );
       })
       .addCase(deletePost.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
+
+    // Tratează stările pentru likePost or unlikePost
+    builder
+      .addCase(likePost.pending, (state) => {
+        console.log('Like post request is pending...');
+        state.isLoading = true;
+      })
+      .addCase(likePost.fulfilled, (state, action) => {
+        console.log('Like post request fulfilled:', action.payload);
+        state.isLoading = false;
+        state.post = action.payload.data;
+        const index = state.posts.findIndex(
+          (post) => post.id === action.payload.data.id
+        );
+        if (index !== -1) {
+          state.posts[index] = action.payload.data;
+        }
+      })
+      .addCase(likePost.rejected, (state, action) => {
+        console.log('Like post request failed:', action.error.message);
         state.isLoading = false;
         state.error = action.error.message;
       });

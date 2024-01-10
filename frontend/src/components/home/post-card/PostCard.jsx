@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import {
   deletePost,
   fetchPosts,
+  likePost,
 } from "../../../redux/features/posts/postSlice";
 import { ReactComponent as Coment } from "../../../assets/icons/coments.svg";
 import { ReactComponent as Like } from "../../../assets/icons/like-icon.svg";
@@ -16,11 +17,24 @@ import { ReactComponent as EyeLook } from "../../../assets/icons/eye-look-icon.s
 import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-icon.svg";
 import { shortenText } from "../../../auth/pages/profile/Profile";
 
-function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
+function PostCard({ id, title, htmlCode, cssCode, jsCode, likes }) {
   const dispatch = useDispatch();
   const [showOverlay, setShowOverlay] = useState(true);
   const shortenedTitle = shortenText(title, 20);
   const [showFullTitle, setShowFullTitle] = useState(false);
+  const [likeCount, setLikeCount] = useState(likes);
+
+  const handleLike = async () => {
+    console.log(`Attempting to like post with id: ${id}`);
+    try {
+      const response = await dispatch(likePost(id)).unwrap();
+      console.log('Post liked successfully:', response);
+      // Actualizați starea locală cu noua valoare a like-urilor
+      setLikeCount(response.likes);
+    } catch (err) {
+      console.error("Failed to like the post: ", err);
+    }
+  };
 
   useEffect(() => {
     function handleMouseMove() {
@@ -90,7 +104,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
         <iframe title={title} src={markupUrl} className="iframe"></iframe>
         <div
           className="overlay"
-          style={{ display: showOverlay ? "flex" : "none" }}
+          style={{ display: showOverlay ? "flex" : "flex" }}
         >
           <Link to={`/post/${id}`} className="btn view-btn">
             View
@@ -102,9 +116,9 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
             {showFullTitle ? title : shortenedTitle}
           </p>
           <div className="post-card-icons">
-            <div className="number-of">
+            <div className="number-of" onClick={handleLike}>
               <Like className="soc-icons" />
-              <span className="soc-number">0</span>
+              <span className="soc-number">{likeCount}</span>
             </div>
             <div className="number-of">
               <Coment className="soc-icons" />

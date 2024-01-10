@@ -34,6 +34,13 @@ const updatePost = (id, post) => {
   });
 };
 
+//like or unlike post
+const likePost = (id) => {
+  return fetchWithCredentials(`${API_URL}${id}/like`, {
+    method: 'PUT',
+  });
+};
+
 //delete post
 const deletePost = (id) => {
   return fetchWithCredentials(`${API_URL}${id}`, {
@@ -47,6 +54,7 @@ const postService = {
   getPostById,
   updatePost,
   deletePost,
+  likePost,
 };
 
 export default postService;
