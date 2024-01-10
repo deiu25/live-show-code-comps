@@ -11,6 +11,7 @@ const initialState = {
   error: null,
   title: "",
   content: "",
+  likesMap: {},
 };
 
 // Create the async thunk for fetching all posts
@@ -62,15 +63,17 @@ export const deletePost = createAsyncThunk(
 export const likePost = createAsyncThunk(
   "posts/likePost",
   async (id, thunkAPI) => {
-    console.log(`Sending like request for post with id: ${id}`); // Log before sending request
-    try {
-      const response = await postService.likePost(id);
-      console.log('Like request successful:', response); // Log successful response
-      return response;
-    } catch (error) {
-      console.error('Like request failed:', error); // Log error if request fails
-      throw error;
-    }
+    const response = await postService.likePost(id);
+    return response;
+  }
+);
+
+// Create the async thunk to get likes for a post
+export const getLikesForPost = createAsyncThunk(
+  "posts/getLikesForPost",
+  async (id, thunkAPI) => {
+    const response = await postService.getLikesForPost(id);
+    return response;
   }
 );
 
@@ -182,6 +185,31 @@ const postSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       });
+
+    // Tratează stările pentru getLikesForPost
+    builder
+      .addCase(getLikesForPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getLikesForPost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // Assuming that the like count is equivalent to the length of the data array for a snippet
+        action.payload.data.forEach(like => {
+          const snippetId = like.snippet;
+          if (snippetId in state.likesMap) {
+            state.likesMap[snippetId]++;
+          } else {
+            state.likesMap[snippetId] = 1;
+          }
+        });
+        // Log the updated likesMap for debugging purposes
+        console.log('Updated likesMap:', state.likesMap);
+      })
+      .addCase(getLikesForPost.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
+
   },
 });
 

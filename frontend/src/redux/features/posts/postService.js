@@ -41,6 +41,13 @@ const likePost = (id) => {
   });
 };
 
+//get likes for post
+const getLikesForPost = (id) => {
+  return fetchWithCredentials(`${API_URL}${id}/likes`, {
+    method: 'GET',
+  });
+};
+
 //delete post
 const deletePost = (id) => {
   return fetchWithCredentials(`${API_URL}${id}`, {
@@ -55,6 +62,7 @@ const postService = {
   updatePost,
   deletePost,
   likePost,
+  getLikesForPost,
 };
 
 export default postService;

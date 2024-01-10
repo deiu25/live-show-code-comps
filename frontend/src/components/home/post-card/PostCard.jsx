@@ -4,25 +4,33 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./PostCard.css";
 import { confirmAlert } from "react-confirm-alert";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deletePost,
   fetchPosts,
   likePost,
+  getLikesForPost,
 } from "../../../redux/features/posts/postSlice";
 import { ReactComponent as Coment } from "../../../assets/icons/coments.svg";
 import { ReactComponent as Like } from "../../../assets/icons/like-icon.svg";
+import { ReactComponent as Dislike } from "../../../assets/icons/dislike-icon.svg";
 import { ReactComponent as Shortcut } from "../../../assets/icons/shortcut.svg";
 import { ReactComponent as EyeLook } from "../../../assets/icons/eye-look-icon.svg";
 import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-icon.svg";
 import { shortenText } from "../../../auth/pages/profile/Profile";
 
-function PostCard({ id, title, htmlCode, cssCode, jsCode, likes }) {
+function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
   const dispatch = useDispatch();
   const [showOverlay, setShowOverlay] = useState(true);
   const shortenedTitle = shortenText(title, 20);
   const [showFullTitle, setShowFullTitle] = useState(false);
-  const [likeCount, setLikeCount] = useState(likes);
+  const likes = useSelector(state => state.posts.likesMap[id]) || 0;
+
+  useEffect(() => {
+    console.log('Getting likes for post with id:', id);
+    dispatch(getLikesForPost(id));
+    console.log('Getting likes for post with id:', id);
+  }, [dispatch, id]);
 
   const handleLike = async () => {
     console.log(`Attempting to like post with id: ${id}`);
@@ -30,9 +38,9 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, likes }) {
       const response = await dispatch(likePost(id)).unwrap();
       console.log('Post liked successfully:', response);
       // Actualizați starea locală cu noua valoare a like-urilor
-      setLikeCount(response.likes);
+      dispatch(getLikesForPost(id));
     } catch (err) {
-      console.error("Failed to like the post: ", err);
+      console.error('Failed to like post:', err);
     }
   };
 
@@ -117,8 +125,12 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, likes }) {
           </p>
           <div className="post-card-icons">
             <div className="number-of" onClick={handleLike}>
-              <Like className="soc-icons" />
-              <span className="soc-number">{likeCount}</span>
+              {likes > 0 ? (
+                <Dislike className="soc-icons" />
+              ) : (
+                <Like className="soc-icons" />
+              )}
+              <span className="soc-number">{likes}</span>
             </div>
             <div className="number-of">
               <Coment className="soc-icons" />
