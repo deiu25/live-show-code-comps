@@ -101,7 +101,18 @@ export const Login = () => {
           value={password}
           onChange={handleInputChange}
         />
-        <button>Login</button>
+        <button className="login-btn">Login</button>
+        {/* <h4 className="authTitle">Log In with Google</h4> */}
+          <div className="flex-center google-btn-login">
+            <GoogleLogin
+              onSuccess={googleLogin}
+              onError={() => {
+                toast.error("Login Failed");
+              }}
+              type={windowSize < 360 ? "icon" : "standard"}
+              shape={windowSize < 360 ? "circle" : "rect"}
+            />
+          </div>
         <Link to="/forgot" className="auth-links" id="forgot">
           Forgot Password?
         </Link>
