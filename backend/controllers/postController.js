@@ -1,6 +1,7 @@
 import Like from "../models/likeModel.js";
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
+import PostStats from "../models/postStats.js";
 import mongoose from "mongoose";
 
 // Add Post
@@ -139,7 +140,7 @@ export const updatePost = async (req, res, next) => {
 };
 
 // Like or unlike a post
-export const likePost = async (req, res, next) => {
+export const likeOrUnlikePost = async (req, res, next) => {
   try {
     const postId = req.params.id;
     const userId = req.user._id;
@@ -160,27 +161,25 @@ export const likePost = async (req, res, next) => {
       });
     }
 
-    // Verificăm dacă există deja un Like
-    const existingLike = await Like.findOne({ user: userId, snippet: postId });
+    // Verificăm dacă utilizatorul a dat deja like la postare
+    let like = await Like.findOne({ user: userId, snippet: postId });
 
-    if (existingLike) {
-      // Dacă există, îl ștergem - acesta este procesul de "unlike"
-      await Like.findByIdAndRemove(existingLike._id);
+    if (like) {
+      // Dacă există, îl eliminăm
+      await Like.findByIdAndDelete(like._id);
+      await Post.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
     } else {
-      // Dacă nu există, creăm un like nou
-      const newLike = new Like({
-        user: userId,
-        snippet: postId
-      });
-      await newLike.save();
+      // Dacă nu există, creăm un nou like
+      like = new Like({ user: userId, snippet: postId });
+      await like.save();
+      await Post.findByIdAndUpdate(postId, { $inc: { likesCount: 1 } });
     }
 
-    // Întoarcem numărul actualizat de like-uri pentru postare
-    const likeCount = await Like.countDocuments({ snippet: postId });
+    const updatedPost = await Post.findById(postId);
 
     res.status(200).json({
       success: true,
-      likeCount: likeCount,
+      likesCount: updatedPost.likesCount,
     });
   } catch (error) {
     console.error('Error in PUT /api/posts/:id/like:', error);
@@ -205,21 +204,21 @@ export const getLikesForPost = async (req, res, next) => {
       });
     }
 
-    const likes = await Like.find({ snippet: postId }).populate('user', 'lastname');
+    const likes = await Like.find({ snippet: postId }).populate("user", "lastname");
 
     res.status(200).json({
       success: true,
+      likesCount: post.likesCount,
       data: likes,
     });
   } catch (error) {
-    console.error('Error in GET /api/posts/:id/likes:', error);
     res.status(500).json({
       success: false,
       message: "An error occurred while getting likes for the post.",
       error: error.message,
     });
   }
-};
+}
 
 // Delete post
 export const deletePost = async (req, res, next) => {

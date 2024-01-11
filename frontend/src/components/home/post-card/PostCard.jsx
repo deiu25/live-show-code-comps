@@ -24,7 +24,21 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
   const [showOverlay, setShowOverlay] = useState(true);
   const shortenedTitle = shortenText(title, 20);
   const [showFullTitle, setShowFullTitle] = useState(false);
-  const likes = useSelector(state => state.posts.likesMap[id]) || 0;
+  const likes = useSelector(
+    (state) =>
+      (state.posts.likesMap && state.posts.likesMap[id]) || {
+        likesCount: 0,
+        users: [],
+      }
+  );
+  const userWhoLiked = useSelector(
+    (state) =>
+      state.posts.likesMap &&
+      state.posts.likesMap[id] &&
+      state.posts.likesMap[id].users.find(
+        (user) => user._id === state.auth.user._id
+      )
+  );
 
   useEffect(() => {
     dispatch(getLikesForPost(id));
@@ -35,6 +49,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
       await dispatch(likePost(id)).unwrap();
       dispatch(getLikesForPost(id));
     } catch (err) {
+      console.log(err);
     }
   };
 
@@ -119,12 +134,12 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
           </p>
           <div className="post-card-icons">
             <div className="number-of" onClick={handleLike}>
-              {likes > 0 ? (
+              {userWhoLiked ? (
                 <Dislike className="soc-icons" />
               ) : (
                 <Like className="soc-icons" />
               )}
-              <span className="soc-number">{likes}</span>
+              <span className="soc-number">{likes.likesCount}</span>
             </div>
             <div className="number-of">
               <Coment className="soc-icons" />

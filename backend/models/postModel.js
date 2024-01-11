@@ -47,12 +47,20 @@ const snippetSchema = new mongoose.Schema({
       ref: "Like",
     },
   ],
+  likesCount: {
+    type: Number,
+    default: 0,
+  },
   views: [
     {
       type: mongoose.Types.ObjectId,
       ref: "View",
     },
   ],
+  viewsCount: {
+    type: Number,
+    default: 0,
+  },
   shares: [
     {
       type: mongoose.Types.ObjectId,

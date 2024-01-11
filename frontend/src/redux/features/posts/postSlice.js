@@ -170,15 +170,9 @@ const postSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(likePost.fulfilled, (state, action) => {
-        console.log('Like post request fulfilled:', action.payload);
-        state.isLoading = false;
-        state.post = action.payload.data;
-        const index = state.posts.findIndex(
-          (post) => post.id === action.payload.data.id
-        );
-        if (index !== -1) {
-          state.posts[index] = action.payload.data;
-        }
+        const { postId, likeCount } = action.payload;
+        // Actualizăm numărul de like-uri pentru postarea specifică
+        state.likesMap[postId] = likeCount;
       })
       .addCase(likePost.rejected, (state, action) => {
         console.log('Like post request failed:', action.error.message);
@@ -193,19 +187,18 @@ const postSlice = createSlice({
       })
       .addCase(getLikesForPost.fulfilled, (state, action) => {
         state.isLoading = false;
-        // Create a temporary map to store unique counts
-        const tempLikesMap = {};
-        action.payload.data.forEach(like => {
-          const snippetId = like.snippet;
-          tempLikesMap[snippetId] = (tempLikesMap[snippetId] || 0) + 1;
-        });
-        state.likesMap = tempLikesMap;
+        const postId = action.meta.arg;
+        const likesCount = action.payload.likesCount;
+        const usersWhoLiked = action.payload.data.map(like => like.user);
+        state.likesMap[postId] = {
+          likesCount,
+          users: usersWhoLiked,
+        };
       })
       .addCase(getLikesForPost.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
-
   },
 });
 
