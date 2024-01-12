@@ -1,16 +1,8 @@
 // PostCard.jsx
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./PostCard.css";
-import { confirmAlert } from "react-confirm-alert";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  deletePost,
-  fetchPosts,
-  likePost,
-  getLikesForPost,
-} from "../../../redux/features/posts/postSlice";
 import { ReactComponent as Coment } from "../../../assets/icons/coments.svg";
 import { ReactComponent as Like } from "../../../assets/icons/like-icon.svg";
 import { ReactComponent as Dislike } from "../../../assets/icons/dislike-icon.svg";
@@ -18,98 +10,34 @@ import { ReactComponent as Shortcut } from "../../../assets/icons/shortcut.svg";
 import { ReactComponent as EyeLook } from "../../../assets/icons/eye-look-icon.svg";
 import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-icon.svg";
 import { shortenText } from "../../../auth/pages/profile/Profile";
+import { useLikes } from "../../../customHooks/useLikes";
+import { useIframeUrl } from "../../../customHooks/useIframeUrl";
+import useDeletePost from "../../../customHooks/useDeletePost";
 
 function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
-  const dispatch = useDispatch();
   const [showOverlay, setShowOverlay] = useState(true);
   const shortenedTitle = shortenText(title, 20);
   const [showFullTitle, setShowFullTitle] = useState(false);
-  const likes = useSelector(
-    (state) =>
-      (state.posts.likesMap && state.posts.likesMap[id]) || {
-        likesCount: 0,
-        users: [],
-      }
-  );
-  const userWhoLiked = useSelector(
-    (state) =>
-      state.posts.likesMap &&
-      state.posts.likesMap[id] &&
-      state.posts.likesMap[id].users.find(
-        (user) => user._id === state.auth.user._id
-      )
-  );
+  const markupUrl = useIframeUrl(htmlCode, cssCode, jsCode);
+  const { likes, userWhoLiked, handleLike } = useLikes(id);
+  const confirmDelete = useDeletePost();
+
+  const handleMouseMove = useCallback(() => {
+    setShowOverlay(true);
+  }, []);
 
   useEffect(() => {
-    dispatch(getLikesForPost(id));
-  }, [dispatch, id]);
-
-  const handleLike = async () => {
-    try {
-      await dispatch(likePost(id)).unwrap();
-      dispatch(getLikesForPost(id));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    function handleMouseMove() {
-      setShowOverlay(true);
-    }
-
     document.addEventListener("mousemove", handleMouseMove);
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
-
-  const markupUrl = useMemo(() => {
-    const blob = new Blob(
-      [
-        `<!DOCTYPE html>
-      <html>
-      <head>
-        <style>${cssCode}</style>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      </head>
-      <body>
-        ${htmlCode}
-        <script>${jsCode}</script>
-      </body>
-      </html>`,
-      ],
-      { type: "text/html" }
-    );
-    return URL.createObjectURL(blob);
-  }, [htmlCode, cssCode, jsCode]);
+  }, [handleMouseMove]);
 
   useEffect(() => {
     return () => {
       URL.revokeObjectURL(markupUrl);
     };
   }, [markupUrl]);
-
-  const handleDelete = async (id) => {
-    await dispatch(deletePost(id));
-    dispatch(fetchPosts());
-  };
-
-  const confirmDelete = (id) => {
-    confirmAlert({
-      title: "Confirm to delete",
-      message: "Are you sure you want to delete this post?",
-      buttons: [
-        {
-          label: "Delete",
-          onClick: () => handleDelete(id),
-        },
-        {
-          label: "Cancel",
-        },
-      ],
-    });
-  };
 
   return (
     <div className="card">
@@ -120,8 +48,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
       >
         <iframe title={title} src={markupUrl} className="iframe"></iframe>
         <div
-          className="overlay"
-          style={{ display: showOverlay ? "flex" : "flex" }}
+          className={`overlay ${!showOverlay && 'overlay-hidden'}`}
         >
           <Link to={`/post/${id}`} className="btn view-btn">
             View

@@ -46,8 +46,11 @@
   transition: opacity 0.8s ease;
   pointer-events: none;
   gap: 10px;
-  display: none;
   border-radius: 5px;
+}
+
+.overlay-hidden {
+  display: none;
 }
 
 .card:hover .overlay {
