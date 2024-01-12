@@ -21,6 +21,7 @@ import { Profile } from "./auth/pages/profile/Profile";
 import { UserList } from "./auth/pages/userList/UserList";
 import { NewProject } from "./pages/newProject/NewProject";
 import { ThePost } from "./pages/thePost/ThePost";
+import { BlogPosts } from "./components/home/blog/blog-posts/BlogPosts";
 
 
 axios.defaults.withCredentials = true;
@@ -45,6 +46,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<HomeAllPosts />} />
+            <Route path="/blog" element={<BlogPosts />} />
             <Route path="/post/:id" element={<ThePost />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

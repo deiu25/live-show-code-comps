@@ -86,9 +86,11 @@ export const CodeEditorContainer = ({
       </SplitPane>
 
       <div>
-        <CodeEditorToolbar />
+      <CodeEditorToolbar />
         <div className="output-section">
-        <iframe title={title} src={markupUrl} className="iframe"></iframe>
+        <div>
+          <iframe title={title} src={markupUrl}></iframe>
+          </div>
         </div>
       </div>
     </SplitPane>

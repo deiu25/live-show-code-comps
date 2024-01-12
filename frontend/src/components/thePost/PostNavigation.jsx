@@ -9,7 +9,6 @@ import {
   ShowOnLogin,
   ShowOnLogout,
 } from "../../auth/components/protect/hiddenLink";
-import useDeletePost from "../../customHooks/useDeletePost";
 
 export const PostNavigation = ({
   title,
@@ -19,12 +18,10 @@ export const PostNavigation = ({
   setProjectTitle,
   handleTitleSave,
   handleSavePost,
-  error,
-  id
+  error
 }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-  const confirmDelete = useDeletePost();
 
   const goProfile = () => {
       navigate("/profile");
@@ -67,9 +64,6 @@ export const PostNavigation = ({
               <button className="save-proj-button" onClick={handleSavePost}>
                 <Save /> Save
               </button>
-              <button onClick={() => confirmDelete(id)} className="btn btn-danger">
-            Delete
-          </button>
               {error && (
                 <div className="create-proj-error-message">{error}</div>
               )}

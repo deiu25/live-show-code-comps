@@ -47,9 +47,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
         onMouseMove={() => setShowOverlay(true)}
       >
         <iframe title={title} src={markupUrl} className="iframe"></iframe>
-        <div
-          className={`overlay ${!showOverlay && 'overlay-hidden'}`}
-        >
+        <div className={`overlay ${!showOverlay && "overlay-hidden"}`}>
           <Link to={`/post/${id}`} className="btn view-btn">
             View
           </Link>
@@ -59,7 +57,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
           <p className="post-card-title text-truncate">
             {showFullTitle ? title : shortenedTitle}
           </p>
-          <div className="post-card-icons">
+          <div className="post-card-icons"  onClick={(e) => { e.stopPropagation(); }}>
             <div className="number-of" onClick={handleLike}>
               {userWhoLiked ? (
                 <Dislike className="soc-icons" />

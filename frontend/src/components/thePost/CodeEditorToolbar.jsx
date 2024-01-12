@@ -11,24 +11,21 @@ import { ReactComponent as Warnings } from "../../assets/icons/warnings.svg";
 // import { ReactComponent as Dislike } from "../../assets/icons/dislike-icon.svg";
 // import { useLikes } from "../../customHooks/useLikes";
 
-export const CodeEditorToolbar = ({ id }) => {
-  
+export const CodeEditorToolbar = (id) => {
   // const { likes, userWhoLiked, handleLike } = useLikes(id);
-  // const onLikeClick = () => {
-  //   handleLike();
-  // };
-  
   return (
     <div className="output-footer-bar">
       <div className="output-footer-bar-left">
         <Terminal />
         <Assets />
-        {/* {userWhoLiked ? (
-          <Dislike onClick={onLikeClick} />
-        ) : (
-          <Like onClick={onLikeClick} />
-        )}
-        <span>{likes.likesCount}</span> */}
+        {/* <div onClick={handleLike}>
+              {userWhoLiked ? (
+                <Dislike className="soc-icons" />
+              ) : (
+                <Like className="soc-icons" />
+              )}
+              <span className="soc-number">{likes.likesCount}</span>
+            </div> */}
         <Coments />
         <Shortcut />
       </div>

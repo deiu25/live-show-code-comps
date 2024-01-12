@@ -82,6 +82,15 @@ export const HomeSidebar = ({ onTabChange, currentTab }) => {
           </a>
         </li>
         <li
+          key="blog"
+          className={`nav-item ${currentTab === "blog" ? "active" : ""}`}
+        >
+          <a className="nav-link" onClick={() => onTabChange("blog")}>
+            <i className="fas fa-blog"></i>
+            {isSidebarOpen && <span className="nav-text"> Blog</span>}
+          </a>
+        </li>
+        <li
           key="about"
           className={`nav-item ${currentTab === "about" ? "active" : ""}`}
         >
