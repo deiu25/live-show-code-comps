@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 
@@ -8,8 +8,10 @@ import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
 
 import { CodeEditorToolbar } from "./CodeEditorToolbar";
 import EditorComponent from "./EditorComponent";
+import { useIframeUrl } from "../../customHooks/useIframeUrl";
 
 export const CodeEditorContainer = ({
+  title,
   initialHtml,
   initialCss,
   initialJs,
@@ -21,26 +23,17 @@ export const CodeEditorContainer = ({
   const [cssCode, setCssCode] = useState(initialCss);
   const [jsCode, setJsCode] = useState(initialJs);
 
+  const markupUrl = useIframeUrl(htmlCode, cssCode, jsCode);
+
+  useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(markupUrl);
+    };
+  }, [markupUrl]);
+
   // Split pane sizes
   const [horizontalSizes, setHorizontalSizes] = useState(["60%", "40%"]);
   const [verticalSizes, setVerticalSizes] = useState(["33%", "34%", "33%"]);
-
-  const iframeSrc = useMemo(() => {
-    const blob = new Blob([
-      `<!DOCTYPE html>
-      <html>
-      <head>
-        <style>${cssCode}</style>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      </head>
-      <body>
-        ${htmlCode}
-        <script>${jsCode}</script>
-      </body>
-      </html>`
-    ], { type: 'text/html' });
-    return URL.createObjectURL(blob);
-  }, [htmlCode, cssCode, jsCode]);
 
   const handleCodeChange = (language, newCode) => {
     if (language === "html") {
@@ -95,12 +88,7 @@ export const CodeEditorContainer = ({
       <div>
         <CodeEditorToolbar />
         <div className="output-section">
-          <iframe
-            title="preview"
-            src={iframeSrc}
-            overflow="auto"
-            className="output-iframe"
-          />
+        <iframe title={title} src={markupUrl} className="iframe"></iframe>
         </div>
       </div>
     </SplitPane>

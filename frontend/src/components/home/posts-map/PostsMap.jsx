@@ -33,7 +33,7 @@ export const PostsMap = memo(({ posts, title, loadMoreRef }) => {
     <div className="content-section">
       {title && <SectionHeading title={title} />}
       <PostList posts={posts} />
-      <div ref={loadMoreRef} style={{ height: '20px', margin: '10px 0' }}>
+      <div ref={loadMoreRef} className="ref-style">
       </div>
     </div>
   );

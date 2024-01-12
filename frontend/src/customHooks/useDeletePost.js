@@ -2,7 +2,6 @@ import { useDispatch } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert';
 import { deletePost, fetchPosts } from '../redux/features/posts/postSlice';
 
-
 const useDeletePost = () => {
   const dispatch = useDispatch();
 
