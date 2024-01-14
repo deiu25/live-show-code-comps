@@ -82,7 +82,21 @@ const postSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    // Poți adăuga reduceri obișnuite aici dacă este nevoie
+    // Define the likePost action
+    likePost(state, action) {
+      const { postId, userId } = action.payload;
+      const post = state.posts.find((post) => post.id === postId);
+      if (post) {
+        const isLiked = post.likes.find((like) => like.user === userId);
+        if (isLiked) {
+          // Dacă utilizatorul a dat deja like, atunci îl scoatem din lista de like-uri
+          post.likes = post.likes.filter((like) => like.user !== userId);
+        } else {
+          // Altfel, adăugăm utilizatorul în lista de like-uri
+          post.likes.push({ user: userId });
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     // Tratează stările pentru savePost
