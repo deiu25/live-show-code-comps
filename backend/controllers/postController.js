@@ -1,7 +1,6 @@
+import User from "../models/userModel.js";
 import Like from "../models/likeModel.js";
 import Post from "../models/postModel.js";
-import User from "../models/userModel.js";
-import PostStats from "../models/postStats.js";
 import mongoose from "mongoose";
 
 // Add Post

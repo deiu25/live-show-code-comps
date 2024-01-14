@@ -22,6 +22,7 @@ app.use(
 // Routes
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRouter);
+app.use("/api/blogPosts", postRouter);
 app.get("/", (req, res) => {
   res.send("Home Page");
 });

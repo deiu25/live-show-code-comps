@@ -108,6 +108,12 @@ export const HomeSidebar = ({ onTabChange, currentTab }) => {
               {isSidebarOpen && <span className="nav-text"> Add Post</span>}
             </Link>
           </li>
+          <li key="addBlogPost" className="nav-item">
+            <Link className="nav-link" to="/NewBlogPost">
+              <i className="fas fa-plus"></i>
+              {isSidebarOpen && <span className="nav-text"> Add Blog Post</span>}
+            </Link>
+          </li>
         </ul>
       )}
       <div className="copyright">

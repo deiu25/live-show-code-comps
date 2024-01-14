@@ -2,7 +2,8 @@
 import React from "react";
 
 import "./BlogPosts.css";
-import { BlogCard } from "../blog-card/BlogCard";
+import { BlogCard } from "../../components/blog-card/BlogCard";
+
 
 export const BlogPosts = () => {
   const posts = [

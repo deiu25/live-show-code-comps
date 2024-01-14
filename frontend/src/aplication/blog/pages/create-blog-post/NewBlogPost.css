@@ -1,0 +1,56 @@
+.myForm-container {
+    background: white;
+    padding: 2em;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    margin: 2em auto 0;
+  }
+  
+  .myForm-label {
+    display: block;
+    margin-bottom: .5em;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .myForm-input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .myForm-quillEditor {
+    margin-bottom: 1em;
+  }
+
+  .ql-editor{
+    min-height: 40vh;
+    max-height: 40vh;
+    overflow-y: scroll;
+  }
+
+  .ql-editor img {
+    max-width: 15vh;
+    height: 15vh;
+  }
+  
+  .myForm-button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .myForm-button:hover {
+    background-color: #003d82;
+  }

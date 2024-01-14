@@ -1,5 +1,17 @@
-// Blog Post Model
 import mongoose from "mongoose";
+
+const contentElementSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    required: true,
+    enum: ['text', 'code', 'image', 'link'], // Define the possible types of content elements
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  // For images, 'content' will store the URL.
+});
 
 const postSchema = new mongoose.Schema({
   title: {
@@ -26,14 +38,11 @@ const postSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  content: {
-    type: Array, // poate conține fragmente de text, cod sursă, link-uri către imagini etc.
-    required: true,
-  },
+  content: [contentElementSchema], // Use the schema for content elements
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-export default mongoose.model("Post", postSchema);
+export default mongoose.model("BlogPost", postSchema);

@@ -4,7 +4,6 @@ import { Home } from "./pages/home/Home";
 import axios from "axios";
 import { HomeAllPosts } from "./components/home/home-posts/HomeAllPosts";
 import { About } from "./pages/about/About";
-import { Contact } from "./pages/contact/Contact";
 import { Login } from "./auth/pages/auth/Login";
 import { Signup } from "./auth/pages/auth/Singup";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +20,9 @@ import { Profile } from "./auth/pages/profile/Profile";
 import { UserList } from "./auth/pages/userList/UserList";
 import { NewProject } from "./pages/newProject/NewProject";
 import { ThePost } from "./pages/thePost/ThePost";
-import { BlogPosts } from "./components/home/blog/blog-posts/BlogPosts";
+
+import NewBlogPost from "./aplication/blog/pages/create-blog-post/NewBlogPost";
+import { BlogPosts } from "./aplication/blog/pages/blog-posts/BlogPosts";
 
 
 axios.defaults.withCredentials = true;
@@ -49,10 +50,10 @@ function App() {
             <Route path="/blog" element={<BlogPosts />} />
             <Route path="/post/:id" element={<ThePost />} />
             <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
             {isLoggedIn && (
               <>
               <Route path="/NewProject" element={<NewProject />} />
+              <Route path="/NewBlogPost" element={<NewBlogPost />} />
               </>
             )}
             <Route path="/login" element={<Login />} />

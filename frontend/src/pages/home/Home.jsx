@@ -6,8 +6,8 @@ import { HomeCurentSection } from "../../components/home/home-curent-section/Hom
 import { HomeFooter } from "../../components/home/home-footer/HomeFooter";
 import { HomeAllPosts } from "../../components/home/home-posts/HomeAllPosts";
 import { About } from "../about/About";
-import { Contact } from "../contact/Contact";
-import { BlogPosts } from "../../components/home/blog/blog-posts/BlogPosts";
+import { BlogPosts } from "../../aplication/blog/pages/blog-posts/BlogPosts";
+
 
 export const Home = ({ children }) => {
   const [currentTab, setCurrentTab] = useState("home");
@@ -26,8 +26,6 @@ export const Home = ({ children }) => {
         return <BlogPosts />;
       case "about":
         return <About />;
-      case "contact":
-        return <Contact />;
       default:
         return <HomeCurentSection />;
     }
