@@ -21,8 +21,12 @@ const NewBlogPost = () => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // Presupunem că avem o acțiune Redux pentru a seta imaginea, numită `setHeaderImage`
-      dispatch(setHeaderImage(file));
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // Dispatch an action with a serializable data URL of the file
+        dispatch(setHeaderImage(e.target.result));
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -32,6 +36,7 @@ const NewBlogPost = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log('Handling submit', { title, content });
     dispatch(saveBlogPost({ title, content }));
     dispatch(clearForm());
   };

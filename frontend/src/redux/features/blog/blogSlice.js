@@ -16,15 +16,17 @@ const initialState = {
 
 // Create the async thunk for fetching all posts
 export const saveBlogPost = createAsyncThunk(
-    "posts/addNewPostBlogPost",
-    async (post, thunkAPI) => {
-      const response = await blogPostService.createPost(post);
+  "blogPosts/addNewPostBlogPost",
+  async (post, thunkAPI) => {
+    try {
+      const response = await blogPostService.createBlogPost(post);
       return response;
+    } catch (error) {
+      // Use rejectWithValue to pass a custom payload to the rejected action
+      return thunkAPI.rejectWithValue(error.message);
     }
-  );
-
-
-
+  }
+);
 
 // Create the slice using the builder callback notation for extraReducers
 const blogPostSlice = createSlice({
@@ -47,14 +49,18 @@ const blogPostSlice = createSlice({
     },
     extraReducers: (builder) => {
       builder
-        .addCase(saveBlogPost.pending, (state, action) => {
+        .addCase(saveBlogPost.pending, (state) => {
+          console.log('Saving blog post...'); // Log the pending state
           state.isLoading = true;
         })
         .addCase(saveBlogPost.fulfilled, (state, action) => {
+          console.log('Blog post saved successfully:', action.payload); // Log the successful save
+          state.posts.push(action.payload); // Assuming the payload contains the new post
           state.isLoading = false;
-          state.data = action.payload;
+          state.error = null;
         })
         .addCase(saveBlogPost.rejected, (state, action) => {
+          console.error('Failed to save blog post:', action.error.message); // Log the error
           state.isLoading = false;
           state.error = action.error.message;
         });

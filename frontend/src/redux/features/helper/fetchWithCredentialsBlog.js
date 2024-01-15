@@ -4,6 +4,9 @@ export const fetchWithCredentialsBlog = async (url, options) => {
   if (!(options.body instanceof FormData)) {
     headers["Content-Type"] = "application/json";
   }
+  
+  // Log the body being sent to the server
+  console.log('Sending request to server with body:', options.body);
 
   const response = await fetch(url, {
     ...options,

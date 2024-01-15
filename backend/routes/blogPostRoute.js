@@ -1,13 +1,13 @@
 import express from "express";
-import { protect } from "../middleware/authMiddleware";
-import { createBlogPost } from "../controllers/blogController";
+import multer from 'multer';
+import { adminOnly, protect } from "../middleware/authMiddleware.js";
+import { createBlogPost } from "../controllers/blogController.js";
+
+const upload = multer();
 
 const blogPostRouter = express.Router();
 
-// // Get all blog posts
-// blogPostRouter.get("/", getBlogPosts);
-
 // Create a new blog post
-blogPostRouter.post("/", protect, createBlogPost);
+blogPostRouter.post("/", upload.array('images'), protect,adminOnly, createBlogPost);
 
 export default blogPostRouter;

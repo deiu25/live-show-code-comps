@@ -14,7 +14,7 @@ const initialState = {
   likesMap: {},
 };
 
-// Create the async thunk for fetching all posts
+// Create the async thunk for saving a post
 export const savePost = createAsyncThunk(
   "posts/addNewPost",
   async (post, thunkAPI) => {

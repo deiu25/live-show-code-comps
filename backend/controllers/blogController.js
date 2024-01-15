@@ -3,57 +3,68 @@ import cloudinary from 'cloudinary';
 import streamifier from 'streamifier';
 import blogPostModel from "../models/blogPostModel.js";
 
+// Functie separata pentru incarcarea unei imagini in Cloudinary
+async function uploadImageToCloudinary(imageBuffer) {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { resource_type: "auto", folder: "blog" },
+      (error, result) => {
+        if (error) {
+          console.error("Error uploading to Cloudinary: ", error);
+          reject(error);
+        } else {
+          resolve({
+            public_id: result.public_id,
+            url: result.secure_url,
+          });
+        }
+      }
+    );
+    streamifier.createReadStream(imageBuffer).pipe(uploadStream);
+  });
+}
+
 // Add BlogPost
 export const createBlogPost = async (req, res) => {
   const user = await User.findById(req.user._id);
-
+  console.log("Received files:", req.files);
+  console.log("Received body:", req.body);
   try {
-    // Încărcați imaginile în Cloudinary și obțineți link-urile
-    const imageElements = req.body.content.filter(element => element.type === 'image');
-    const imagesLinks = await Promise.all(
-      imageElements.map(async (element) => {
-        return new Promise((resolve, reject) => {
-          const uploadStream = cloudinary.uploader.upload_stream(
-            { resource_type: "auto", folder: "blog" },
-            (error, result) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve({
-                  public_id: result.public_id,
-                  url: result.secure_url,
-                });
-              }
-            }
-          );
+    // Incarcam imaginile in Cloudinary
+    const imagesUploadPromises = req.files.map(file => uploadImageToCloudinary(file.buffer));
+    const imagesLinks = await Promise.all(imagesUploadPromises);
 
-          // Presupunem că `element.content` este un buffer al imaginii
-          streamifier.createReadStream(element.content).pipe(uploadStream);
-        });
-      })
-    );
 
-    // Actualizați elementele de conținut cu URL-urile imaginilor încărcate
-    req.body.content.forEach(element => {
-      if (element.type === 'image') {
-        const uploadedImage = imagesLinks.find(link => link.public_id === element.content);
-        if (uploadedImage) {
-          element.content = uploadedImage.url;
-        }
-      }
+    // Construim un array de content elements
+    const contentElements = req.body.content.map((element, index) => {
+      return {
+        type: element.type,
+        content: element.content,
+        image: imagesLinks[index],
+      };
     });
 
-    req.body.user = user._id;
-
-    const post = await blogPostModel.create(req.body);
-
+    // Construim un obiect de tip post
+    const post = {
+      title: req.body.title,
+      content: contentElements,
+      user: user._id,
+    };
+    console.log("Creating blog post with data:", post);
+    // Salvam postul in baza de date
+    const createdPost = await blogPostModel.create(post);
+ console.log("Created post:", createdPost);
     res.status(201).json({
       success: true,
-      post,
+      createdPost,
     });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, error: "Failed to upload images or create the post." });
+  }
+  catch (error) {
+    console.log(error);
+    console.error("Error in createBlogPost: ", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to create blog post.",
+    });
   }
 };

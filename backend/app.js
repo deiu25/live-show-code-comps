@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import userRoute from './routes/userRoute.js';
 import postRouter from './routes/postRoute.js';
+import blogPostRouter from './routes/blogPostRoute.js';
 import errorHandler from './middleware/errorMiddleware.js';
 
 const app = express();
@@ -22,7 +23,7 @@ app.use(
 // Routes
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRouter);
-app.use("/api/blogPosts", postRouter);
+app.use("/api/blogPosts", blogPostRouter);
 app.get("/", (req, res) => {
   res.send("Home Page");
 });

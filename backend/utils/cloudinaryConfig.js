@@ -1,3 +1,4 @@
+// cloudinaryConfig.js
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
@@ -10,7 +11,16 @@ cloudinary.config({
   delete_derived_resources: true
 });
 
-// Cloudinary Storage
+// File Filter
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+// Cloudinary Storage for accounts
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -25,17 +35,29 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-const upload = multer({ 
+export const upload = multer({ 
   storage: storage,
   fileFilter: fileFilter,
 });
 
 export default upload;
+
+// Cloudinary Storage for blog posts
+const blogPostStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'blog',
+    public_id: (req, file) => file.originalname,
+    url: async (req, file) => {
+      return new Promise((resolve, reject) => {
+        const uniqueFilename = new Date().toISOString();
+        resolve(uniqueFilename);
+      });
+    },
+  },
+});
+
+export const postUpload = multer({ 
+  storage: blogPostStorage,
+  fileFilter: fileFilter,
+});
