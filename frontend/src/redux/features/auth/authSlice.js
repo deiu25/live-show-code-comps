@@ -381,6 +381,10 @@ const authSlice = createSlice({
         state.user = action.payload;
         toast.success("Login Successful");
 
+        // Store user ID in local storage.
+        localStorage.setItem("userId", state.user._id);
+        // Store token in local storage.
+        localStorage.setItem("token", state.user.token);
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -403,6 +407,11 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.user = null;
         toast.success(action.payload);
+        
+        // Remove token from local storage.
+        localStorage.removeItem("token");
+        // Remove user ID from local storage.
+        localStorage.removeItem("userId");
       })
       .addCase(logout.rejected, (state, action) => {
         state.isLoading = false;
@@ -437,6 +446,10 @@ const authSlice = createSlice({
         state.isSuccess = true;
         state.isLoggedIn = true;
         state.user = action.payload;
+        state.isVerified = action.payload.isVerified;
+
+        // Store user ID in local storage.
+        localStorage.setItem("userId", state.user._id);
       })
       .addCase(getUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -455,6 +468,8 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.user = action.payload;
         toast.success("User Updated");
+                // Store user ID in local storage.
+                localStorage.setItem("userId", state.user._id);
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.isLoading = false;

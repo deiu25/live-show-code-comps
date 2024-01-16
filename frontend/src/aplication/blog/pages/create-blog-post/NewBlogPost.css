@@ -54,3 +54,36 @@
   .myForm-button:hover {
     background-color: #003d82;
   }
+
+  .imgPrevUpdate{ 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+  }
+
+  .imgPrevUpdate-imgContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+  }
+
+  .imgPrevUpdate-img {
+    max-width: 15vh;
+    height: 15vh;
+    border-radius: 5px;
+    margin-right: 1em;
+  }
+
+  .imgPrevUpdate-deleteBtn {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    box-sizing: border-box;
+  }

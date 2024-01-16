@@ -8,6 +8,6 @@ const upload = multer();
 const blogPostRouter = express.Router();
 
 // Create a new blog post
-blogPostRouter.post("/", upload.array('images'), protect,adminOnly, createBlogPost);
+blogPostRouter.post("/", upload.array('images'), protect, createBlogPost);
 
 export default blogPostRouter;
