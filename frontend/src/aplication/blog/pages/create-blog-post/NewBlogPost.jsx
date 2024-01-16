@@ -21,6 +21,7 @@ const NewBlogPost = () => {
   });
   const [file, setFile] = useState(null);
   const [previewSource, setPreviewSource] = useState([]);
+  const [editorContent, setEditorContent] = useState("");
   const [errors, setErrors] = useState({});
 
 
@@ -49,6 +50,10 @@ const NewBlogPost = () => {
   const handleDeletePreview = (index) => {
     setPreviewSource((prev) => prev.filter((src, i) => i !== index));
     setFile((prev) => prev.filter((file, i) => i !== index));
+  };
+
+  const onEditorChange = (value) => {
+    setEditorContent(value);
   };
 
   const onResReceived = (data) => {
@@ -96,6 +101,11 @@ const NewBlogPost = () => {
       return;
     }
 
+    if (!editorContent) {
+      setErrors({ form: "Content is required." });
+      return;
+    }
+
     console.log("Inputs:", inputs);
 
     if (Object.keys(formErrors).length > 0) {
@@ -104,9 +114,10 @@ const NewBlogPost = () => {
     }
 
     const formData = new FormData();
-    file.forEach((file, index) => {
+    file.forEach((file) => {
       formData.append("images", file);
     });
+    formData.append("content", editorContent);
     for (let key in inputs) {
       formData.append(key, inputs[key]);
     }
@@ -184,9 +195,9 @@ const NewBlogPost = () => {
           onChange={handleChange}
         />
       </div>
-      {/* <div className="myForm-quillEditor myForm-quillEditor-large">
-        <QuillEditor value={content} onChange={handleEditorChange} />
-      </div> */}
+      <div className="myForm-quillEditor myForm-quillEditor-large">
+      <QuillEditor value={editorContent} onChange={onEditorChange} />
+      </div>
       <button type="submit" className="myForm-button">
         Submit Post
       </button>
