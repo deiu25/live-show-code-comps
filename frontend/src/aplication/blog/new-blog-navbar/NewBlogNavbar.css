@@ -21,6 +21,12 @@
   align-items: center;
 }
 
+.editor-nav-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .editor-nav-buttons {
   display: flex;
   justify-content: center;
@@ -63,4 +69,8 @@
 .editor-nav-button-publish:hover,
 .editor-nav-button-preview:hover {
   opacity: 0.8;
+}
+
+.editor-nav-user {
+  margin-left: 30px;
 }

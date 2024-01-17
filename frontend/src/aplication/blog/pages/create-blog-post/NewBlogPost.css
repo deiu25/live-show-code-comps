@@ -23,22 +23,19 @@
     border-radius: 5px;
     box-sizing: border-box;
   }
-  
-  .myForm-quillEditor {
+
+  .myForm-input-textArea {
+    width: calc(100% - 22px);
+    padding: 10px;
     margin-bottom: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    resize: none;
+    outline: none;
+    overflow: hidden;
   }
 
-  .ql-editor{
-    min-height: 40vh;
-    max-height: 40vh;
-    overflow-y: scroll;
-  }
-
-  .ql-editor img {
-    max-width: 15vh;
-    height: 15vh;
-  }
-  
   .myForm-button {
     background-color: #0056b3;
     color: white;

@@ -1,19 +1,18 @@
 import "./NewBlogPost.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import QuillEditor from "../../helpers/QuillEditor";
-
 import { useNavigate } from "react-router-dom";
 import { createBlogPost } from "../../api-helpers/helpers";
 import { NewBlogNavbar } from "../../new-blog-navbar/NewBlogNavbar";
-
+import EditorJs from "@editorjs/editorjs";
+import { tools } from "../../components/tools-component/ToolsComponent";
 
 const NewBlogPost = () => {
   const navigate = useNavigate();
   const { isLoggedIn, isVerified } = useSelector((state) => state.auth);
   const getCurrentDate = () => {
     const current = new Date();
-    return current.toISOString().slice(0, 10); 
+    return current.toISOString().slice(0, 10);
   };
   const [inputs, setInputs] = useState({
     title: "",
@@ -25,6 +24,26 @@ const NewBlogPost = () => {
   const [editorContent, setEditorContent] = useState("");
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    let editor = new EditorJs({
+      holderId: "textEditor",
+      data: '',	
+      tools: tools,
+      placeholder: "Let`s write an awesome story!",
+      
+      },)
+  }, []);
+
+  const handleTextAreaKeyDown = (e) => {
+    if (e.keyCode === 10) {
+      e.preventDefault();
+    }
+  };
+  const handleTextAreaChange = (e) => {
+    let input = e.target;
+    input.style.height = "auto";
+    input.style.height = input.scrollHeight + "px";
+  };
 
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -68,9 +87,11 @@ const NewBlogPost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!isLoggedIn || !isVerified) {
-      setErrors({ form: "You must be logged in and have a verified email to post." });
+      setErrors({
+        form: "You must be logged in and have a verified email to post.",
+      });
       return;
     }
 
@@ -93,11 +114,7 @@ const NewBlogPost = () => {
       formErrors.file = "File is required.";
     }
 
-    if (
-      !inputs.title ||
-      !inputs.description ||
-      !inputs.date
-    ) {
+    if (!inputs.title || !inputs.description || !inputs.date) {
       setErrors({ form: "Please fill in all required fields." });
       return;
     }
@@ -135,76 +152,74 @@ const NewBlogPost = () => {
       setErrors({ form: err.message });
     }
   };
-  
+
   return (
     <>
-    <NewBlogNavbar />
-    <form onSubmit={handleSubmit} className="myForm-container">
-      <h1 className="myForm-title">Create New Blog Post</h1>
-      {errors.form && <span className="myForm-error">{errors.form}</span>}
-      <div className="myForm-field">
-        <label htmlFor="title" className="myForm-label">
-          Title:
-        </label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          className="myForm-input"
-          value={inputs.title}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="myForm-field">
-        <label htmlFor="headerImage" className="myForm-label">
-          Header Image:
-        </label>
-        <input
-          type="file"
-          id="headerImage"
-          name="headerImage"
-          className="myForm-input"
-          onChange={handleFileChange}
-          multiple
-        />
-      </div>
-      <div className="imgPrevUpdate">
-        {previewSource.map((src, index) => (
-          <div className="imgPrevUpdate-imgContainer" key={index}>
-            <img
-              src={src}
-              alt="Preview"
-              className="imgPrevUpdate-img"
-            />
-            <button
-              type="button"
-              className="imgPrevUpdate-deleteBtn"
-              onClick={() => handleDeletePreview(index)}
-            >
-              X
-            </button>
-          </div>
-        ))}
-      </div>
-      <div className="myForm-field">
-        <label htmlFor="description" className="myForm-label">
-          Description:
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          className="myForm-input"
-          value={inputs.description}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="myForm-quillEditor myForm-quillEditor-large">
-      <QuillEditor value={editorContent} onChange={onEditorChange} />
-      </div>
-      <button type="submit" className="myForm-button">
-        Submit Post
-      </button>
-    </form>
+      <NewBlogNavbar />
+      <form onSubmit={handleSubmit} className="myForm-container">
+        <h1 className="myForm-title">Create New Blog Post</h1>
+        {errors.form && <span className="myForm-error">{errors.form}</span>}
+        <div className="myForm-field">
+          <label htmlFor="title" className="myForm-label">
+            Title:
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            className="myForm-input"
+            value={inputs.title}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="myForm-field">
+          <label htmlFor="headerImage" className="myForm-label">
+            Header Image:
+          </label>
+          <input
+            type="file"
+            id="headerImage"
+            name="headerImage"
+            className="myForm-input"
+            onChange={handleFileChange}
+            multiple
+          />
+        </div>
+        <div className="imgPrevUpdate">
+          {previewSource.map((src, index) => (
+            <div className="imgPrevUpdate-imgContainer" key={index}>
+              <img src={src} alt="Preview" className="imgPrevUpdate-img" />
+              <button
+                type="button"
+                className="imgPrevUpdate-deleteBtn"
+                onClick={() => handleDeletePreview(index)}
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="myForm-field">
+          <label htmlFor="description" className="myForm-label">
+            Description:
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            className=" myForm-input-textArea"
+            value={inputs.description}
+            onChange={handleChange}
+            onKeyDown={handleTextAreaKeyDown}
+            onKeyUp={handleTextAreaChange}
+          />
+        </div>
+        <div className="myForm-quillEditor myForm-quillEditor-large">
+          <div id="textEditor" className="myForm-quillEditor-container" />
+        </div>
+        <button type="submit" className="myForm-button">
+          Submit Post
+        </button>
+      </form>
     </>
   );
 };

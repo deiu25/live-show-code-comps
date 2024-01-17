@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import livecodeshowlogo1 from "../../assets/logo/livecodeshowlogo1.png";
 import { ReactComponent as Edit } from "../../assets/icons/edit.svg";
 import { ReactComponent as SaveTitle } from "../../assets/icons/check-circle.svg";
 import { ReactComponent as Save } from "../../assets/icons/save-project.svg";
@@ -35,9 +35,9 @@ export const PostNavigation = ({
         <div className="new-proj-nav">
           <div className="new-proj-nav-left">
             <div className="new-proj-nav-left-logo">
-              <Link to="/" className="logo">
-                <p>LiveShow Code</p>
-              </Link>
+            <Link to='/' className=''>
+            <img src={livecodeshowlogo1} alt='logo' className='editor-nav-logo' />
+           </Link>
             </div>
             <div className="new-proj-nav-title">
               {!isEditingTitle ? (
