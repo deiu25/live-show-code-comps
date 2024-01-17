@@ -5,6 +5,7 @@ import QuillEditor from "../../helpers/QuillEditor";
 
 import { useNavigate } from "react-router-dom";
 import { createBlogPost } from "../../api-helpers/helpers";
+import { NewBlogNavbar } from "../../new-blog-navbar/NewBlogNavbar";
 
 
 const NewBlogPost = () => {
@@ -136,6 +137,8 @@ const NewBlogPost = () => {
   };
   
   return (
+    <>
+    <NewBlogNavbar />
     <form onSubmit={handleSubmit} className="myForm-container">
       <h1 className="myForm-title">Create New Blog Post</h1>
       {errors.form && <span className="myForm-error">{errors.form}</span>}
@@ -202,6 +205,7 @@ const NewBlogPost = () => {
         Submit Post
       </button>
     </form>
+    </>
   );
 };
 

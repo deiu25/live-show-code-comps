@@ -1,0 +1,66 @@
+.editor-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 60px;
+  background-color: rgba(128, 128, 128, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.editor-nav-logo {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editor-nav-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editor-nav-button-draft {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.editor-nav-button-publish {
+  margin-left: 10px;
+  background-color: #28a745;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.editor-nav-button-preview {
+  margin-left: 10px;
+  background-color: #ffc107;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.editor-nav-button-draft:hover,
+.editor-nav-button-publish:hover,
+.editor-nav-button-preview:hover {
+  opacity: 0.8;
+}
