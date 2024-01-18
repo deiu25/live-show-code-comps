@@ -6,6 +6,7 @@ import { createBlogPost } from "../../api-helpers/helpers";
 import { NewBlogNavbar } from "../../new-blog-navbar/NewBlogNavbar";
 import EditorJs from "@editorjs/editorjs";
 import { tools } from "../../components/tools-component/ToolsComponent";
+import { Tag } from "../../components/tag/Tag";
 
 const NewBlogPost = () => {
   const navigate = useNavigate();
@@ -18,20 +19,23 @@ const NewBlogPost = () => {
     title: "",
     description: "",
     date: getCurrentDate(),
+    tags: "",
   });
   const [file, setFile] = useState(null);
   const [previewSource, setPreviewSource] = useState([]);
-  const [editorContent, setEditorContent] = useState("");
   const [errors, setErrors] = useState({});
+  const [editor, setEditor] = useState({ isReady: false });
+  const [newTag, setNewTag] = useState("");
 
   useEffect(() => {
-    let editor = new EditorJs({
-      holderId: "textEditor",
-      data: '',	
-      tools: tools,
-      placeholder: "Let`s write an awesome story!",
-      
-      },)
+    setEditor(
+      new EditorJs({
+        holderId: "editor",
+        data: [],
+        tools: tools,
+        placeholder: "Let`s write an awesome story!",
+      })
+    );
   }, []);
 
   const handleTextAreaKeyDown = (e) => {
@@ -72,8 +76,31 @@ const NewBlogPost = () => {
     setFile((prev) => prev.filter((file, i) => i !== index));
   };
 
-  const onEditorChange = (value) => {
-    setEditorContent(value);
+  const handleNewTagChange = (e) => {
+    setNewTag(e.target.value);
+  };
+
+  const handleAddTag = () => {
+    addTag(newTag);
+    setNewTag("");
+  };
+
+  const handleDeleteTag = (tagToDelete) => {
+    setInputs((prevState) => ({
+      ...prevState,
+      tags: prevState.tags
+        .split(" ")
+        .filter((tag) => tag !== tagToDelete)
+        .join(" "),
+    }));
+  };
+
+  const addTag = (newTag) => {
+    if (!newTag.trim() || inputs.tags.split(" ").includes(newTag)) return;
+    setInputs((prevState) => ({
+      ...prevState,
+      tags: `${prevState.tags} ${newTag}`.trim(),
+    }));
   };
 
   const onResReceived = (data) => {
@@ -114,13 +141,8 @@ const NewBlogPost = () => {
       formErrors.file = "File is required.";
     }
 
-    if (!inputs.title || !inputs.description || !inputs.date) {
+    if (!inputs.title || !inputs.description || !inputs.date || !inputs.tags) {
       setErrors({ form: "Please fill in all required fields." });
-      return;
-    }
-
-    if (!editorContent) {
-      setErrors({ form: "Content is required." });
       return;
     }
 
@@ -135,10 +157,11 @@ const NewBlogPost = () => {
     file.forEach((file) => {
       formData.append("images", file);
     });
-    formData.append("content", editorContent);
-    for (let key in inputs) {
-      formData.append(key, inputs[key]);
-    }
+    formData.append("title", inputs.title);
+    formData.append("description", inputs.description);
+    formData.append("date", inputs.date);
+    formData.append("content", JSON.stringify(await editor.save()));
+    formData.append("tags", inputs.tags);
 
     try {
       console.log(file);
@@ -214,7 +237,34 @@ const NewBlogPost = () => {
           />
         </div>
         <div className="myForm-quillEditor myForm-quillEditor-large">
-          <div id="textEditor" className="myForm-quillEditor-container" />
+          <div id="editor"></div>
+        </div>
+        <div className="myForm-field tag-label-btn">
+          <label htmlFor="tags" className="myForm-label">
+            Tags:
+          </label>
+          <input
+            type="text"
+            id="tags"
+            name="tags"
+            className="myForm-input"
+            value={newTag}
+            onChange={handleNewTagChange}
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                handleAddTag();
+              }
+            }}
+          />
+          <button type="button" className="add-tag-button" onClick={handleAddTag}>
+            Add
+          </button>
+        </div>
+        <div className="myForm-tags">
+          {inputs.tags.split(" ").map((tag, index) => (
+            <Tag key={index} tag={tag} onDelete={handleDeleteTag} />
+          ))}
         </div>
         <button type="submit" className="myForm-button">
           Submit Post

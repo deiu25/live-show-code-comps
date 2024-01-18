@@ -1,0 +1,50 @@
+:root {
+    --tag-bg-color: #e0e0e0;
+    --tag-text-color: #333;
+    --tag-hover-bg-color: #bdbdbd;
+    --tag-delete-bg-color: #ff5252;
+    --tag-delete-hover-bg-color: #ff1744;
+  }
+  
+  .tag-div {
+    display: inline-flex;
+    align-items: center;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    background-color: var(--tag-bg-color);
+    color: var(--tag-text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .tag-div:hover {
+    background-color: var(--tag-hover-bg-color);
+  }
+  
+  .tag {
+    margin-right: 0.5rem;
+  }
+  
+  .tag-delete {
+    padding: 0 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--tag-delete-bg-color);
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .tag-delete:hover {
+    background-color: var(--tag-delete-hover-bg-color);
+  }
+  
+  .tag-delete:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px var(--tag-delete-bg-color);
+  }
+  
