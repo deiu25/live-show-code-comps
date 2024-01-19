@@ -5,10 +5,9 @@ import blogPostModel from "../models/blogPostModel.js";
 
 // Add BlogPost
 export const createBlogPost = async (req, res) => {
-  const user = await User.findById(req.user._id);
-
   try {
-    
+    const user = await User.findById(req.user._id);
+
     // Încărcați imaginile în Cloudinary și obțineți link-urile
     const imagesLinks = await Promise.all(
       req.files.map(async (file) => {
@@ -32,21 +31,19 @@ export const createBlogPost = async (req, res) => {
       })
     );
 
+    // Asigurați-vă că acest cod este executat înainte de a crea postarea
     req.body.headerImage = imagesLinks;
+    req.body.user = user._id;
+
+    if (req.body.content) {
+      req.body.content = JSON.parse(req.body.content);
+    }
+
+    const post = await blogPostModel.create(req.body);
+    res.status(201).json({ success: true, post });
+
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, error: "Failed to upload images." });
+    // Aceasta este singura clauză de catch, care va gestiona toate erorile
+    return res.status(500).json({ success: false, error: error.message });
   }
-
-  req.body.user = user._id;
-
-  const post = await blogPostModel.create(req.body);
-
-  res.status(201).json({
-    success: true,
-    post,
-  });
 };
-
-

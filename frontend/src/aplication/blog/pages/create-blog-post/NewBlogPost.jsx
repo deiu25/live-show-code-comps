@@ -153,6 +153,8 @@ const NewBlogPost = () => {
       return;
     }
 
+    const editorData = await editor.save();
+    console.log("Editor data:", editorData);
     const formData = new FormData();
     file.forEach((file) => {
       formData.append("images", file);
@@ -160,12 +162,13 @@ const NewBlogPost = () => {
     formData.append("title", inputs.title);
     formData.append("description", inputs.description);
     formData.append("date", inputs.date);
-    formData.append("content", JSON.stringify(await editor.save()));
     formData.append("tags", inputs.tags);
-
+    formData.append("content", JSON.stringify(editorData));
+    console.log("Form data:", formData);
     try {
       console.log(file);
       const response = await createBlogPost(formData);
+      console.log(response);
       if (!response) {
         throw new Error("An error occurred while submitting the form.");
       }
