@@ -143,7 +143,6 @@ const NewBlogPost = () => {
   };
 
   const onResReceived = (data) => {
-    console.log(data);
     if (data.error) {
       setErrors({ form: data.error });
     } else {
@@ -185,44 +184,37 @@ const NewBlogPost = () => {
       return;
     }
 
-    console.log("Inputs:", inputs);
-
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
     }
 
-    
     const formData = new FormData();
     file.forEach((file) => {
       formData.append("images", file);
     });
     contentBlocks.forEach((block, index) => {
       if (block.type === "image" && block.file) {
-          formData.append("contentBlocksImages", block.file);
-          formData.append(`contentBlocks[${index}][type]`, block.type);
+        formData.append("contentBlocksImages", block.file);
+        formData.append(`contentBlocks[${index}][type]`, block.type);
       } else if (block.type === "text") {
-          formData.append(`contentBlocks[${index}][text]`, block.text);
-          formData.append(`contentBlocks[${index}][type]`, "text");
+        formData.append(`contentBlocks[${index}][text]`, block.text);
+        formData.append(`contentBlocks[${index}][type]`, "text");
       }
-  });
-    console.log("contentBlocks:", contentBlocks); 
-    
+    });
+
     formData.append("title", inputs.title);
     formData.append("description", inputs.description);
     formData.append("date", inputs.date);
     formData.append("tags", inputs.tags);
 
     try {
-      console.log(file);
       const response = await createBlogPost(formData);
-      console.log(response);
       if (!response) {
         throw new Error("An error occurred while submitting the form.");
       }
       onResReceived(response);
     } catch (err) {
-      console.log(err);
       setErrors({ form: err.message });
     }
   };

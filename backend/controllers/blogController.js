@@ -62,3 +62,25 @@ async function uploadImages(files) {
     })
   );
 }
+
+// Get BlogPosts
+export const getBlogPosts = async (req, res) => {
+  try {
+    const posts = await blogPostModel.find().populate("user", "name");
+    res.status(200).json({ success: true, posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// Get BlogPost
+export const getBlogPost = async (req, res) => {
+  try {
+    const post = await blogPostModel.findById(req.params.id).populate("user", "name");
+    res.status(200).json({ success: true, post });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};

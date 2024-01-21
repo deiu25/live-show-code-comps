@@ -1,43 +1,22 @@
 // BlogPosts.js
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import "./BlogPosts.css";
 import { BlogCard } from "../../components/blog-card/BlogCard";
-
+import { getBlogPosts } from "../../api-helpers/helpers";
 
 export const BlogPosts = () => {
-  const posts = [
-    {
-      id: 1,
-      title: "Card Grid Layout",
-      text: "Demo of pixel perfect pure CSS simple responsive card grid layout",
-      imageUrl: "https://picsum.photos/500/300/?image=2",
-    },
-    {
-      id: 2,
-      title: "Another Card",
-      text: "This is another card with different content",
-      imageUrl: "https://picsum.photos/500/300/?image=10",
-    },
-    {
-      id: 3,
-      title: "Another Card",
-      text: "This is another card with different content",
-      imageUrl: "https://picsum.photos/500/300/?image=10",
-    },
-    {
-      id: 4,
-      title: "Another Card",
-      text: "This is another card with different content",
-      imageUrl: "https://picsum.photos/500/300/?image=10",
-    },
-    {
-      id: 5,
-      title: "Another Card",
-      text: "This is another card with different content",
-      imageUrl: "https://picsum.photos/500/300/?image=10",
-    },
-  ];
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const fetchedPosts = await getBlogPosts();
+      if (fetchedPosts) {
+        setPosts(fetchedPosts);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <div className="blog-main">
@@ -45,10 +24,12 @@ export const BlogPosts = () => {
       <ul className="blog-cards">
         {posts.map((post) => (
           <BlogCard
-            key={post.id}
+            key={post._id}
             title={post.title}
-            text={post.text}
-            imageUrl={post.imageUrl}
+            text={post.description}
+            headerImage={
+              post.headerImage.length > 0 ? post.headerImage[0].url : ""
+            }
           />
         ))}
       </ul>
