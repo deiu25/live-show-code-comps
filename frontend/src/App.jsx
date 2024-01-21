@@ -23,6 +23,7 @@ import { ThePost } from "./pages/thePost/ThePost";
 
 import NewBlogPost from "./aplication/blog/pages/create-blog-post/NewBlogPost";
 import { BlogPosts } from "./aplication/blog/pages/blog-posts/BlogPosts";
+import { BlogPost } from "./aplication/blog/pages/blog-post/BlogPost";
 
 
 axios.defaults.withCredentials = true;
@@ -48,6 +49,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<HomeAllPosts />} />
             <Route path="/blog" element={<BlogPosts />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
             <Route path="/post/:id" element={<ThePost />} />
             <Route path="/about" element={<About />} />
             {isLoggedIn && (

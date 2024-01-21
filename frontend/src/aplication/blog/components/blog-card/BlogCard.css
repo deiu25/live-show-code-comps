@@ -24,6 +24,10 @@
   background-color: rgba(255, 255, 255, 0.12);
 }
 
+.blog-card_link:hover {
+  text-decoration: none;
+}
+
 .blog-cards_item {
   display: flex;
   padding: 1rem;
