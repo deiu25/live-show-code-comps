@@ -6,20 +6,10 @@ import Quote from "@editorjs/quote";
 import Marker from "@editorjs/marker";
 import InlineCode from "@editorjs/inline-code";
 
-const uploadImageByUrl = (e) => {
-  let link = new Promise((resolve, reject) => {
-    try {
-      resolve(e);
-    } catch (err) {
-      reject(err);
-    }
-  });
-
-  return link.then((url) => {
-    return {
-      success: 1,
-      file: { url },
-    };
+const uploadImageByUrl = (url) => {
+  return Promise.resolve({
+    success: 1,
+    file: { url },
   });
 };
 

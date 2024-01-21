@@ -1,11 +1,9 @@
 import "./NewBlogPost.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createBlogPost } from "../../api-helpers/helpers";
 import { NewBlogNavbar } from "../../new-blog-navbar/NewBlogNavbar";
-import EditorJs from "@editorjs/editorjs";
-import { tools } from "../../components/tools-component/ToolsComponent";
 import { Tag } from "../../components/tag/Tag";
 
 const NewBlogPost = () => {
@@ -24,19 +22,8 @@ const NewBlogPost = () => {
   const [file, setFile] = useState(null);
   const [previewSource, setPreviewSource] = useState([]);
   const [errors, setErrors] = useState({});
-  const [editor, setEditor] = useState({ isReady: false });
+  const [contentBlocks, setContentBlocks] = useState([]);
   const [newTag, setNewTag] = useState("");
-
-  useEffect(() => {
-    setEditor(
-      new EditorJs({
-        holderId: "editor",
-        data: [],
-        tools: tools,
-        placeholder: "Let`s write an awesome story!",
-      })
-    );
-  }, []);
 
   const handleTextAreaKeyDown = (e) => {
     if (e.keyCode === 10) {
@@ -74,6 +61,58 @@ const NewBlogPost = () => {
   const handleDeletePreview = (index) => {
     setPreviewSource((prev) => prev.filter((src, i) => i !== index));
     setFile((prev) => prev.filter((file, i) => i !== index));
+  };
+
+  const addContentBlock = (type) => {
+    const newBlock =
+      type === "image" ? { type, file: null } : { type, text: "" };
+    setContentBlocks([...contentBlocks, newBlock]);
+  };
+
+  const handleContentBlockChange = (e, index) => {
+    const { name, value } = e.target;
+    setContentBlocks((prev) => {
+      const newBlocks = [...prev];
+      newBlocks[index][name] = value;
+      return newBlocks;
+    });
+  };
+
+  const handleContentBlockFileChange = (e, index) => {
+    const { files } = e.target;
+    setContentBlocks((prev) => {
+      const newBlocks = [...prev];
+      newBlocks[index].file = files[0];
+      return newBlocks;
+    });
+  };
+
+  const handleDeleteContentBlock = (index) => {
+    setContentBlocks((prev) => prev.filter((block, i) => i !== index));
+  };
+
+  const moveBlockUp = (index) => {
+    if (index === 0) return;
+    setContentBlocks((prev) => {
+      const newBlocks = [...prev];
+      [newBlocks[index - 1], newBlocks[index]] = [
+        newBlocks[index],
+        newBlocks[index - 1],
+      ];
+      return newBlocks;
+    });
+  };
+
+  const moveBlockDown = (index) => {
+    if (index === contentBlocks.length - 1) return;
+    setContentBlocks((prev) => {
+      const newBlocks = [...prev];
+      [newBlocks[index], newBlocks[index + 1]] = [
+        newBlocks[index + 1],
+        newBlocks[index],
+      ];
+      return newBlocks;
+    });
   };
 
   const handleNewTagChange = (e) => {
@@ -153,18 +192,27 @@ const NewBlogPost = () => {
       return;
     }
 
-    const editorData = await editor.save();
-    console.log("Editor data:", editorData);
+    
     const formData = new FormData();
     file.forEach((file) => {
       formData.append("images", file);
     });
+    contentBlocks.forEach((block, index) => {
+      if (block.type === "image" && block.file) {
+          formData.append("contentBlocksImages", block.file);
+          formData.append(`contentBlocks[${index}][type]`, block.type);
+      } else if (block.type === "text") {
+          formData.append(`contentBlocks[${index}][text]`, block.text);
+          formData.append(`contentBlocks[${index}][type]`, "text");
+      }
+  });
+    console.log("contentBlocks:", contentBlocks); 
+    
     formData.append("title", inputs.title);
     formData.append("description", inputs.description);
     formData.append("date", inputs.date);
     formData.append("tags", inputs.tags);
-    formData.append("content", JSON.stringify(editorData));
-    console.log("Form data:", formData);
+
     try {
       console.log(file);
       const response = await createBlogPost(formData);
@@ -239,8 +287,34 @@ const NewBlogPost = () => {
             onKeyUp={handleTextAreaChange}
           />
         </div>
-        <div className="myForm-quillEditor myForm-quillEditor-large">
-          <div id="editor"></div>
+        <hr />
+        <div className="myForm-field">
+          <div className="content-blocks">
+            {contentBlocks.map((block, index) => (
+              <div key={index}>
+                {block.type === "image" ? (
+                  <input
+                    type="file"
+                    onChange={(e) => handleContentBlockFileChange(e, index)}
+                  />
+                ) : (
+                  <textarea
+                    className="myForm-input-textArea"
+                    value={block.text}
+                    name="text"
+                    onChange={(e) => handleContentBlockChange(e, index)}
+                  />
+                )}
+                <button onClick={() => moveBlockUp(index)}>Move Up</button>
+                <button onClick={() => moveBlockDown(index)}>Move Down</button>
+                <button onClick={() => handleDeleteContentBlock(index)}>
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+          <button onClick={() => addContentBlock("image")}>Add Image</button>
+          <button onClick={() => addContentBlock("text")}>Add Text</button>
         </div>
         <div className="myForm-field tag-label-btn">
           <label htmlFor="tags" className="myForm-label">
@@ -260,7 +334,11 @@ const NewBlogPost = () => {
               }
             }}
           />
-          <button type="button" className="add-tag-button" onClick={handleAddTag}>
+          <button
+            type="button"
+            className="add-tag-button"
+            onClick={handleAddTag}
+          >
             Add
           </button>
         </div>
