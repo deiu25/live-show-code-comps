@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createBlogPost } from "../../api-helpers/helpers";
-import { NewBlogNavbar } from "../../new-blog-navbar/NewBlogNavbar";
+import { NewBlogNavbar } from "../../components/new-blog-navbar/NewBlogNavbar";
 import { Tag } from "../../components/tag/Tag";
 
 const NewBlogPost = () => {

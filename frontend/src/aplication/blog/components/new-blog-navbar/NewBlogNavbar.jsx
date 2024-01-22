@@ -1,11 +1,11 @@
 import React from "react";
 import "./NewBlogNavbar.css";
 import { Link, useNavigate } from "react-router-dom";
-import livecodeshowlogo1 from "../../../assets/logo/livecodeshowlogo1.png";
+import livecodeshowlogo1 from "../../../../assets/logo/livecodeshowlogo1.png";
 import {
   ShowOnLogin,
   ShowOnLogout,
-} from "../../../auth/components/protect/hiddenLink";
+} from "../../../../auth/components/protect/hiddenLink";
 import { useSelector } from "react-redux";
 
 export const NewBlogNavbar = () => {
