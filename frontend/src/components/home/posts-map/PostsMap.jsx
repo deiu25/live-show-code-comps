@@ -13,7 +13,7 @@ const SectionHeading = memo(({ title }) => (
 const PostList = memo(({ posts, onPostDelete  }) => (
   <div className="row">
     {posts.map((post) => (
-      <div className="col-md-4 mb-5" key={post._id}>
+      <div className=" mb-5" key={post._id}>
         <Card
           title={post.title}
           htmlCode={post.htmlCode}

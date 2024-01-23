@@ -36,12 +36,12 @@ export const HomeSidebar = ({
     <div className={sidebarClass} id="sidebar">
       {isSidebarOpen ? (
         <div
-          className="anchor far fa-chevron-double-left"
+          className="sidebar-switch far fa-chevron-double-left"
           onClick={toggleSidebar}
         />
       ) : (
         <div
-          className="anchor far fa-chevron-double-right"
+          className="sidebar-switch far fa-chevron-double-right"
           onClick={toggleSidebar}
         />
       )}

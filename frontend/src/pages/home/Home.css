@@ -110,7 +110,7 @@
   height: auto;
   border-radius: 50%;
   cursor: pointer;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
 }
 .sidebar-acc-logo:hover {
   transform: scale(1.2);
@@ -126,7 +126,7 @@
   z-index: -1;
   filter: blur(8px);
 }
-#wrapper #sidebar .anchor-btn {
+#wrapper #sidebar .sidebar-switch {
   right: -17px;
   top: 0;
   position: absolute;
@@ -136,7 +136,7 @@
   background-color: var(--secondary-color);
   z-index: 1;
 }
-#wrapper #sidebar .anchor-btn:hover {
+#wrapper #sidebar .sidebar-switch:hover {
   cursor: pointer;
 }
 #wrapper #sidebar .logo {
@@ -199,7 +199,6 @@
 #wrapper #sidebar .anchor-btn:hover,
 .anchor-btn.active {
   border: 1px solid var(--main-color);
-
   background-color: var(--white-lit-color);
   box-shadow: 0 0 1px 5px var(--shadow-color);
   cursor: pointer;
@@ -324,34 +323,14 @@
   margin-top: 20px;
 }
 #wrapper #main-area .content-section .card {
-  background-color: transparent;
-  box-shadow: 0 0 10px 3px var(--shadow-color);
-  cursor: pointer;
-  transition: 0.5s;
-  width: 50%;
-  margin: 0 auto;
-}
-#wrapper #main-area .content-section .card:hover {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   box-shadow: 0 0 15px 5px var(--shadow-color);
-}
-#wrapper #main-area .content-section .card:before {
-  content: "";
-  width: 10%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 10px;
-  background-color: rgba(255, 255, 255, 0);
-  transition: 0.5s;
   border-radius: 10px;
-  filter: blur(5px);
-  transform: rotate(15deg);
-}
-#wrapper #main-area .content-section .card:hover:before {
-  left: 90%;
-  width: 0;
-  background-color: var(--white-lit-color);
-  opacity: 1;
+  transition: 0.5s;
+  position: relative;
+  margin: 0 20px 20px 20px;
 }
 #wrapper #main-area .content-section h2 {
   font-size: 24px;
@@ -666,24 +645,24 @@
 
 @media (min-width: 576px) {
   .container-card {
-      max-width: 540px;
+    max-width: 540px;
   }
 }
 
 @media (min-width: 768px) {
   .container-card {
-      max-width: 720px;
+    max-width: 720px;
   }
 }
 
 @media (min-width: 992px) {
   .container-card {
-      max-width: 960px;
+    max-width: 960px;
   }
 }
 
 @media (min-width: 1200px) {
   .container-card {
-      max-width: 1140px;
+    max-width: 1140px;
   }
 }
