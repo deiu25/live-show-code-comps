@@ -219,6 +219,7 @@ a.active {
 /* MAIN AREA STYLE */
 #wrapper #main-area {
   height: calc(100% - 40px);
+  width: auto;
   padding: 10px 20px;
   margin: 20px 5px;
   box-sizing: border-box;

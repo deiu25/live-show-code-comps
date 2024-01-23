@@ -65,7 +65,7 @@
 }
 
 .post-headline-1 {
-  font-size: 10.5vw;
+  font-size: 7.5vw;
 }
 
 .post-headline-2 {
@@ -90,7 +90,7 @@
     
 .post-section p:first-of-type:first-letter {
   float: left;
-  font-size: 7em;
+  font-size: 6em;
   line-height: 1;
   margin-top: -0.2em;
   margin-bottom: -0.2em;

@@ -31,7 +31,7 @@ export const BlogPost = () => {
           <header className="post-header">
             <h1 className="post-h1">
               <div className="post-headline-1">{post.title}</div>
-              <div className="post-headline-2">& Blues</div>
+              {/* <div className="post-headline-2">& Blues</div> */}
             </h1>
             <p className="post-subheading">
               {/* Music that makes you live experiences */}
@@ -51,6 +51,8 @@ export const BlogPost = () => {
               <p>{post.description}</p>
             </section>
           </section>
+          <br></br>
+          <hr className="post-hr" />
         </article>
 
         <article className="post-article">
@@ -77,6 +79,7 @@ export const BlogPost = () => {
                 <hr className="post-hr" />
               </section>
             ))}
+            <hr className="post-hr" />
           </header>
         </article>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import classNames from "classnames";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -7,21 +7,15 @@ import {
 } from "../../../auth/components/protect/hiddenLink";
 import { useSelector } from "react-redux";
 
-export const HomeSidebar = ({ onTabChange, currentTab }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSidebar }) => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
 
   const sidebarClass = classNames({
     "col-md-3": isSidebarOpen,
     "col-md-1": !isSidebarOpen,
     sidebar: true,
   });
-
   const logoClass = classNames({
     logo: true,
     "logo-small": !isSidebarOpen,

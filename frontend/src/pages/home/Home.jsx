@@ -8,8 +8,12 @@ import { HomeAllPosts } from "../../components/home/home-posts/HomeAllPosts";
 import { About } from "../about/About";
 import { BlogPosts } from "../../aplication/blog/pages/blog-posts/BlogPosts";
 
-
 export const Home = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
   const [currentTab, setCurrentTab] = useState("home");
 
   const handleTabChange = (tab) => {
@@ -36,8 +40,13 @@ export const Home = ({ children }) => {
       {children}
       <div className=" home-container" id="wrapper">
         <div className="row">
-          <HomeSidebar onTabChange={handleTabChange} currentTab={currentTab} />
-          <div className="col-md-9">
+          <HomeSidebar
+            onTabChange={handleTabChange}
+            currentTab={currentTab}
+            isSidebarOpen={isSidebarOpen}
+            toggleSidebar={toggleSidebar} // Adăugat
+          />
+          <div className={`col-md-${isSidebarOpen ? "9" : "11"}`}>
             <div id="main-area">
               {renderCurrentTab()}
               <HomeFooter />
