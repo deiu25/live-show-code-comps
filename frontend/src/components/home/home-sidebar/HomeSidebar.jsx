@@ -7,7 +7,12 @@ import {
 } from "../../../auth/components/protect/hiddenLink";
 import { useSelector } from "react-redux";
 
-export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSidebar }) => {
+export const HomeSidebar = ({
+  onTabChange,
+  currentTab,
+  isSidebarOpen,
+  toggleSidebar,
+}) => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
@@ -61,55 +66,80 @@ export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSide
           key="home"
           className={`nav-item ${currentTab === "home" ? "active" : ""}`}
         >
-          <a className="nav-link" onClick={() => onTabChange("home")}>
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => onTabChange("home")}
+          >
             <i className="fas fa-home"></i>
             {isSidebarOpen && <span className="nav-text"> Home</span>}
-          </a>
+          </button>
         </li>
         <li
           key="posts"
           className={`nav-item ${currentTab === "posts" ? "active" : ""}`}
         >
-          <a className="nav-link" onClick={() => onTabChange("posts")}>
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => onTabChange("posts")}
+          >
             <i className="fas fa-tasks"></i>
             {isSidebarOpen && <span className="nav-text"> Posts</span>}
-          </a>
+          </button>
         </li>
         <li
           key="blog"
           className={`nav-item ${currentTab === "blog" ? "active" : ""}`}
         >
-          <a className="nav-link" onClick={() => onTabChange("blog")}>
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => onTabChange("blog")}
+          >
             <i className="fas fa-blog"></i>
             {isSidebarOpen && <span className="nav-text"> Blog</span>}
-          </a>
+          </button>
         </li>
         <li
           key="about"
           className={`nav-item ${currentTab === "about" ? "active" : ""}`}
         >
-          <a className="nav-link" onClick={() => onTabChange("about")}>
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => onTabChange("about")}
+          >
             <i className="fas fa-info-circle"></i>
             {isSidebarOpen && <span className="nav-text"> About</span>}
-          </a>
+          </button>
         </li>
+        {isAdmin && (
+          <>
+            <li key="addPost" className="nav-item">
+              <button
+                className="nav-link anchor-btn"
+                onClick={() => {
+                  navigate("/NewProject");
+                }}
+              >
+                <i className="fas fa-plus"></i>
+                {isSidebarOpen && <span className="nav-text"> Add Post</span>}
+              </button>
+            </li>
+            <li key="addBlogPost" className="nav-item">
+              <button
+                className="nav-link anchor-btn"
+                onClick={() => {
+                  navigate("/NewBlogPost");
+                }}
+              >
+                <i className="fas fa-plus"></i>
+                {isSidebarOpen && (
+                  <span className="nav-text"> Add Blog Post</span>
+                )}
+              </button>
+            </li>
+          </>
+        )}
       </ul>
-      {isAdmin && (
-        <ul className="nav flex-column">
-          <li key="addPost" className="nav-item">
-            <Link className="nav-link" to="/NewProject">
-              <i className="fas fa-plus"></i>
-              {isSidebarOpen && <span className="nav-text"> Add Post</span>}
-            </Link>
-          </li>
-          <li key="addBlogPost" className="nav-item">
-            <Link className="nav-link" to="/NewBlogPost">
-              <i className="fas fa-plus"></i>
-              {isSidebarOpen && <span className="nav-text"> Add Blog Post</span>}
-            </Link>
-          </li>
-        </ul>
-      )}
+
       <div className="copyright">
         {isSidebarOpen ? (
           <p>
