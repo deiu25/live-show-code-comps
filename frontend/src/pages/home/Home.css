@@ -138,6 +138,7 @@
 }
 #wrapper #sidebar .sidebar-switch:hover {
   cursor: pointer;
+  background-color: var(--dark-blue);
 }
 #wrapper #sidebar .logo {
   width: 100px;
@@ -197,7 +198,7 @@
   opacity: 1;
 }
 #wrapper #sidebar .anchor-btn:hover,
-.anchor-btn.active {
+.anchor-btn .active {
   border: 1px solid var(--main-color);
   background-color: var(--white-lit-color);
   box-shadow: 0 0 1px 5px var(--shadow-color);
