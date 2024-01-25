@@ -11,7 +11,7 @@ const SectionHeading = memo(({ title }) => (
 
 // Componentă pentru randarea listei de postări
 const PostList = memo(({ posts, onPostDelete  }) => (
-  <div className="row">
+  <div className="row posts-map">
     {posts.map((post) => (
       <div className=" mb-5" key={post._id}>
         <Card

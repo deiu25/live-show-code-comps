@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   ShowOnLogin,
   ShowOnLogout,
@@ -46,10 +46,15 @@ export const HomeSidebar = ({
         />
       )}
       <ShowOnLogout>
-        <Link to="/login">
+        <button
+          className="nav-link anchor-btn"
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
           <i className="far fa-user"></i>
           {isSidebarOpen && <span className="nav-text"> Auth</span>}
-        </Link>
+        </button>
       </ShowOnLogout>
       <ShowOnLogin>
         <div className={logoClass} onClick={goProfile}>
