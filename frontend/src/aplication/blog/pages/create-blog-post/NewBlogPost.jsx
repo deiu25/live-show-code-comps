@@ -9,6 +9,7 @@ import useFileHandler from "../../helpers/useFileHandler";
 import ContentBlocksManager from "../../components/content-blocks-manager/ContentBlocksManager";
 import TagsManager from "../../components/tags-manager/TagsManager";
 import useTagsManager from "../../customHooks/useTagsManager";
+import useContentBlocks from "../../customHooks/useContentBlocks";
 
 const NewBlogPost = () => {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ const NewBlogPost = () => {
     return current.toISOString().slice(0, 10);
   };
 
+  const [errors, setErrors] = useState({});
+
   const [inputs, setInputs] = useState({
     title: "",
     description: "",
@@ -26,9 +29,7 @@ const NewBlogPost = () => {
   });
 
   const { files, previewSources, handleFileChange, handleDeletePreview } = useFileHandler();
-  const [errors, setErrors] = useState({});
-  const [contentBlocks, setContentBlocks] = useState([]);
-
+  const { contentBlocks, addContentBlock, deleteContentBlock, updateContentBlock, moveContentBlock } = useContentBlocks();
   const { tags, newTag, handleNewTagChange, handleAddTag, handleDeleteTag } = useTagsManager(inputs.tags);
 
   useEffect(() => {
@@ -57,58 +58,6 @@ const NewBlogPost = () => {
         [e.target.name]: null,
       }));
     }
-  };
-
-  const addContentBlock = (type) => {
-    const newBlock =
-      type === "image" ? { type, file: null } : { type, text: "" };
-    setContentBlocks([...contentBlocks, newBlock]);
-  };
-
-  const handleContentBlockChange = (e, index) => {
-    const { name, value } = e.target;
-    setContentBlocks((prev) => {
-      const newBlocks = [...prev];
-      newBlocks[index][name] = value;
-      return newBlocks;
-    });
-  };
-
-  const handleContentBlockFileChange = (e, index) => {
-    const { files } = e.target;
-    setContentBlocks((prev) => {
-      const newBlocks = [...prev];
-      newBlocks[index].file = files[0];
-      return newBlocks;
-    });
-  };
-
-  const handleDeleteContentBlock = (index) => {
-    setContentBlocks((prev) => prev.filter((block, i) => i !== index));
-  };
-
-  const moveBlockUp = (index) => {
-    if (index === 0) return;
-    setContentBlocks((prev) => {
-      const newBlocks = [...prev];
-      [newBlocks[index - 1], newBlocks[index]] = [
-        newBlocks[index],
-        newBlocks[index - 1],
-      ];
-      return newBlocks;
-    });
-  };
-
-  const moveBlockDown = (index) => {
-    if (index === contentBlocks.length - 1) return;
-    setContentBlocks((prev) => {
-      const newBlocks = [...prev];
-      [newBlocks[index], newBlocks[index + 1]] = [
-        newBlocks[index + 1],
-        newBlocks[index],
-      ];
-      return newBlocks;
-    });
   };
 
   const onResReceived = (data) => {
@@ -223,7 +172,11 @@ const NewBlogPost = () => {
         <div className="imgPrevUpdate">
           {previewSources.map((src, index) => (
             <div className="imgPrevUpdate-imgContainer" key={index}>
-              <img src={src} alt="Previzualizare" className="imgPrevUpdate-img" />
+              <img
+                src={src}
+                alt="Previzualizare"
+                className="imgPrevUpdate-img"
+              />
               <button
                 type="button"
                 className="imgPrevUpdate-deleteBtn"
@@ -252,14 +205,18 @@ const NewBlogPost = () => {
         <div className="myForm-field">
           <ContentBlocksManager
             contentBlocks={contentBlocks}
-            handleContentBlockChange={handleContentBlockChange}
-            handleContentBlockFileChange={handleContentBlockFileChange}
-            handleDeleteContentBlock={handleDeleteContentBlock}
-            moveBlockUp={moveBlockUp}
-            moveBlockDown={moveBlockDown}
+            handleContentBlockChange={(e, index) =>
+              updateContentBlock(index, { text: e.target.value })
+            }
+            handleContentBlockFileChange={(e, index) =>
+              updateContentBlock(index, { file: e.target.files[0] })
+            }
+            handleDeleteContentBlock={deleteContentBlock}
+            moveBlockUp={(index) => moveContentBlock(index, "up")}
+            moveBlockDown={(index) => moveContentBlock(index, "down")}
           />
-          <button className="content-block-button" onClick={() => addContentBlock("image")}>Add Image</button>
-          <button className="content-block-button" onClick={() => addContentBlock("text")}>Add Text</button>
+          <button onClick={() => addContentBlock("image")}>Add Image</button>
+          <button onClick={() => addContentBlock("text")}>Add Text</button>
         </div>
         <TagsManager
           tags={tags}

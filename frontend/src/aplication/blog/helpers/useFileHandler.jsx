@@ -1,4 +1,4 @@
-// useFileHandler.js
+// useFileHandler.jsx
 import { useState, useCallback } from 'react';
 
 const useFileHandler = (initialFiles = []) => {

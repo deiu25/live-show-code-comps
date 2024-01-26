@@ -1,4 +1,4 @@
-//useTagsManager.js
+//useTagsManager.jsx
 import { useState } from 'react';
 
 const useTagsManager = (initialTags = '') => {
