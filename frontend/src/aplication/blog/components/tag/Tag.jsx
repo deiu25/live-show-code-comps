@@ -11,4 +11,3 @@ export const Tag = ({ tag, onDelete }) => {
     );
   }
   
-

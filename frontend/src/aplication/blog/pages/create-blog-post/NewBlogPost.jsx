@@ -1,18 +1,18 @@
-//NewBlogPost.jsx
+// NewBlogPost.jsx
 import "./NewBlogPost.css";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createBlogPost } from "../../api-helpers/helpers";
 import { NewBlogNavbar } from "../../components/new-blog-navbar/NewBlogNavbar";
-import { Tag } from "../../components/tag/Tag";
 import useFileHandler from "../../helpers/useFileHandler";
-import useTagHandler from "../../customHooks/useTagHandler";
+import ContentBlocksManager from "../../components/content-blocks-manager/ContentBlocksManager";
+import TagsManager from "../../components/tags-manager/TagsManager";
+import useTagsManager from "../../customHooks/useTagsManager";
 
 const NewBlogPost = () => {
   const navigate = useNavigate();
   const { isLoggedIn, isVerified } = useSelector((state) => state.auth);
-
   const getCurrentDate = () => {
     const current = new Date();
     return current.toISOString().slice(0, 10);
@@ -24,12 +24,16 @@ const NewBlogPost = () => {
     date: getCurrentDate(),
     tags: "",
   });
+
+  const { files, previewSources, handleFileChange, handleDeletePreview } = useFileHandler();
   const [errors, setErrors] = useState({});
   const [contentBlocks, setContentBlocks] = useState([]);
-  const { files, previewSources, handleFileChange, handleDeletePreview } =
-    useFileHandler();
-  const { tags, addTag, deleteTag } = useTagHandler();
-  const [newTag, setNewTag] = useState("");
+
+  const { tags, newTag, handleNewTagChange, handleAddTag, handleDeleteTag } = useTagsManager(inputs.tags);
+
+  useEffect(() => {
+    setInputs((prevState) => ({ ...prevState, tags }));
+  }, [tags]);
 
   const handleTextAreaKeyDown = (e) => {
     if (e.keyCode === 10) {
@@ -107,21 +111,6 @@ const NewBlogPost = () => {
     });
   };
 
-  const handleAddTag = () => {
-    addTag(newTag);
-    setNewTag("");
-  };
-
-  const handleTagInputChange = (e) => {
-    setNewTag(e.target.value);
-  };
-
-  useEffect(() => {
-    return () => {
-      previewSources.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [previewSources]);
-
   const onResReceived = (data) => {
     if (data.error) {
       setErrors({ form: data.error });
@@ -135,13 +124,13 @@ const NewBlogPost = () => {
 
     if (!isLoggedIn || !isVerified) {
       setErrors({
-        form: "You must be logged in and have a verified email to post.",
+        form: "You must be logged in and verified to create a blog post.",
       });
       return;
     }
 
     if (!files) {
-      setErrors({ form: "File is required." });
+      setErrors({ form: "The file is required." });
       return;
     }
 
@@ -151,16 +140,16 @@ const NewBlogPost = () => {
       if (!inputs[key]) {
         formErrors[key] = `${
           key.charAt(0).toUpperCase() + key.slice(1)
-        } field is required.`;
+        } is required.`;
       }
     }
 
     if (!files) {
-      formErrors.file = "File is required.";
+      formErrors.file = "The file is required.";
     }
 
     if (!inputs.title || !inputs.description || !inputs.date || !inputs.tags) {
-      setErrors({ form: "Please fill in all required fields." });
+      setErrors({ form: "All fields are required." });
       return;
     }
 
@@ -191,7 +180,7 @@ const NewBlogPost = () => {
     try {
       const response = await createBlogPost(formData);
       if (!response) {
-        throw new Error("An error occurred while submitting the form.");
+        throw new Error("Something went wrong.");
       }
       onResReceived(response);
     } catch (err) {
@@ -203,7 +192,7 @@ const NewBlogPost = () => {
     <>
       <NewBlogNavbar />
       <form onSubmit={handleSubmit} className="myForm-container">
-        <h1 className="myForm-title">Create New Blog Post</h1>
+        <h1 className="myForm-title">Create a new blog post</h1>
         {errors.form && <span className="myForm-error">{errors.form}</span>}
         <div className="myForm-field">
           <label htmlFor="title" className="myForm-label">
@@ -220,7 +209,7 @@ const NewBlogPost = () => {
         </div>
         <div className="myForm-field">
           <label htmlFor="headerImage" className="myForm-label">
-            Header Image:
+            Header Image
           </label>
           <input
             type="file"
@@ -234,7 +223,7 @@ const NewBlogPost = () => {
         <div className="imgPrevUpdate">
           {previewSources.map((src, index) => (
             <div className="imgPrevUpdate-imgContainer" key={index}>
-              <img src={src} alt="Preview" className="imgPrevUpdate-img" />
+              <img src={src} alt="Previzualizare" className="imgPrevUpdate-img" />
               <button
                 type="button"
                 className="imgPrevUpdate-deleteBtn"
@@ -247,7 +236,7 @@ const NewBlogPost = () => {
         </div>
         <div className="myForm-field">
           <label htmlFor="description" className="myForm-label">
-            Description:
+            Description
           </label>
           <textarea
             id="description"
@@ -261,66 +250,26 @@ const NewBlogPost = () => {
         </div>
         <hr />
         <div className="myForm-field">
-          <div className="content-blocks">
-            {contentBlocks.map((block, index) => (
-              <div key={index}>
-                {block.type === "image" ? (
-                  <input
-                    type="file"
-                    onChange={(e) => handleContentBlockFileChange(e, index)}
-                  />
-                ) : (
-                  <textarea
-                    className="myForm-input-textArea"
-                    value={block.text}
-                    name="text"
-                    onChange={(e) => handleContentBlockChange(e, index)}
-                  />
-                )}
-                <button onClick={() => moveBlockUp(index)}>Move Up</button>
-                <button onClick={() => moveBlockDown(index)}>Move Down</button>
-                <button onClick={() => handleDeleteContentBlock(index)}>
-                  Delete
-                </button>
-              </div>
-            ))}
-          </div>
-          <button onClick={() => addContentBlock("image")}>Add Image</button>
-          <button onClick={() => addContentBlock("text")}>Add Text</button>
-        </div>
-        <div className="myForm-field tag-label-btn">
-          <label htmlFor="tags" className="myForm-label">
-            Tags:
-          </label>
-          <input
-            type="text"
-            id="tags"
-            name="tags"
-            className="myForm-input"
-            value={newTag}
-            onChange={handleTagInputChange}
-            onKeyPress={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                handleAddTag();
-              }
-            }}
+          <ContentBlocksManager
+            contentBlocks={contentBlocks}
+            handleContentBlockChange={handleContentBlockChange}
+            handleContentBlockFileChange={handleContentBlockFileChange}
+            handleDeleteContentBlock={handleDeleteContentBlock}
+            moveBlockUp={moveBlockUp}
+            moveBlockDown={moveBlockDown}
           />
-          <button
-            type="button"
-            className="add-tag-button"
-            onClick={handleAddTag}
-          >
-            Add
-          </button>
+          <button className="content-block-button" onClick={() => addContentBlock("image")}>Add Image</button>
+          <button className="content-block-button" onClick={() => addContentBlock("text")}>Add Text</button>
         </div>
-        <div className="myForm-tags">
-          {tags.map((tag, index) => (
-            <Tag key={index} tag={tag} onDelete={deleteTag} />
-          ))}
-        </div>
+        <TagsManager
+          tags={tags}
+          newTag={newTag}
+          handleNewTagChange={handleNewTagChange}
+          handleAddTag={handleAddTag}
+          handleDeleteTag={handleDeleteTag}
+        />
         <button type="submit" className="myForm-button">
-          Submit Post
+          Create
         </button>
       </form>
     </>
