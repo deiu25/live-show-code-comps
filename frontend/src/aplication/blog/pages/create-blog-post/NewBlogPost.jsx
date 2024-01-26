@@ -1,28 +1,34 @@
+//NewBlogPost.jsx
 import "./NewBlogPost.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createBlogPost } from "../../api-helpers/helpers";
 import { NewBlogNavbar } from "../../components/new-blog-navbar/NewBlogNavbar";
 import { Tag } from "../../components/tag/Tag";
+import useFileHandler from "../../helpers/useFileHandler";
+import useTagHandler from "../../customHooks/useTagHandler";
 
 const NewBlogPost = () => {
   const navigate = useNavigate();
   const { isLoggedIn, isVerified } = useSelector((state) => state.auth);
+
   const getCurrentDate = () => {
     const current = new Date();
     return current.toISOString().slice(0, 10);
   };
+
   const [inputs, setInputs] = useState({
     title: "",
     description: "",
     date: getCurrentDate(),
     tags: "",
   });
-  const [file, setFile] = useState(null);
-  const [previewSource, setPreviewSource] = useState([]);
   const [errors, setErrors] = useState({});
   const [contentBlocks, setContentBlocks] = useState([]);
+  const { files, previewSources, handleFileChange, handleDeletePreview } =
+    useFileHandler();
+  const { tags, addTag, deleteTag } = useTagHandler();
   const [newTag, setNewTag] = useState("");
 
   const handleTextAreaKeyDown = (e) => {
@@ -47,20 +53,6 @@ const NewBlogPost = () => {
         [e.target.name]: null,
       }));
     }
-  };
-
-  const handleFileChange = (e) => {
-    setFile(Array.from(e.target.files));
-    setPreviewSource(
-      e.target.files.length > 0
-        ? Array.from(e.target.files).map((file) => URL.createObjectURL(file))
-        : []
-    );
-  };
-
-  const handleDeletePreview = (index) => {
-    setPreviewSource((prev) => prev.filter((src, i) => i !== index));
-    setFile((prev) => prev.filter((file, i) => i !== index));
   };
 
   const addContentBlock = (type) => {
@@ -115,32 +107,20 @@ const NewBlogPost = () => {
     });
   };
 
-  const handleNewTagChange = (e) => {
-    setNewTag(e.target.value);
-  };
-
   const handleAddTag = () => {
     addTag(newTag);
     setNewTag("");
   };
 
-  const handleDeleteTag = (tagToDelete) => {
-    setInputs((prevState) => ({
-      ...prevState,
-      tags: prevState.tags
-        .split(" ")
-        .filter((tag) => tag !== tagToDelete)
-        .join(" "),
-    }));
+  const handleTagInputChange = (e) => {
+    setNewTag(e.target.value);
   };
 
-  const addTag = (newTag) => {
-    if (!newTag.trim() || inputs.tags.split(" ").includes(newTag)) return;
-    setInputs((prevState) => ({
-      ...prevState,
-      tags: `${prevState.tags} ${newTag}`.trim(),
-    }));
-  };
+  useEffect(() => {
+    return () => {
+      previewSources.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [previewSources]);
 
   const onResReceived = (data) => {
     if (data.error) {
@@ -160,7 +140,7 @@ const NewBlogPost = () => {
       return;
     }
 
-    if (!file) {
+    if (!files) {
       setErrors({ form: "File is required." });
       return;
     }
@@ -175,7 +155,7 @@ const NewBlogPost = () => {
       }
     }
 
-    if (!file) {
+    if (!files) {
       formErrors.file = "File is required.";
     }
 
@@ -190,7 +170,7 @@ const NewBlogPost = () => {
     }
 
     const formData = new FormData();
-    file.forEach((file) => {
+    files.forEach((file) => {
       formData.append("images", file);
     });
     contentBlocks.forEach((block, index) => {
@@ -252,7 +232,7 @@ const NewBlogPost = () => {
           />
         </div>
         <div className="imgPrevUpdate">
-          {previewSource.map((src, index) => (
+          {previewSources.map((src, index) => (
             <div className="imgPrevUpdate-imgContainer" key={index}>
               <img src={src} alt="Preview" className="imgPrevUpdate-img" />
               <button
@@ -318,7 +298,7 @@ const NewBlogPost = () => {
             name="tags"
             className="myForm-input"
             value={newTag}
-            onChange={handleNewTagChange}
+            onChange={handleTagInputChange}
             onKeyPress={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
@@ -335,8 +315,8 @@ const NewBlogPost = () => {
           </button>
         </div>
         <div className="myForm-tags">
-          {inputs.tags.split(" ").map((tag, index) => (
-            <Tag key={index} tag={tag} onDelete={handleDeleteTag} />
+          {tags.map((tag, index) => (
+            <Tag key={index} tag={tag} onDelete={deleteTag} />
           ))}
         </div>
         <button type="submit" className="myForm-button">

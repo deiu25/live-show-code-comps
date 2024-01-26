@@ -1,10 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
-import {
-  ShowOnLogin,
-  ShowOnLogout,
-} from "../../../auth/components/protect/hiddenLink";
+import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
 import { useSelector } from "react-redux";
 
 export const HomeSidebar = ({
