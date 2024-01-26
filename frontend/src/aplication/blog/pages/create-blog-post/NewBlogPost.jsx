@@ -5,11 +5,12 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createBlogPost } from "../../api-helpers/helpers";
 import { NewBlogNavbar } from "../../components/new-blog-navbar/NewBlogNavbar";
-import useFileHandler from "../../helpers/useFileHandler";
 import ContentBlocksManager from "../../components/content-blocks-manager/ContentBlocksManager";
 import TagsManager from "../../components/tags-manager/TagsManager";
 import useTagsManager from "../../customHooks/useTagsManager";
 import useContentBlocks from "../../customHooks/useContentBlocks";
+import useFileHandler from "../../customHooks/useFileHandler";
+import { validateNewBlogPost } from "../../utils/validation";
 
 const NewBlogPost = () => {
   const navigate = useNavigate();
@@ -28,9 +29,17 @@ const NewBlogPost = () => {
     tags: "",
   });
 
-  const { files, previewSources, handleFileChange, handleDeletePreview } = useFileHandler();
-  const { contentBlocks, addContentBlock, deleteContentBlock, updateContentBlock, moveContentBlock } = useContentBlocks();
-  const { tags, newTag, handleNewTagChange, handleAddTag, handleDeleteTag } = useTagsManager(inputs.tags);
+  const { files, previewSources, handleFileChange, handleDeletePreview } =
+    useFileHandler();
+  const {
+    contentBlocks,
+    addContentBlock,
+    deleteContentBlock,
+    updateContentBlock,
+    moveContentBlock,
+  } = useContentBlocks();
+  const { tags, newTag, handleNewTagChange, handleAddTag, handleDeleteTag } =
+    useTagsManager(inputs.tags);
 
   useEffect(() => {
     setInputs((prevState) => ({ ...prevState, tags }));
@@ -60,7 +69,7 @@ const NewBlogPost = () => {
     }
   };
 
-  const onResReceived = (data) => {
+  const handleResponse = (data) => {
     if (data.error) {
       setErrors({ form: data.error });
     } else {
@@ -70,38 +79,9 @@ const NewBlogPost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!isLoggedIn || !isVerified) {
-      setErrors({
-        form: "You must be logged in and verified to create a blog post.",
-      });
-      return;
-    }
-
-    if (!files) {
-      setErrors({ form: "The file is required." });
-      return;
-    }
-
-    let formErrors = {};
-
-    for (let key in inputs) {
-      if (!inputs[key]) {
-        formErrors[key] = `${
-          key.charAt(0).toUpperCase() + key.slice(1)
-        } is required.`;
-      }
-    }
-
-    if (!files) {
-      formErrors.file = "The file is required.";
-    }
-
-    if (!inputs.title || !inputs.description || !inputs.date || !inputs.tags) {
-      setErrors({ form: "All fields are required." });
-      return;
-    }
-
+  
+    const formErrors = validateNewBlogPost(inputs, files, isLoggedIn, isVerified);
+  
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
@@ -131,7 +111,7 @@ const NewBlogPost = () => {
       if (!response) {
         throw new Error("Something went wrong.");
       }
-      onResReceived(response);
+      handleResponse(response);
     } catch (err) {
       setErrors({ form: err.message });
     }
@@ -142,7 +122,13 @@ const NewBlogPost = () => {
       <NewBlogNavbar />
       <form onSubmit={handleSubmit} className="myForm-container">
         <h1 className="myForm-title">Create a new blog post</h1>
-        {errors.form && <span className="myForm-error">{errors.form}</span>}
+        <div>
+          {Object.keys(errors).map((key) => (
+            <span key={key} className="myForm-error">
+              {errors[key]}
+            </span>
+          ))}
+        </div>
         <div className="myForm-field">
           <label htmlFor="title" className="myForm-label">
             Title:
