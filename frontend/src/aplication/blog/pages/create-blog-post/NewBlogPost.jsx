@@ -11,6 +11,8 @@ import useTagsManager from "../../customHooks/useTagsManager";
 import useContentBlocks from "../../customHooks/useContentBlocks";
 import useFileHandler from "../../customHooks/useFileHandler";
 import { validateNewBlogPost } from "../../utils/validation";
+import { ReactComponent as AddImageIcon } from "../../assets/icons/add-image-svg.svg";
+import { ReactComponent as AddTextIcon } from "../../assets/icons/add-text-svg.svg";
 
 const NewBlogPost = () => {
   const navigate = useNavigate();
@@ -201,9 +203,14 @@ const NewBlogPost = () => {
             moveBlockUp={(index) => moveContentBlock(index, "up")}
             moveBlockDown={(index) => moveContentBlock(index, "down")}
           />
-          <button onClick={() => addContentBlock("image")}>Add Image</button>
-          <button onClick={() => addContentBlock("text")}>Add Text</button>
-        </div>
+              <button className="add-button" onClick={() => addContentBlock("image")}>
+                <AddImageIcon /> 
+              </button>
+              <button className="add-button" onClick={() => addContentBlock("text")}>
+                <AddTextIcon /> 
+              </button>
+            </div>
+        <hr />
         <TagsManager
           tags={tags}
           newTag={newTag}
