@@ -60,7 +60,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (isSuccess && isLoggedIn) {
-      navigate("/profile");
+      navigate("/");
     }
 
     if (isError && twoFactor) {

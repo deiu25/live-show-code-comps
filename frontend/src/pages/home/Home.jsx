@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import "./Home.css";
 import { HomeSidebar } from "../../components/home/home-sidebar/HomeSidebar";
 import { HomeCurentSection } from "../../components/home/home-curent-section/HomeCurentSection";
-
-import { HomeFooter } from "../../components/home/home-footer/HomeFooter";
 import { HomeAllPosts } from "../../components/home/home-posts/HomeAllPosts";
 import { About } from "../about/About";
 import { BlogPosts } from "../../aplication/blog/pages/blog-posts/BlogPosts";
+import { Learn } from "../../aplication/learn/components/Learn";
+
 
 export const Home = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -28,6 +28,8 @@ export const Home = ({ children }) => {
         return <HomeAllPosts />;
       case "blog":
         return <BlogPosts />;
+      case "learn":
+        return <Learn />;
       case "about":
         return <About />;
       default:
@@ -44,7 +46,7 @@ export const Home = ({ children }) => {
             onTabChange={handleTabChange}
             currentTab={currentTab}
             isSidebarOpen={isSidebarOpen}
-            toggleSidebar={toggleSidebar} // Adăugat
+            toggleSidebar={toggleSidebar}
           />
           <div className={`col-md-${isSidebarOpen ? "9" : "11"}`}>
             <div id="main-area">
