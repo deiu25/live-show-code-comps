@@ -24,6 +24,7 @@ import { ThePost } from "./pages/thePost/ThePost";
 import NewBlogPost from "./aplication/blog/pages/create-blog-post/NewBlogPost";
 import { BlogPosts } from "./aplication/blog/pages/blog-posts/BlogPosts";
 import { BlogPost } from "./aplication/blog/pages/blog-post/BlogPost";
+import { JavascriptCourse } from "./aplication/learn/components/javascript-course/JavascriptCourse";
 
 
 axios.defaults.withCredentials = true;
@@ -52,6 +53,7 @@ function App() {
             <Route path="/blog/:id" element={<BlogPost />} />
             <Route path="/post/:id" element={<ThePost />} />
             <Route path="/about" element={<About />} />
+            <Route path="/javascriptCourse" element={<JavascriptCourse />} />
             {isLoggedIn && (
               <>
               <Route path="/NewProject" element={<NewProject />} />

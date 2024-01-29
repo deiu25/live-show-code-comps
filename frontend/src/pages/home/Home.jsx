@@ -5,7 +5,7 @@ import { HomeCurentSection } from "../../components/home/home-curent-section/Hom
 import { HomeAllPosts } from "../../components/home/home-posts/HomeAllPosts";
 import { About } from "../about/About";
 import { BlogPosts } from "../../aplication/blog/pages/blog-posts/BlogPosts";
-import { Learn } from "../../aplication/learn/components/Learn";
+import { Courses } from "../../aplication/learn/components/courses/Courses";
 
 
 export const Home = ({ children }) => {
@@ -29,7 +29,7 @@ export const Home = ({ children }) => {
       case "blog":
         return <BlogPosts />;
       case "learn":
-        return <Learn />;
+        return <Courses />;
       case "about":
         return <About />;
       default:

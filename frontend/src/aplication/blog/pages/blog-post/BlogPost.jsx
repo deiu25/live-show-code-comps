@@ -56,31 +56,23 @@ export const BlogPost = () => {
         </article>
 
         <article className="post-article">
-          <header className="post-header">
-            {post.contentBlocks.map((block, index) => (
-              <section key={index} className="content-block">
-                {block.type === "image" && (
-                  <img
-                    src={block.image.url}
-                    alt="Content"
-                    className="post-img"
-                  />
-                )}
-                <section className="post-section">
-                  <section className="post-section">
-                    <p>
-                      {" "}
-                      {block.type === "text" && (
-                        <p className="">{block.text}</p>
-                      )}
-                    </p>
-                  </section>
-                </section>
-                <hr className="post-hr" />
-              </section>
-            ))}
-            <hr className="post-hr" />
-          </header>
+          {post.contentBlocks.map((block, index) => (
+            <section key={index} className="content-block">
+              {block.type === "image" && (
+                <img src={block.image.url} alt="Content" className="post-img" />
+              )}
+              {block.type === "text" && (
+                <p className="post-text">{block.text}</p>
+              )}
+              {block.type === "code" && (
+                <pre className="post-code">
+                  {block.code.language && <p>{block.code.language}</p>}
+                  <code>{block.code.code}</code>
+                </pre>
+              )}
+              <hr className="post-hr" />
+            </section>
+          ))}
         </article>
       </div>
     </>

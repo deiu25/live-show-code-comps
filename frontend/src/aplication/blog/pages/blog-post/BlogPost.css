@@ -132,3 +132,16 @@
 .post-blockquote::after {
   content: close-quote;
 }
+
+.post-code {
+  background-color: #222226;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  font-family: 'Courier New', monospace;
+  font-size: 1.25em;
+  margin: 0 auto;
+  max-width: 20em;
+  overflow-x: auto;
+  margin-bottom: 2em;
+}

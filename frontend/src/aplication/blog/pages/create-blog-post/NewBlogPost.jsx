@@ -13,6 +13,7 @@ import useFileHandler from "../../customHooks/useFileHandler";
 import { validateNewBlogPost } from "../../utils/validation";
 import { ReactComponent as AddImageIcon } from "../../assets/icons/add-image-svg.svg";
 import { ReactComponent as AddTextIcon } from "../../assets/icons/add-text-svg.svg";
+import { ReactComponent as AddCodeIcon } from "../../assets/icons/add-code-svg.svg";
 
 const NewBlogPost = () => {
   const navigate = useNavigate();
@@ -208,6 +209,9 @@ const NewBlogPost = () => {
               </button>
               <button className="add-button" onClick={() => addContentBlock("text")}>
                 <AddTextIcon /> 
+              </button>
+              <button className="add-button" onClick={() => addContentBlock("code")}>
+                <AddCodeIcon />
               </button>
             </div>
         <hr />

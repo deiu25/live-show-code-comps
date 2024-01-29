@@ -29,7 +29,7 @@ const postSchema = new mongoose.Schema({
     {
       type: {
         type: String,
-        enum: ["image", "text"],
+        enum: ["image", "text", "code"],
         required: true,
       },
       text: String,
@@ -37,8 +37,10 @@ const postSchema = new mongoose.Schema({
         public_id: String,
         url: String,
       },
+      code: String, 
+      language: String, 
     },
-  ],
+  ],  
   tags: [
     {
       type: String,
