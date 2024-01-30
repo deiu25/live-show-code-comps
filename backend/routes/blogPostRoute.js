@@ -4,7 +4,9 @@ import { adminOnly, protect } from "../middleware/authMiddleware.js";
 import { 
   createBlogPost, 
   getBlogPosts, 
-  getBlogPost 
+  getBlogPost, 
+  updateBlogPost,
+  deleteBlogPost
 } from "../controllers/blogController.js";
 
 const upload = multer();
@@ -26,5 +28,11 @@ blogPostRouter.get("/", getBlogPosts);
 
 // Get a specific blog post by id
 blogPostRouter.get("/:id", getBlogPost);
+
+// Update a specific blog post by id
+blogPostRouter.put("/:id", protect, adminOnly, updateBlogPost);
+
+// Delete a specific blog post by id
+blogPostRouter.delete("/:id", protect, adminOnly, deleteBlogPost);
 
 export default blogPostRouter;

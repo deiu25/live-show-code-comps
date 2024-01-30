@@ -2,8 +2,10 @@
 import React from "react";
 import "./BlogCard.css";
 import { Link } from "react-router-dom";
+import { useDeleteBlogPost } from "../../customHooks/useDeleteBlogPost";
 
 export const BlogCard = ({ id, title, description, headerImage }) => {
+  const confirmDelete = useDeleteBlogPost();
   return (
     <li className="blog-cards_item">
       <div className="blog-card">
@@ -14,7 +16,9 @@ export const BlogCard = ({ id, title, description, headerImage }) => {
           <h2 className="blog-card_title">{title}</h2>
           <p className="blog-card_text">{description}</p>
           <Link to={`/blog/${id}`} className="blog-card_link">
-          <button className="blog-btn blog-card_btn">Read More</button>
+            <button className="blog-btn blog-card_btn">Read More</button>
+            <button className="blog-btn blog-card_btn">Edit</button>
+            <button onClick={() => confirmDelete(id)} className="blog-btn blog-card_btn">Delete</button>
           </Link>
         </div>
       </div>

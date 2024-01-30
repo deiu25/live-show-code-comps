@@ -84,3 +84,58 @@ export const getBlogPost = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+// Update BlogPost
+export const updateBlogPost = async (req, res) => {
+  try {
+    const post = await blogPostModel.findById(req.params.id);
+
+    // Procesarea imaginilor header
+    let imagesLinks = [];
+    if (req.files.images) {
+      imagesLinks = await uploadImages(req.files.images);
+    }
+
+    // Procesarea imaginilor din contentBlocks
+    let contentBlocksImagesLinks = [];
+    if (req.files.contentBlocksImages) {
+      contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages);
+    }
+
+    req.body.headerImage = imagesLinks;
+    req.body.user = req.user._id;
+
+    // Asociază fiecare imagine din contentBlocks
+    let imageIndex = 0;
+    req.body.contentBlocks = req.body.contentBlocks.map((block) => {
+      if (block.type === "image") {
+        block.image = contentBlocksImagesLinks[imageIndex++];
+      }
+      return block;
+    });
+
+    const updatedPost = await blogPostModel.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json({ success: true, post: updatedPost });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// Delete BlogPost
+export const deleteBlogPost = async (req, res) => {
+  try {
+    const post = await blogPostModel.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
+    await post.remove();
+    res.status(204).json({ success: true, post: {} });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};

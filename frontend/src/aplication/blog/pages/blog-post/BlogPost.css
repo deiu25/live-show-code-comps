@@ -160,7 +160,7 @@
   background-color: rgb(1, 22, 39);
   border-radius: 0 0 5px 5px;
   padding: 15px;
-  font-family: 'Courier New', monospace;
+  font-family: 'Courier New', monospace !important;
   font-size: 1.25em;
   margin: 0 !important;
   max-width: auto;

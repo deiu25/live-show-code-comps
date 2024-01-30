@@ -100,7 +100,7 @@ export const BlogPost = () => {
                     </button>
                   </div>
                   <SyntaxHighlighter
-                    language={block.code.language}
+                    language={block.language === 'react' ? 'jsx' : block.code.language}
                     className="post-code"
                     style={nightOwlStyle}
                   >
