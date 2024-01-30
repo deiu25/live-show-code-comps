@@ -5,9 +5,23 @@ const useContentBlocks = () => {
   const [contentBlocks, setContentBlocks] = useState([]);
 
   const addContentBlock = (type) => {
-    const newBlock = type === "image" ? { type, file: null } : { type, text: "" };
+    let newBlock;
+    switch (type) {
+      case 'image':
+        newBlock = { type, file: null };
+        break;
+      case 'text':
+        newBlock = { type, text: '' };
+        break;
+      case 'code':
+        newBlock = { type, code: '', language: 'plaintext' }; 
+        break;
+      default:
+        return;
+    }
     setContentBlocks(prevBlocks => [...prevBlocks, newBlock]);
   };
+  
 
   const deleteContentBlock = (index) => {
     setContentBlocks(prevBlocks => prevBlocks.filter((_, i) => i !== index));
@@ -17,7 +31,7 @@ const useContentBlocks = () => {
     setContentBlocks(prevBlocks =>
       prevBlocks.map((block, i) => (i === index ? { ...block, ...data } : block))
     );
-  };
+  };  
 
   const moveContentBlock = (index, direction) => {
     setContentBlocks(prevBlocks => {

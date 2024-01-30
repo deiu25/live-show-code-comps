@@ -34,6 +34,10 @@ const NewBlogPost = () => {
 
   const { files, previewSources, handleFileChange, handleDeletePreview } =
     useFileHandler();
+  const handleCodeBlockChange = (e, index) => {
+    const { name, value } = e.target;
+    updateContentBlock(index, { [name]: value });
+  };
   const {
     contentBlocks,
     addContentBlock,
@@ -82,9 +86,14 @@ const NewBlogPost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const formErrors = validateNewBlogPost(inputs, files, isLoggedIn, isVerified);
-  
+
+    const formErrors = validateNewBlogPost(
+      inputs,
+      files,
+      isLoggedIn,
+      isVerified
+    );
+
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
@@ -98,9 +107,15 @@ const NewBlogPost = () => {
       if (block.type === "image" && block.file) {
         formData.append("contentBlocksImages", block.file);
         formData.append(`contentBlocks[${index}][type]`, block.type);
-      } else if (block.type === "text") {
+      }
+      if (block.type === "text") {
         formData.append(`contentBlocks[${index}][text]`, block.text);
         formData.append(`contentBlocks[${index}][type]`, "text");
+      }
+      if (block.type === "code") {
+        formData.append(`contentBlocks[${index}][code]`, block.code);
+        formData.append(`contentBlocks[${index}][language]`, block.language);
+        formData.append(`contentBlocks[${index}][type]`, "code");
       }
     });
 
@@ -200,20 +215,30 @@ const NewBlogPost = () => {
             handleContentBlockFileChange={(e, index) =>
               updateContentBlock(index, { file: e.target.files[0] })
             }
+            handleCodeBlockChange={handleCodeBlockChange}
             handleDeleteContentBlock={deleteContentBlock}
             moveBlockUp={(index) => moveContentBlock(index, "up")}
             moveBlockDown={(index) => moveContentBlock(index, "down")}
           />
-              <button className="add-button" onClick={() => addContentBlock("image")}>
-                <AddImageIcon /> 
-              </button>
-              <button className="add-button" onClick={() => addContentBlock("text")}>
-                <AddTextIcon /> 
-              </button>
-              <button className="add-button" onClick={() => addContentBlock("code")}>
-                <AddCodeIcon />
-              </button>
-            </div>
+          <button
+            className="add-button"
+            onClick={() => addContentBlock("image")}
+          >
+            <AddImageIcon />
+          </button>
+          <button
+            className="add-button"
+            onClick={() => addContentBlock("text")}
+          >
+            <AddTextIcon />
+          </button>
+          <button
+            className="add-button"
+            onClick={() => addContentBlock("code")}
+          >
+            <AddCodeIcon />
+          </button>
+        </div>
         <hr />
         <TagsManager
           tags={tags}

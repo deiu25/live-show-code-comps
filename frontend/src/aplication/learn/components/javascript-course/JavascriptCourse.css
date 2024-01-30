@@ -1,0 +1,120 @@
+.course-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 120px;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.course-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.course-body h2 {
+  margin: 0;
+}
+
+.course-body p {
+  color: #b4b4b4;
+}
+
+.course-body .course-lessons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.course-body .course-lessons .lesson-card {
+  width: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.course-body .course-lessons .lesson-card:hover {
+  transform: translateY(-10px);
+}
+
+.course-body .course-lessons .lesson-card h3 {
+  margin: 0;
+  color: #fff;
+}
+
+.course-body .course-lessons .lesson-card p {
+  color: #b4b4b4;
+}
+
+.course-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.course-map {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chapter-card {
+  flex: 0 0 calc(20% - 20px);
+  width: 200px;
+  height: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.chapter-card:hover {
+  transform: translateY(-10px);
+}
+
+.chapter-card h3 {
+  margin: 0;
+  color: #fff;
+}
+
+.chapter-card p {
+  color: #b4b4b4;
+}
+
+
+@media (max-width: 1024px) {
+    .chapter-card {
+      flex: 0 0 calc(33.33% - 20px);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .chapter-card {
+      flex: 0 0 calc(50% - 20px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .chapter-card {
+      flex: 0 0 100%;
+    }
+  }
+  
