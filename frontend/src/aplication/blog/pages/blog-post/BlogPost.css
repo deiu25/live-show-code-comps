@@ -3,7 +3,7 @@
   color: #cccccc;
   font-family: 'Georgia', 'Times New Roman', Times, serif;
   padding-bottom: 3em;
-  padding-top: 17vh;
+  padding-top: 10vh;
 }
 
 .post-profile {
@@ -20,7 +20,7 @@
 
 .post-hr {
   overflow: visible;
-  padding: 0;
+  padding: 1em 0;
   border: none;
   border-top: medium double #333;
   color: #333;
@@ -38,8 +38,18 @@
 }
 
 .post-article {
-  margin: 0 auto;
+  margin: 7vh auto;
   position: relative;
+  max-width: 66em;
+  height: auto;
+  padding: 20px;
+  background: #222226;
+  box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.23);
+  border-radius: 15px;
+}
+
+.content-block {
+  margin: 0 auto;
   max-width: 66em;
   height: auto;
   padding: 20px;
@@ -65,20 +75,7 @@
 }
 
 .post-headline-1 {
-  font-size: 7.5vw;
-}
-
-.post-headline-2 {
-  font-size: 8vw;
-}
-
-.post-subheading {
-  color: #ccc;
-  font-size: 1.5625em;
-  max-width: 25em;
-  margin: 0 auto;
-  text-align: center;
-  padding-bottom: 1.5em;
+  font-size: 5.5vw;
 }
 
 .post-section {
@@ -90,9 +87,9 @@
     
 .post-section p:first-of-type:first-letter {
   float: left;
-  font-size: 6em;
+  font-size: 4em;
   line-height: 1;
-  margin-top: -0.2em;
+  margin-top: -0.3em;
   margin-bottom: -0.2em;
   margin-right: 0.1em;
   color: #ebcb34;
@@ -102,6 +99,10 @@
   max-width: 20%;
   margin-bottom: 1.33em;
   vertical-align: middle;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 10vh auto;
 }
 
 .post-blockquote {
@@ -133,15 +134,56 @@
   content: close-quote;
 }
 
-.post-code {
+.code-card{
+  max-height: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   background-color: #222226;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+}
+
+.code-title {
+  font-size: 18px;
+  font-weight: bold;
+  background-color: rgb(1, 22, 39);
+  padding: 5px 15px 0 15px;
+  text-transform: uppercase;
+}
+
+.post-code {
+  background-color: rgb(1, 22, 39);
+  border-radius: 0 0 5px 5px;
   padding: 15px;
   font-family: 'Courier New', monospace;
   font-size: 1.25em;
-  margin: 0 auto;
-  max-width: 20em;
+  margin: 0 !important;
+  max-width: auto;
+  max-height: 100em;
   overflow-x: auto;
   margin-bottom: 2em;
+}
+
+.copy-button {
+  background-color: rgb(1, 22, 39);
+  color: white;
+  border: none;
+  height: 48px;
+  width: 120px;
+  cursor: pointer;
+  margin-left: auto; 
+}
+
+.copy-button:active {
+  outline: none;
+  transform: translateY(4px);
+}
+
+.copy-button:focus {
+  outline: none;
 }

@@ -27,12 +27,6 @@ const ContentBlocksManager = ({
               <label htmlFor="code" className="myForm-label">
                 Code
               </label>
-              <textarea
-                className="myForm-input-textArea"
-                value={block.code}
-                name="code"
-                onChange={(e) => handleCodeBlockChange(e, index)}
-              />
               <label htmlFor="language" className="myForm-label">
                 Language
               </label>
@@ -59,6 +53,12 @@ const ContentBlocksManager = ({
                 <option value="angular">angular</option>
                 <option value="typescript">typescript</option>
               </select>
+              <textarea
+                className="myForm-input-textArea"
+                value={block.code}
+                name="code"
+                onChange={(e) => handleCodeBlockChange(e, index)}
+              />
             </div>
           ) : (
             <textarea
