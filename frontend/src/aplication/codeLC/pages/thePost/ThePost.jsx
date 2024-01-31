@@ -3,14 +3,10 @@ import "./ThePost.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
-import {
-  fetchPostById,
-  updatePost,
-} from "../../redux/features/posts/postSlice";
 import { PostNavigation } from "../../components/thePost/PostNavigation";
 import { CodeEditorContainer } from "../../components/thePost/CodeEditorContainer";
 import useProjectTitle from "../../customHooks/useProjectTitle";
+import { fetchPostById, updatePost } from "../../../../redux/features/posts/postSlice";
 
 export const ThePost = () => {
   const dispatch = useDispatch();

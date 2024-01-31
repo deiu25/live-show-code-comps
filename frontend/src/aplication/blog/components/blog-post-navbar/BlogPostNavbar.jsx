@@ -1,12 +1,9 @@
 import React from "react";
 import "../new-blog-navbar/NewBlogNavbar.css";
 import { Link, useNavigate } from "react-router-dom";
-import livecodeshowlogo1 from "../../../../assets/logo/livecodeshowlogo1.png";
-import {
-  ShowOnLogin,
-  ShowOnLogout,
-} from "../../../auth/components/protect/hiddenLink";
+import livecodeshowlogo1 from "../../../codeLC/assets/logo/livecodeshowlogo1.png";
 import { useSelector } from "react-redux";
+import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
 
 export const BlogPostNavbar = () => {
   const navigate = useNavigate();

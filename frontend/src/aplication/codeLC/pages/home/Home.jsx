@@ -4,8 +4,8 @@ import { HomeSidebar } from "../../components/home/home-sidebar/HomeSidebar";
 import { HomeCurentSection } from "../../components/home/home-curent-section/HomeCurentSection";
 import { HomeAllPosts } from "../../components/home/home-posts/HomeAllPosts";
 import { About } from "../about/About";
-import { BlogPosts } from "../../aplication/blog/pages/blog-posts/BlogPosts";
-import { Courses } from "../../aplication/learn/components/courses/Courses";
+import { Courses } from "../../../learn/components/courses/Courses";
+import { BlogPosts } from "../../../blog/pages/blog-posts/BlogPosts";
 
 
 export const Home = ({ children }) => {

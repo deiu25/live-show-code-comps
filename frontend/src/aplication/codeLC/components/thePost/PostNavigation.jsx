@@ -5,7 +5,8 @@ import livecodeshowlogo1 from "../../assets/logo/livecodeshowlogo1.png";
 import { ReactComponent as Edit } from "../../assets/icons/edit.svg";
 import { ReactComponent as SaveTitle } from "../../assets/icons/check-circle.svg";
 import { ReactComponent as Save } from "../../assets/icons/save-project.svg";
-import { ShowOnLogin, ShowOnLogout } from "../../aplication/auth/components/protect/hiddenLink";
+import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
+
 
 export const PostNavigation = ({
   title,

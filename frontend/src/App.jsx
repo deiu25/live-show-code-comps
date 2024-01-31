@@ -1,9 +1,9 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home } from "./pages/home/Home";
 import axios from "axios";
-import { HomeAllPosts } from "./components/home/home-posts/HomeAllPosts";
-import { About } from "./pages/about/About";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home } from "./aplication/codeLC/pages/home/Home";
+import { HomeAllPosts } from "./aplication/codeLC/components/home/home-posts/HomeAllPosts";
+import { About } from "./aplication/codeLC/pages/about/About";
 import { Login } from "./aplication/auth/pages/auth/Login";
 import { Signup } from "./aplication/auth/pages/auth/Singup";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,8 +18,8 @@ import { LoginWithCode } from "./aplication/auth/pages/auth/LoginWithCode";
 import { Verify } from "./aplication/auth/pages/auth/Verify";
 import { Profile } from "./aplication/auth/pages/profile/Profile";
 import { UserList } from "./aplication/auth/pages/userList/UserList";
-import { NewProject } from "./pages/newProject/NewProject";
-import { ThePost } from "./pages/thePost/ThePost";
+import { NewProject } from "./aplication/codeLC/pages/newProject/NewProject";
+import { ThePost } from "./aplication/codeLC/pages/thePost/ThePost";
 
 import NewBlogPost from "./aplication/blog/pages/create-blog-post/NewBlogPost";
 import { BlogPosts } from "./aplication/blog/pages/blog-posts/BlogPosts";

@@ -1,28 +1,29 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const PostsHeader = () => {
   return (
     <div className="header-section">
       <ul className="nav justify-content-center">
         <li className="nav-item">
-          <a className="nav-link" href="category.html">
-          Newest
-          </a>
+          <Link className="nav-link" to="/newest">
+            Newest
+          </Link>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="category.html">
+          <Link className="nav-link" to="/most-viewed">
             Most Viewed
-          </a>
+          </Link>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="category.html">
+          <Link className="nav-link" to="/top-rated">
             Top Rated
-          </a>
+          </Link>
         </li>
         <li className="nav-item dropdown">
-          <a
+          <Link
             className="nav-link dropdown-toggle"
-            href="#"
+            to="/components"
             id="navbarDropdown"
             role="button"
             data-toggle="dropdown"
@@ -30,18 +31,18 @@ export const PostsHeader = () => {
             aria-expanded="false"
           >
             Components
-          </a>
+          </Link>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a className="dropdown-item" href="#">
+            <Link className="dropdown-item" to="/button">
               Button
-            </a>
-            <a className="dropdown-item" href="#">
+            </Link>
+            <Link className="dropdown-item" to="/navbar">
               Navibar
-            </a>
+            </Link>
             <div className="dropdown-divider"></div>
-            <a className="dropdown-item" href="#">
+            <Link className="dropdown-item" to="/dropdown">
               Dropdown
-            </a>
+            </Link>
           </div>
         </li>
       </ul>
@@ -54,5 +55,5 @@ export const PostsHeader = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,8 +1,8 @@
 // useLikes.js
 import { useDispatch, useSelector } from "react-redux";
-import { getLikesForPost, likePost } from "../redux/features/posts/postSlice";
 import { useCallback, useEffect, useMemo } from "react";
 import { createSelector } from "reselect";
+import { getLikesForPost, likePost } from "../../../redux/features/posts/postSlice";
 
 // Memoized selector using Reselect
 const createLikesSelector = () =>

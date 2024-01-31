@@ -3,10 +3,10 @@ import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./NewProject.css";
 import { useDispatch, useSelector } from "react-redux";
-import { savePost } from "../../redux/features/posts/postSlice";
 import { PostNavigation } from "../../components/thePost/PostNavigation";
 import { CodeEditorContainer } from "../../components/thePost/CodeEditorContainer";
 import useProjectTitle from "../../customHooks/useProjectTitle";
+import { savePost } from "../../../../redux/features/posts/postSlice";
 
 export const NewProject = () => {
   const dispatch = useDispatch();

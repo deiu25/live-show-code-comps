@@ -9,10 +9,10 @@ import { ReactComponent as Dislike } from "../../../assets/icons/dislike-icon.sv
 import { ReactComponent as Shortcut } from "../../../assets/icons/shortcut.svg";
 import { ReactComponent as EyeLook } from "../../../assets/icons/eye-look-icon.svg";
 import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-icon.svg";
-import { shortenText } from "../../../aplication/auth/pages/profile/Profile";
 import { useLikes } from "../../../customHooks/useLikes";
 import { useIframeUrl } from "../../../customHooks/useIframeUrl";
 import useDeletePost from "../../../customHooks/useDeletePost";
+import { shortenText } from "../../../../auth/pages/profile/Profile";
 
 function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
   const [showOverlay, setShowOverlay] = useState(true);
