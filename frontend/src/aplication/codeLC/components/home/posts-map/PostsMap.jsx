@@ -20,6 +20,7 @@ const PostList = memo(({ posts, onPostDelete  }) => (
           cssCode={post.cssCode}
           jsCode={post.jsCode}
           id={post._id}
+          user={post.user}
           onPostDelete={onPostDelete}
         />
       </div>

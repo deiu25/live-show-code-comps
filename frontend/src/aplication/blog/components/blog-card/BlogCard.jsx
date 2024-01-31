@@ -3,23 +3,12 @@ import React from "react";
 import "./BlogCard.css";
 import { useDeleteBlogPost } from "../../customHooks/useDeleteBlogPost";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 
 export const BlogCard = ({ id, title, description, headerImage, user: postUser }) => {
-  const { user } = useSelector((state) => state.auth);
-
-  const blogPosts = useSelector((state) => state.blogPosts.blogPosts);
-
-  console.log("blogPost", blogPosts);
-  console.log(user);
-
-  const isAdmin = user?.role === "admin";
-  console.log(isAdmin);
+  const { isAdmin, isUserLoggedIn, isUserCreator } = useAuthAdminStatus(postUser);
 
   const confirmDelete = useDeleteBlogPost();
-
-  const isUserLoggedIn = user !== null;
-  const isUserCreator = user?._id === postUser?._id;
 
   return (
     <li className="blog-cards_item">
@@ -33,7 +22,7 @@ export const BlogCard = ({ id, title, description, headerImage, user: postUser }
           <Link to={`/blog/${id}`} className="blog-card_link">
             <button className="blog-btn blog-card_btn">Read More</button>
           </Link>
-          {isUserLoggedIn && isUserCreator && (
+          {isUserLoggedIn && isUserCreator && isAdmin && (
             <>
               <button className="blog-btn blog-card_btn">Edit</button>
               <button

@@ -13,14 +13,17 @@ import { useLikes } from "../../../customHooks/useLikes";
 import { useIframeUrl } from "../../../customHooks/useIframeUrl";
 import useDeletePost from "../../../customHooks/useDeletePost";
 import { shortenText } from "../../../../auth/pages/profile/Profile";
+import { useAuthAdminStatus } from "../../../../customHooks/useAuthAdminStatus";
 
-function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
+function PostCard({ id, title, htmlCode, cssCode, jsCode, user: postUser }) {
   const [showOverlay, setShowOverlay] = useState(true);
   const shortenedTitle = shortenText(title, 20);
   const [showFullTitle, setShowFullTitle] = useState(false);
   const markupUrl = useIframeUrl(htmlCode, cssCode, jsCode);
   const { likes, userWhoLiked, handleLike } = useLikes(id);
   const confirmDelete = useDeletePost();
+
+  const { isAdmin, isUserLoggedIn, isUserCreator } = useAuthAdminStatus(postUser);
 
   const handleMouseMove = useCallback(() => {
     setShowOverlay(true);
@@ -51,9 +54,10 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode }) {
           <Link to={`/post/${id}`} className="btn view-btn">
             View
           </Link>
+          {isUserLoggedIn && isUserCreator && isAdmin && (
           <button onClick={() => confirmDelete(id)} className="btn btn-danger">
             Delete
-          </button>
+          </button> )}
           <p className="post-card-title text-truncate">
             {showFullTitle ? title : shortenedTitle}
           </p>
