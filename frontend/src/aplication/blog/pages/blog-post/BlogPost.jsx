@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getBlogPost } from "../../api-helpers/helpers";
+
 import "./BlogPost.css";
 import { BlogPostNavbar } from "../../components/blog-post-navbar/BlogPostNavbar";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import nightOwlStyle from "react-syntax-highlighter/dist/esm/styles/prism/night-owl";
+import { getBlogPost } from "../../../../redux/features/blog/blogService";
 
 export const BlogPost = () => {
   const { id } = useParams();

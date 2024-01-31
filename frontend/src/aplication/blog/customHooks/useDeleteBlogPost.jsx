@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert';
-import { deleteBlogPost } from '../api-helpers/helpers';
+import { deleteBlogPost } from '../../../redux/features/blog/blogSlice';
+
 
 export const useDeleteBlogPost = () => {
     const dispatch = useDispatch();

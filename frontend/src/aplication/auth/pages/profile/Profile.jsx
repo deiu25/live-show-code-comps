@@ -26,7 +26,7 @@ export const Profile = () => {
 
   const dispatch = useDispatch();
 
-  const { isLoading, user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   const initialState = {
     firstname: user?.firstname || "",

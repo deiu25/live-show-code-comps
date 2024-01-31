@@ -1,4 +1,4 @@
-export const fetchWithCredentialsBlog = async (url, options) => {
+export const fetchWithCredentialsBlog = async (url, options = {}) => {
   const headers = {};
 
   if (!(options.body instanceof FormData)) {
@@ -6,7 +6,9 @@ export const fetchWithCredentialsBlog = async (url, options) => {
   }
   
   // Log the body being sent to the server
-  console.log('Sending request to server with body:', options.body);
+  if (options.body) {
+    console.log('Sending request to server with body:', options.body);
+  }
 
   const response = await fetch(url, {
     ...options,
@@ -22,6 +24,6 @@ export const fetchWithCredentialsBlog = async (url, options) => {
       `Network response was not ok, status code: ${response.status}`
     );
   }
-
-  return response.json();
+  const text = await response.text();
+  return text.length ? JSON.parse(text) : {};
 };

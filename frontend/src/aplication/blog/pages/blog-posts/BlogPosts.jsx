@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 import "./BlogPosts.css";
 import { BlogCard } from "../../components/blog-card/BlogCard";
-import { getBlogPosts } from "../../api-helpers/helpers";
+import { getBlogPosts } from "../../../../redux/features/blog/blogService";
+
 
 export const BlogPosts = () => {
   const [posts, setPosts] = useState([]);

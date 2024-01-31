@@ -3,7 +3,7 @@ import "./NewBlogPost.css";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createBlogPost } from "../../api-helpers/helpers";
+
 import { NewBlogNavbar } from "../../components/new-blog-navbar/NewBlogNavbar";
 import ContentBlocksManager from "../../components/content-blocks-manager/ContentBlocksManager";
 import TagsManager from "../../components/tags-manager/TagsManager";
@@ -14,6 +14,7 @@ import { validateNewBlogPost } from "../../utils/validation";
 import { ReactComponent as AddImageIcon } from "../../assets/icons/add-image-svg.svg";
 import { ReactComponent as AddTextIcon } from "../../assets/icons/add-text-svg.svg";
 import { ReactComponent as AddCodeIcon } from "../../assets/icons/add-code-svg.svg";
+import { createBlogPost } from "../../../../redux/features/blog/blogService";
 
 const NewBlogPost = () => {
   const navigate = useNavigate();

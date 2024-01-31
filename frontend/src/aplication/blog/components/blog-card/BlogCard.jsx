@@ -6,6 +6,7 @@ import { useDeleteBlogPost } from "../../customHooks/useDeleteBlogPost";
 
 export const BlogCard = ({ id, title, description, headerImage }) => {
   const confirmDelete = useDeleteBlogPost();
+  
   return (
     <li className="blog-cards_item">
       <div className="blog-card">
