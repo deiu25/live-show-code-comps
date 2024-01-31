@@ -22,10 +22,11 @@ export const BlogPosts = () => {
           <BlogCard
             key={post._id}
             id={post._id}
+            user={post.user}
             title={post.title}
             text={post.description}
             headerImage={
-              post.headerImage.length > 0 ? post.headerImage[0].url : ""
+            post.headerImage.length > 0 ? post.headerImage[0].url : ""
             }
           />
         ))}

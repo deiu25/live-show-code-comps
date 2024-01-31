@@ -5,16 +5,21 @@ import { useDeleteBlogPost } from "../../customHooks/useDeleteBlogPost";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export const BlogCard = ({ id, title, description, headerImage }) => {
-  const blogPost = useSelector((state) => state.blogPosts.post);
-  console.log("blogPost", blogPost);
+export const BlogCard = ({ id, title, description, headerImage, user: postUser }) => {
   const { user } = useSelector((state) => state.auth);
+
+  const blogPosts = useSelector((state) => state.blogPosts.blogPosts);
+
+  console.log("blogPost", blogPosts);
   console.log(user);
 
   const isAdmin = user?.role === "admin";
   console.log(isAdmin);
 
   const confirmDelete = useDeleteBlogPost();
+
+  const isUserLoggedIn = user !== null;
+  const isUserCreator = user?._id === postUser?._id;
 
   return (
     <li className="blog-cards_item">
@@ -28,20 +33,20 @@ export const BlogCard = ({ id, title, description, headerImage }) => {
           <Link to={`/blog/${id}`} className="blog-card_link">
             <button className="blog-btn blog-card_btn">Read More</button>
           </Link>
-
-            <button className="blog-btn blog-card_btn">Edit</button>
-
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                confirmDelete(id);
-              }}
-              className="blog-btn blog-card_btn"
-            >
-              Delete
-            </button>
-
+          {isUserLoggedIn && isUserCreator && (
+            <>
+              <button className="blog-btn blog-card_btn">Edit</button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  confirmDelete(id);
+                }}
+                className="blog-btn blog-card_btn"
+              >
+                Delete
+              </button>
+            </>
+          )}
         </div>
       </div>
     </li>
