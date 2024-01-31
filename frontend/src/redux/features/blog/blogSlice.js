@@ -1,6 +1,6 @@
 // blogSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { deleteBlogPostService, getBlogPosts } from "./blogService";
+import { deleteBlogPostService, getBlogPost, getBlogPosts } from "./blogService";
 
 const initialState = {
   blogPosts: [],
@@ -26,6 +26,20 @@ export const fetchBlogPosts = createAsyncThunk(
     }
   }
 );
+
+// Adaăugă un thunk asincron pentru a prelua o postare după id  
+export const fetchBlogPost = createAsyncThunk(
+  "blog/fetchBlogPost",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await getBlogPost(id);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 
 // Async thunk for deleting a blog post
 export const deleteBlogPost = createAsyncThunk(
@@ -53,12 +67,14 @@ const blogPostSlice = createSlice({
         );
       })
       .addCase(deleteBlogPost.rejected, (state, action) => {
-        console.log(action.payload);
+        state.error = action.payload;
       });
       builder.addCase(fetchBlogPosts.fulfilled, (state, action) => {
         state.blogPosts = action.payload;
-        console.log(action.payload);
-      });      
+      });   
+      builder.addCase(fetchBlogPost.fulfilled, (state, action) => {
+        state.post = action.payload;
+      });   
   },
 });
 

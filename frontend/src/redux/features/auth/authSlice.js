@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import authService from "./authService";
 
-
 const initialState = {
   isLoggedIn: false,
   user: null,
@@ -407,7 +406,7 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.user = null;
         toast.success(action.payload);
-        
+
         // Remove token from local storage.
         localStorage.removeItem("token");
         // Remove user ID from local storage.
@@ -428,13 +427,11 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isLoggedIn = action.payload;
-
       })
       .addCase(getLoginStatus.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-
       })
 
       // Get User
@@ -468,8 +465,8 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.user = action.payload;
         toast.success("User Updated");
-                // Store user ID in local storage.
-                localStorage.setItem("userId", state.user._id);
+        // Store user ID in local storage.
+        localStorage.setItem("userId", state.user._id);
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.isLoading = false;

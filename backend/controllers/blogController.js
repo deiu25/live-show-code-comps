@@ -74,10 +74,13 @@ export const getBlogPosts = async (req, res) => {
   }
 };
 
-// Get BlogPost
-export const getBlogPost = async (req, res) => {
+// Get BlogPost by id
+export const getBlogPostById = async (req, res) => {
   try {
     const post = await blogPostModel.findById(req.params.id).populate("user", "name");
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
     res.status(200).json({ success: true, post });
   } catch (error) {
     console.error(error);

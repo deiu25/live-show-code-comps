@@ -4,7 +4,7 @@ import { adminOnly, protect } from "../middleware/authMiddleware.js";
 import { 
   createBlogPost, 
   getBlogPosts, 
-  getBlogPost, 
+  getBlogPostById, 
   deleteBlogPost
 } from "../controllers/blogController.js";
 
@@ -26,7 +26,7 @@ blogPostRouter.post(
 blogPostRouter.get("/", getBlogPosts);
 
 // Get a specific blog post by id
-blogPostRouter.get("/:id", getBlogPost);
+blogPostRouter.get("/:id", getBlogPostById);
 
 // Delete a specific blog post by id
 blogPostRouter.delete("/:id", protect, adminOnly, deleteBlogPost);
