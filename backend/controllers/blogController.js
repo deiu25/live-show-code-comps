@@ -66,8 +66,8 @@ async function uploadImages(files) {
 // Get BlogPosts
 export const getBlogPosts = async (req, res) => {
   try {
-    const posts = await blogPostModel.find().populate("user", "name");
-    res.status(200).json({ success: true, posts });
+    const blogPosts = await blogPostModel.find().populate("user", "name");
+    res.status(200).json({ success: true, blogPosts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });

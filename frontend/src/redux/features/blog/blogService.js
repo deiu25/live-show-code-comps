@@ -18,11 +18,11 @@ export const createBlogPost = async (formData) => {
   }
 };
 
-// get all blog posts
+// get all blog Posts
 export const getBlogPosts = async () => {
   try {
     const res = await fetchWithCredentialsBlog(`${API_URL}`);
-    return res.posts;
+    return res.blogPosts;
   }
   catch (error) {
     console.log(error);

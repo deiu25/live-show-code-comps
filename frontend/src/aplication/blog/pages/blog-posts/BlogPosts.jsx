@@ -1,23 +1,18 @@
 // BlogPosts.js
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./BlogPosts.css";
 import { BlogCard } from "../../components/blog-card/BlogCard";
-import { getBlogPosts } from "../../../../redux/features/blog/blogService";
+import { fetchBlogPosts } from "../../../../redux/features/blog/blogSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 
 export const BlogPosts = () => {
-  const [posts, setPosts] = useState([]);
+  const dispatch = useDispatch();
+  const posts = useSelector(state => state.blogPosts.blogPosts);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const fetchedPosts = await getBlogPosts();
-      if (fetchedPosts) {
-        setPosts(fetchedPosts);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+    dispatch(fetchBlogPosts());
+  }, [dispatch]);
 
   return (
     <div className="blog-main">
