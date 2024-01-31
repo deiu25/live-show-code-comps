@@ -5,7 +5,7 @@ import livecodeshowlogo1 from "../../../../assets/logo/livecodeshowlogo1.png";
 import {
   ShowOnLogin,
   ShowOnLogout,
-} from "../../../../auth/components/protect/hiddenLink";
+} from "../../../auth/components/protect/hiddenLink";
 import { useSelector } from "react-redux";
 
 export const NewBlogNavbar = () => {

@@ -36,26 +36,21 @@ export const getBlogPost = async (id) => {
   }
 };
 
-export const updateBlogPost = async (id, formData) => {
-  try {
-    const res = await api.put(`/api/blogPosts/${id}`, formData);
-    if (res.status !== 200) {
-      return null;
-    }
-    return res.data.post;
-  } catch (err) {
-    return null;
-  }
-};
+// În fișierul cu acțiunile Redux
 
-export const deleteBlogPost = async (id) => {
+export const deleteBlogPost = (id) => async (dispatch) => {
   try {
     const res = await api.delete(`/api/blogPosts/${id}`);
-    if (res.status !== 204) {
-      return null;
+
+    if (res.status === 204) {
+      // Expedierea unei acțiuni de succes (de exemplu, pentru a actualiza starea)
+      dispatch({ type: 'DELETE_BLOG_POST_SUCCESS', payload: id });
+    } else {
+      // Expedierea unei acțiuni de eroare
+      dispatch({ type: 'DELETE_BLOG_POST_FAILURE', payload: id });
     }
-    return true;
   } catch (err) {
-    return null;
+    // Expedierea unei acțiuni de eroare
+    dispatch({ type: 'DELETE_BLOG_POST_ERROR', payload: id });
   }
 };

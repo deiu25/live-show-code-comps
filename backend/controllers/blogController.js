@@ -85,46 +85,6 @@ export const getBlogPost = async (req, res) => {
   }
 };
 
-// Update BlogPost
-export const updateBlogPost = async (req, res) => {
-  try {
-    const post = await blogPostModel.findById(req.params.id);
-
-    // Procesarea imaginilor header
-    let imagesLinks = [];
-    if (req.files.images) {
-      imagesLinks = await uploadImages(req.files.images);
-    }
-
-    // Procesarea imaginilor din contentBlocks
-    let contentBlocksImagesLinks = [];
-    if (req.files.contentBlocksImages) {
-      contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages);
-    }
-
-    req.body.headerImage = imagesLinks;
-    req.body.user = req.user._id;
-
-    // Asociază fiecare imagine din contentBlocks
-    let imageIndex = 0;
-    req.body.contentBlocks = req.body.contentBlocks.map((block) => {
-      if (block.type === "image") {
-        block.image = contentBlocksImagesLinks[imageIndex++];
-      }
-      return block;
-    });
-
-    const updatedPost = await blogPostModel.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    res.status(200).json({ success: true, post: updatedPost });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-};
-
 // Delete BlogPost
 export const deleteBlogPost = async (req, res) => {
   try {
@@ -132,10 +92,26 @@ export const deleteBlogPost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ success: false, error: "Post not found" });
     }
-    await post.remove();
-    res.status(204).json({ success: true, post: {} });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: error.message });
+
+    // Delete header image
+    if (post.headerImage && post.headerImage.public_id) {
+      await cloudinary.uploader.destroy(post.headerImage.public_id);
   }
+
+// Delete contentBlocks images
+if (post.contentBlocks && post.contentBlocks.length > 0) {
+  const imageDeletionPromises = post.contentBlocks
+      .filter(block => block.type === "image" && block.image && block.image.public_id)
+      .map(block => cloudinary.uploader.destroy(block.image.public_id));
+
+  await Promise.all(imageDeletionPromises);
+}
+
+await blogPostModel.deleteOne({ _id: post._id });
+res.status(204).json({ success: true });
+}
+catch (error) {
+console.error(error);
+res.status(500).json({ success: false, error: error.message });
+}
 };

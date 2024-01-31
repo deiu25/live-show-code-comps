@@ -1,8 +1,9 @@
 import React from "react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
-import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
+
 import { useSelector } from "react-redux";
+import { ShowOnLogin, ShowOnLogout } from "../../../aplication/auth/components/protect/hiddenLink";
 
 export const HomeSidebar = ({
   onTabChange,
