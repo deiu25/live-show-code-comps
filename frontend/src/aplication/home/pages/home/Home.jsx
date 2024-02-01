@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./Home.css";
-import { HomeSidebar } from "../../components/home/home-sidebar/HomeSidebar";
-import { HomeCurentSection } from "../../components/home/home-curent-section/HomeCurentSection";
-import { HomeAllPosts } from "../../components/home/home-posts/HomeAllPosts";
-import { About } from "../about/About";
+import { HomeSidebar } from "../../../home/components/home-sidebar/HomeSidebar";
+import { HomeCurentSection } from "../../customHooks/HomeCurentSection";
+import { HomeAllPosts } from "../../../codeLC/components/home/home-posts/HomeAllPosts";
+import { About } from "../../../about/pages/about/About";
 import { Courses } from "../../../learn/components/courses/Courses";
 import { BlogPosts } from "../../../blog/pages/blog-posts/BlogPosts";
 

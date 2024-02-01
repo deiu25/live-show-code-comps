@@ -21,7 +21,7 @@ genericRouter.post(
     { name: "images", maxCount: 10 },
     { name: "contentBlocksImages", maxCount: 10 },
   ]),
-  protect,
+    [protect, adminOnly],
   async (req, res) => {
     const type = req.params.type;
     let model, folder;
@@ -44,7 +44,7 @@ genericRouter.post(
 );
 
 // Get all posts/courses
-genericRouter.get("/:type", protect, async (req, res) => {
+genericRouter.get("/:type", async (req, res) => {
   const { model } = getModelAndFolder(req.params.type);
   if (!model) {
     return res.status(400).json({ success: false, error: "Invalid type" });
@@ -53,7 +53,7 @@ genericRouter.get("/:type", protect, async (req, res) => {
 });
 
 // Get a post/course by ID
-genericRouter.get("/:type/:id", protect, async (req, res) => {
+genericRouter.get("/:type/:id", async (req, res) => {
   const { model } = getModelAndFolder(req.params.type);
   if (!model) {
     return res.status(400).json({ success: false, error: "Invalid type" });

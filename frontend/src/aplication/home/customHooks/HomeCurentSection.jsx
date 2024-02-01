@@ -1,7 +1,7 @@
 //HomeCurentSection.jsx
 import React, { useState, useEffect } from 'react';
-import { PostsMap } from '../posts-map/PostsMap';
-import { usePosts } from '../posts-map/usePosts';
+import { PostsMap } from '../../codeLC/components/home/posts-map/PostsMap';
+import { usePosts } from '../../codeLC/components/home/posts-map/usePosts';
 
 export const HomeCurentSection = () => {
   const allPosts = usePosts((state) => state.posts?.data ?? []);

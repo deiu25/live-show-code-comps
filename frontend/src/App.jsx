@@ -1,9 +1,9 @@
 import "./App.css";
 import axios from "axios";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home } from "./aplication/codeLC/pages/home/Home";
+import { Home } from "./aplication/home/pages/home/Home";
 import { HomeAllPosts } from "./aplication/codeLC/components/home/home-posts/HomeAllPosts";
-import { About } from "./aplication/codeLC/pages/about/About";
+import { About } from "./aplication/about/pages/about/About";
 import { Login } from "./aplication/auth/pages/auth/Login";
 import { Signup } from "./aplication/auth/pages/auth/Singup";
 import { useDispatch, useSelector } from "react-redux";
