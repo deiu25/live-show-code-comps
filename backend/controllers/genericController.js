@@ -4,35 +4,35 @@ import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 
 const createPostOrCourse = async (model, folder, req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    let imagesLinks = [];
-    if (req.files.images) {
-      imagesLinks = await uploadImages(req.files.images, model.folder);
+    try {
+        const user = await User.findById(req.user._id);
+        let imagesLinks = [];
+        if (req.files.images) {
+            imagesLinks = await uploadImages(req.files.images, folder);
+        }
+
+        let contentBlocksImagesLinks = [];
+        if (req.files.contentBlocksImages) {
+            contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages, folder);
+        }
+
+        req.body.headerImage = imagesLinks;
+        req.body.user = user._id;
+
+        let imageIndex = 0;
+        req.body.contentBlocks = req.body.contentBlocks.map((block) => {
+            if (block.type === "image") {
+                block.image = contentBlocksImagesLinks[imageIndex++];
+            }
+            return block;
+        });
+
+        const post = await model.create(req.body);
+        res.status(201).json({ success: true, post });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: error.message });
     }
-
-    let contentBlocksImagesLinks = [];
-    if (req.files.contentBlocksImages) {
-      contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages, model.folder);
-    }
-
-    req.body.headerImage = imagesLinks;
-    req.body.user = user._id;
-
-    let imageIndex = 0;
-    req.body.contentBlocks = req.body.contentBlocks.map((block) => {
-      if (block.type === "image") {
-        block.image = contentBlocksImagesLinks[imageIndex++];
-      }
-      return block;
-    });
-
-    const post = await model.create(req.body);
-    res.status(201).json({ success: true, post });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
 };
 
 async function uploadImages(files, folder) {
