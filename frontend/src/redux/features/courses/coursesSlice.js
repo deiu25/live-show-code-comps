@@ -14,7 +14,7 @@ export const fetchCoursePosts = createAsyncThunk(
   "course/fetchCoursePosts",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getCoursePost();
+      const response = await getCoursePosts();
       return response;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -27,7 +27,7 @@ export const fetchCoursePost = createAsyncThunk(
   "course/fetchCoursePost",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await getCoursePosts(id);
+      const response = await getCoursePost(id);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

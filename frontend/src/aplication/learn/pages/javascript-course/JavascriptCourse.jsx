@@ -4,41 +4,9 @@ import "./JavascriptCourse.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCoursePosts } from "../../../../redux/features/courses/coursesSlice";
 
-const chapters = [
-  {
-    title: "Introducere în JavaScript",
-    description: "Descriere scurtă...",
-    id: 1,
-  },
-  {
-    title: "Variabile și Tipuri de Date",
-    description: "Descriere scurtă...",
-    id: 2,
-  },
-  {
-    title: "Structuri de Control",
-    description: "Descriere scurtă...",
-    id: 3,
-  },
-  {
-    title: "Funcții",
-    description: "Descriere scurtă...",
-    id: 4,
-  },
-  {
-    title: "Arrays",
-    description: "Descriere scurtă...",
-    id: 5,
-  },
-  { title: "Obiecte", description: "Descriere scurtă...", id: 6 },
-  { title: "Clase", description: "Descriere scurtă...", id: 7 },
-  { title: "DOM", description: "Descriere scurtă...", id: 8 },
-];
-
 export const JavascriptCourse = () => {
   const dispatch = useDispatch();
-  const posts = useSelector(state => state.coursePosts.items);
-  console.log(posts);
+  const posts = useSelector((state) => state.coursePosts.items);
 
   useEffect(() => {
     dispatch(fetchCoursePosts());
@@ -49,15 +17,19 @@ export const JavascriptCourse = () => {
       <BlogPostNavbar />
       <div className="course-body">
         <div className="course-header">
-          <div className="course-title">Curs Rapid Javascript</div>
+          <div className="course-title">Javascript Quick Course</div>
         </div>
         <div className="course-map">
-          {chapters.map((chapter) => (
-            <div className="chapter-card" key={chapter.id}>
-              <h3>{chapter.title}</h3>
-              <p>{chapter.description}</p>
-            </div>
-          ))}
+          {posts && posts.length > 0 ? (
+            posts.map((post) => (
+              <div className="chapter-card" key={post._id}>
+                <h3>{post.title}</h3>
+                <p>{post.description}</p>
+              </div>
+            ))
+          ) : (
+            <p>There are no posts available for this course.</p>
+          )}
         </div>
       </div>
     </>
