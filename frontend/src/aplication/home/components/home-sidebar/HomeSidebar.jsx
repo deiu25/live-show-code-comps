@@ -126,7 +126,7 @@ export const HomeSidebar = ({
           </button>
         </li>
         {isAdmin && (
-          <>
+          <div className="add-section-buttons">
             <li key="addPost" className="nav-item">
               <button
                 className="nav-link anchor-btn"
@@ -151,7 +151,20 @@ export const HomeSidebar = ({
                 )}
               </button>
             </li>
-          </>
+            <li key="addCourse" className="nav-item">
+              <button
+                className="nav-link anchor-btn"
+                onClick={() => {
+                  navigate("/NewCourse");
+                }}
+              >
+                <i className="fas fa-plus"></i>
+                {isSidebarOpen && (
+                  <span className="nav-text"> Add Course</span>
+                )}
+              </button>
+            </li>
+          </div>
         )}
       </ul>
 
@@ -163,8 +176,7 @@ export const HomeSidebar = ({
           </p>
         ) : (
           <p>
-            &copy; 2023 Syntax Seeker. All rights reserved. Built by Syntax
-            Seeker.
+            &copy; 2023 Syntax Seeker.
           </p>
         )}
       </div>

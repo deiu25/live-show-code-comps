@@ -4,7 +4,7 @@ import { HomeSidebar } from "../../../codeLC/components/home/home-sidebar/HomeSi
 import { HomeCurentSection } from "../../customHooks/HomeCurentSection";
 import { HomeAllPosts } from "../../../codeLC/components/home/home-posts/HomeAllPosts";
 import { About } from "../../../about/pages/about/About";
-import { Courses } from "../../../learn/components/courses/Courses";
+import { Courses } from "../../../learn/pages/courses/Courses";
 import { BlogPosts } from "../../../blog/pages/blog-posts/BlogPosts";
 
 

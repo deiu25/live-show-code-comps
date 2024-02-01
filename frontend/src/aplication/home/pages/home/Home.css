@@ -97,7 +97,7 @@
 /* SIDEBAE STYLE */
 #wrapper #sidebar {
   color: var(--white-color);
-  height: 110vh;
+  height: 100%;
   padding: 60px 20px;
   box-sizing: border-box;
   border-radius: 0px 0px 20px 0px;
@@ -423,6 +423,9 @@
 #wrapper #main-area .content-section .carousel h5 {
   font-size: 14px;
   color: var(--white-color);
+}
+.add-section-buttons {
+  margin-top: 20px;
 }
 @media (max-width: 320px) {
   #wrapper #sidebar {
