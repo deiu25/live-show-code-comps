@@ -5,7 +5,7 @@ import emailReducer from "./features/email/emailSlice";
 import filterSlice from "./features/auth/filterSlice";
 import postReducer from "./features/posts/postSlice";
 import blogPostSlice from "./features/blog/blogSlice";
-
+import coursesSlice from "./features/courses/coursesSlice";
 
 // Create the store
 const store = configureStore({
@@ -15,8 +15,8 @@ const store = configureStore({
     filter: filterSlice,
     posts: postReducer,
     blogPosts: blogPostSlice,
+    coursePosts: coursesSlice,
   },
 });
 
-// Export the store
 export default store;

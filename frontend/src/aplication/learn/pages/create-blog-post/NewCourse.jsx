@@ -12,10 +12,12 @@ import ContentBlocksManager from "../../../blog/components/content-blocks-manage
 import TagsManager from "../../../blog/components/tags-manager/TagsManager";
 import useContentBlocks from "../../../blog/customHooks/useContentBlocks";
 import useTagsManager from "../../../blog/customHooks/useTagsManager";
-import { createBlogPost } from "../../../../redux/features/blog/blogService";
 import { NewBlogNavbar } from "../../../blog/components/new-blog-navbar/NewBlogNavbar";
 import useFileHandler from "../../../blog/customHooks/useFileHandler";
 import { validateNewBlogPost } from "../../../blog/utils/validation";
+import { createCoursePost } from "../../../../redux/features/courses/coursesService";
+
+
 
 const NewCourse = () => {
   const navigate = useNavigate();
@@ -127,7 +129,7 @@ const NewCourse = () => {
     formData.append("tags", inputs.tags);
 
     try {
-      const response = await createBlogPost(formData);
+      const response = await createCoursePost(formData);
       if (!response) {
         throw new Error("Something went wrong.");
       }
