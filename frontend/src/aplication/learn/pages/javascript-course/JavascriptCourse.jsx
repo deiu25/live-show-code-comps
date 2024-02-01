@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BlogPostNavbar } from "../../../blog/components/blog-post-navbar/BlogPostNavbar";
 import "./JavascriptCourse.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCoursePosts } from "../../../../redux/features/courses/coursesSlice";
 
 const chapters = [
   {
@@ -34,6 +36,14 @@ const chapters = [
 ];
 
 export const JavascriptCourse = () => {
+  const dispatch = useDispatch();
+  const posts = useSelector(state => state.coursePosts.items);
+  console.log(posts);
+
+  useEffect(() => {
+    dispatch(fetchCoursePosts());
+  }, [dispatch]);
+
   return (
     <>
       <BlogPostNavbar />

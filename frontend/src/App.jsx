@@ -24,7 +24,7 @@ import { ThePost } from "./aplication/codeLC/pages/thePost/ThePost";
 import NewBlogPost from "./aplication/blog/pages/create-blog-post/NewBlogPost";
 import { BlogPosts } from "./aplication/blog/pages/blog-posts/BlogPosts";
 import { BlogPost } from "./aplication/blog/pages/blog-post/BlogPost";
-import { JavascriptCourse } from "./aplication/learn/components/javascript-course/JavascriptCourse";
+import { JavascriptCourse } from "./aplication/learn/pages/javascript-course/JavascriptCourse";
 import NewCourse from "./aplication/learn/pages/create-blog-post/NewCourse";
 
 
