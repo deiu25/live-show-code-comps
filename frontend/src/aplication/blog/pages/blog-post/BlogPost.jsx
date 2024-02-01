@@ -9,8 +9,7 @@ import { getBlogPost } from "../../../../redux/features/blog/blogService";
 
 export const BlogPost = () => {
   const { id } = useParams();
-  const [post, setPost] = useState(null);
-
+  const [item, setItem] = useState(null);
   const [isCopied, setIsCopied] = useState(false);
   const [copiedBlockIndex, setCopiedBlockIndex] = useState(null);
 
@@ -34,13 +33,13 @@ export const BlogPost = () => {
     const fetchPost = async () => {
       const fetchedPost = await getBlogPost(id);
       if (fetchedPost) {
-        setPost(fetchedPost);
+        setItem(fetchedPost);
       }
     };
     fetchPost();
   }, [id]);
 
-  if (!post) {
+  if (!item) {
     return <div>Loading...</div>;
   }
 
@@ -53,9 +52,9 @@ export const BlogPost = () => {
           <section className="content-block">
             <header className="post-header">
               <h1 className="post-h1">
-                <div className="post-headline-1">{post.title}</div>
+                <div className="post-headline-1">{item.title}</div>
               </h1>
-              {post.headerImage.map((image, index) => (
+              {item.headerImage.map((image, index) => (
                 <img
                   key={index}
                   src={image.url}
@@ -67,7 +66,7 @@ export const BlogPost = () => {
             <hr className="post-hr" />
             <section className="post-section">
               <section className="post-section">
-                <p>{post.description}</p>
+                <p>{item.description}</p>
               </section>
             </section>
             <br></br>
@@ -76,7 +75,7 @@ export const BlogPost = () => {
         </article>
 
         <article className="post-article">
-          {post.contentBlocks.map((block, index) => (
+          {item.contentBlocks.map((block, index) => (
             <section key={index} className="content-block">
               <hr className="post-hr" />
               {block.type === "image" && (

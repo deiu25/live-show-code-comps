@@ -3,18 +3,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { deleteBlogPostService, getBlogPost, getBlogPosts } from "./blogService";
 
 const initialState = {
-  blogPosts: [],
-  data: [],
-  headerImageURL: "",
-  post: null,
+  items: [],
   isLoading: false,
   error: null,
-  title: "",
-  content: "",
-  likesMap: {},
+  item: null,
 };
 
-// Adaugă un thunk asincron pentru a prelua postările
+// Add an asynchronous thunk to fetch the posts
 export const fetchBlogPosts = createAsyncThunk(
   "blog/fetchBlogPosts",
   async (_, { rejectWithValue }) => {
@@ -27,7 +22,7 @@ export const fetchBlogPosts = createAsyncThunk(
   }
 );
 
-// Adaăugă un thunk asincron pentru a prelua o postare după id  
+// Add an asynchronous thunk to fetch a single post
 export const fetchBlogPost = createAsyncThunk(
   "blog/fetchBlogPost",
   async (id, { rejectWithValue }) => {
@@ -40,8 +35,7 @@ export const fetchBlogPost = createAsyncThunk(
   }
 );
 
-
-// Async thunk for deleting a blog post
+// Add an asynchronous thunk to delete a post
 export const deleteBlogPost = createAsyncThunk(
   "blog/deleteBlogPost",
   async (id, { rejectWithValue }) => {
@@ -62,18 +56,18 @@ const blogPostSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(deleteBlogPost.fulfilled, (state, action) => {
-        state.blogPosts = state.blogPosts.filter(
-          (post) => post.id !== action.payload
+        state.items = state.items.filter(
+          (item) => item._id !== action.payload
         );
       })
       .addCase(deleteBlogPost.rejected, (state, action) => {
         state.error = action.payload;
       });
       builder.addCase(fetchBlogPosts.fulfilled, (state, action) => {
-        state.blogPosts = action.payload;
+        state.items = action.payload;
       });   
       builder.addCase(fetchBlogPost.fulfilled, (state, action) => {
-        state.post = action.payload;
+        state.item = action.payload;
       });   
   },
 });

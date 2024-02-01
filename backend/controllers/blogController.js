@@ -45,7 +45,7 @@ async function uploadImages(files) {
     files.map(async (file) => {
       return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
-          { resource_type: "auto" },
+          { resource_type: "auto", folder: "blog" },
           (error, result) => {
             if (error) {
               reject(error);
@@ -96,18 +96,22 @@ export const deleteBlogPost = async (req, res) => {
       return res.status(404).json({ success: false, error: "Post not found" });
     }
 
-    // Delete header image
-    if (post.headerImage && post.headerImage.public_id) {
-      await cloudinary.uploader.destroy(post.headerImage.public_id);
-  }
+    // Delete header images
+    if (post.headerImage && post.headerImage.length > 0) {
+      const headerImageDeletionPromises = post.headerImage
+        .filter(image => image.public_id)
+        .map(image => cloudinary.uploader.destroy(image.public_id));
+
+      await Promise.all(headerImageDeletionPromises);
+    }
 
 // Delete contentBlocks images
 if (post.contentBlocks && post.contentBlocks.length > 0) {
-  const imageDeletionPromises = post.contentBlocks
+  const contentBlocksImageDeletionPromises  = post.contentBlocks
       .filter(block => block.type === "image" && block.image && block.image.public_id)
       .map(block => cloudinary.uploader.destroy(block.image.public_id));
 
-  await Promise.all(imageDeletionPromises);
+  await Promise.all(contentBlocksImageDeletionPromises );
 }
 
 await blogPostModel.deleteOne({ _id: post._id });

@@ -1,7 +1,7 @@
 import { fetchWithCredentialsBlog } from "../helper/fetchWithCredentialsBlog";
 
 const BACKEND_URL = "http://localhost:5000";
-const API_URL = `${BACKEND_URL}/api/blogPosts/`;
+const API_URL = `${BACKEND_URL}/api/content/blogPost`;
 
 // create blog post
 export const createBlogPost = async (formData) => {
@@ -22,19 +22,19 @@ export const createBlogPost = async (formData) => {
 export const getBlogPosts = async () => {
   try {
     const res = await fetchWithCredentialsBlog(`${API_URL}`);
-    return res.blogPosts;
-  }
-  catch (error) {
+    return res.items;
+  } catch (error) {
     console.log(error);
     return null;
   }
 };
 
+
 // get blog post by id
 export const getBlogPost = async (id) => {
   try {
-    const res = await fetchWithCredentialsBlog(`${API_URL}${id}`);
-    return res.post;
+    const res = await fetchWithCredentialsBlog(`${API_URL}/${id}`);
+    return res.item;
   }
   catch (error) {
     console.log(error);
@@ -45,7 +45,7 @@ export const getBlogPost = async (id) => {
 // update blog post by id
 export const updateBlogPost = async (id, formData) => {
   try {
-    const res = await fetchWithCredentialsBlog(`${API_URL}${id}`, {
+    const res = await fetchWithCredentialsBlog(`${API_URL}/${id}`, {
       method: "PUT",
       body: formData,
     });
@@ -60,7 +60,7 @@ export const updateBlogPost = async (id, formData) => {
 // delete blog post by id
 export const deleteBlogPostService  = async (id) => {
   try {
-    const res = await fetchWithCredentialsBlog(`${API_URL}${id}`, {
+    const res = await fetchWithCredentialsBlog(`${API_URL}/${id}`, {
       method: 'DELETE',
     });    
 

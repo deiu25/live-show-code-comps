@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const BlogPosts = () => {
   const dispatch = useDispatch();
-  const posts = useSelector(state => state.blogPosts.blogPosts);
-
+  const posts = useSelector(state => state.blogPosts.items);
+  
   useEffect(() => {
     dispatch(fetchBlogPosts());
   }, [dispatch]);
