@@ -20,12 +20,15 @@ const createPostOrCourse = async (model, folder, req, res) => {
         req.body.user = user._id;
 
         let imageIndex = 0;
-        req.body.contentBlocks = req.body.contentBlocks.map((block) => {
-            if (block.type === "image") {
-                block.image = contentBlocksImagesLinks[imageIndex++];
-            }
-            return block;
-        });
+        
+        if (req.body.contentBlocks) {
+            req.body.contentBlocks = req.body.contentBlocks.map((block) => {
+                if (block.type === "image") {
+                    block.image = contentBlocksImagesLinks[imageIndex++];
+                }
+                return block;
+            });
+        }  
 
         const post = await model.create(req.body);
         res.status(201).json({ success: true, post });
@@ -60,14 +63,19 @@ async function uploadImages(files, folder) {
 
 // Get All Posts/Courses
 const getAll = async (model, req, res) => {
-    try {
-      const items = await model.find().populate("user", "name");
-      res.status(200).json({ success: true, items });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, error: error.message });
+  try {
+    let query = {};
+    if (req.query.category) {
+      query.category = req.query.category;
     }
-  };
+
+    const items = await model.find(query).populate("user", "name");
+    res.status(200).json({ success: true, items });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
   
   // Get Post/Course by ID
   const getById = async (model, req, res) => {

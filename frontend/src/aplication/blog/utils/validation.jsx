@@ -10,7 +10,7 @@ export const validateNewBlogPost = (inputs, files, isLoggedIn, isVerified) => {
       errors.file = "The file is required.";
     }
   
-    ['title', 'description', 'date', 'tags'].forEach(key => {
+    ['title', 'description', 'date', 'tags', 'category'].forEach(key => {
       if (!inputs[key]) {
         errors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required.`;
       }

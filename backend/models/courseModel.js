@@ -47,6 +47,11 @@ const postSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  category: {
+    type: String,
+    required: true,
+    enum: ['javascript', 'css', 'html', 'react', 'redux', 'vue', 'node', 'mongodb', 'express', 'api', 'git', 'career', 'other'],
+  },
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",

@@ -10,6 +10,7 @@ export const createCoursePost = async (formData) => {
       method: "POST",
       body: formData,
     });
+    console.log(res);
     return res;
   }
   catch (error) {

@@ -1,23 +1,24 @@
 // NewCourse.jsx
 import "./NewCourse.css";
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { NewBlogNavbar } from "../../../blog/components/new-blog-navbar/NewBlogNavbar";
 
 import { ReactComponent as AddImageIcon } from "../../../blog/assets/icons/add-image-svg.svg";
 import { ReactComponent as AddTextIcon } from "../../../blog/assets/icons/add-text-svg.svg";
 import { ReactComponent as AddCodeIcon } from "../../../blog/assets/icons/add-code-svg.svg";
 
 import ContentBlocksManager from "../../../blog/components/content-blocks-manager/ContentBlocksManager";
-import TagsManager from "../../../blog/components/tags-manager/TagsManager";
 import useContentBlocks from "../../../blog/customHooks/useContentBlocks";
+import TagsManager from "../../../blog/components/tags-manager/TagsManager";
 import useTagsManager from "../../../blog/customHooks/useTagsManager";
-import { NewBlogNavbar } from "../../../blog/components/new-blog-navbar/NewBlogNavbar";
 import useFileHandler from "../../../blog/customHooks/useFileHandler";
 import { validateNewBlogPost } from "../../../blog/utils/validation";
+
 import { createCoursePost } from "../../../../redux/features/courses/coursesService";
-
-
 
 const NewCourse = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const NewCourse = () => {
     description: "",
     date: getCurrentDate(),
     tags: "",
+    category: "",
   });
 
   const { files, previewSources, handleFileChange, handleDeletePreview } =
@@ -90,16 +92,13 @@ const NewCourse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formErrors = validateNewBlogPost(
-      inputs,
-      files,
-      isLoggedIn,
-      isVerified
-    );
-
+  
+    const formErrors = validateNewBlogPost(inputs, files, isLoggedIn, isVerified);
+  
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
+      Object.values(formErrors).forEach(error => {
+        toast.error(error);
+      });
       return;
     }
 
@@ -126,6 +125,7 @@ const NewCourse = () => {
     formData.append("title", inputs.title);
     formData.append("description", inputs.description);
     formData.append("date", inputs.date);
+    formData.append("category", inputs.category);
     formData.append("tags", inputs.tags);
 
     try {
@@ -142,6 +142,7 @@ const NewCourse = () => {
   return (
     <>
       <NewBlogNavbar />
+      <ToastContainer />
       <form onSubmit={handleSubmit} className="myForm-container">
         <h1 className="myForm-title">Create a new blog post</h1>
         <div>
@@ -242,6 +243,32 @@ const NewCourse = () => {
           >
             <AddCodeIcon />
           </button>
+        </div>
+        <hr />
+        <div className="myForm-field">
+          <label htmlFor="category" className="myForm-label">
+            Category:
+          </label>
+          <select
+            id="category"
+            name="category"
+            value={inputs.category}
+            onChange={handleChange}
+            className="myForm-input"
+          >
+            <option value="">Select a category</option>
+            <option value="javascript">JavaScript</option>
+            <option value="css">CSS</option>
+            <option value="html">HTML</option>
+            <option value="react">React</option>
+            <option value="node">Node</option>
+            <option value="express">Express</option>
+            <option value="mongodb">MongoDB</option>
+            <option value="typecript">TypeScript</option>
+            <option value="angular">Angular</option>
+            <option value="vue">Vue</option>
+            <option value="react native">React Native</option>
+          </select>
         </div>
         <hr />
         <TagsManager
