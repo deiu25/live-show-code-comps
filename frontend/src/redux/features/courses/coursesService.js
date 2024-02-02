@@ -63,7 +63,6 @@ export const deleteCoursePostService  = async (id) => {
     const res = await fetchWithCredentialsBlog(`${API_URL}/${id}`, {
       method: 'DELETE',
     });    
-
     if (res.status === 204) {
       return { success: true, id };
     } else {

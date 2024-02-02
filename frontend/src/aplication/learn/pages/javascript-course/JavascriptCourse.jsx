@@ -4,10 +4,16 @@ import "./JavascriptCourse.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCoursePosts } from "../../../../redux/features/courses/coursesSlice";
 import { Link } from "react-router-dom";
+import { useDeleteCoursePost } from "../../custom-hooks/useDeleteCoursePost";
 
 export const JavascriptCourse = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.coursePosts.items);
+  const { user } = useSelector((state) => state.auth);
+  const isAdmin = user?.role === "admin";
+  const isUserLoggedIn = user !== null;
+
+  const confirmDelete = useDeleteCoursePost();
 
   useEffect(() => {
     dispatch(fetchCoursePosts("javascript"));
@@ -22,14 +28,34 @@ export const JavascriptCourse = () => {
         </div>
         <div className="course-map">
           {posts && posts.length > 0 ? (
-            posts.map((post) => (
-              <Link to={`/javascriptCourse/${post._id}`} key={post._id}>
-                <div className="chapter-card">
-                  <h3>{post.title}</h3>
-                  <p>{post.description}</p>
+            posts.map((post) => {
+              const isUserCreatorOfPost = user?._id === post.user._id;
+              return (
+                <div key={post._id} className="chapter-card-container">
+                  <Link to={`/javascriptCourse/${post._id}`} className="chapter-card-link">
+                    <div className="chapter-card">
+                      {isUserLoggedIn && isUserCreatorOfPost && isAdmin && (
+                        <div className="card-buttons">
+                          <button className="card-button edit">Edit</button>
+                          <button
+                            className="card-button delete"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              confirmDelete(post._id);
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                      <h3>{post.title}</h3>
+                      <p>{post.description}</p>
+                    </div>
+                  </Link>
                 </div>
-              </Link>
-            ))
+              );
+            })
           ) : (
             <p>There are no posts available for this course.</p>
           )}

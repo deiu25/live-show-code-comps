@@ -1,6 +1,6 @@
 // courseSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createCoursePost, getCoursePosts, getCoursePost } from "./coursesService";
+import { getCoursePosts, getCoursePost, deleteCoursePostService } from "./coursesService";
 
 const initialState = {
   items: [],
@@ -39,7 +39,7 @@ export const fetchCoursePost = createAsyncThunk(
 export const deleteCoursePost = createAsyncThunk(
   "course/deleteCoursePost",
   async (id, { rejectWithValue }) => {
-    const response = await createCoursePost(id);
+    const response = await deleteCoursePostService(id);
     if (!response.success) {
       return rejectWithValue(response);
     }
