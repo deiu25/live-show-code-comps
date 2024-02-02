@@ -3,6 +3,7 @@ import { BlogPostNavbar } from "../../../blog/components/blog-post-navbar/BlogPo
 import "./JavascriptCourse.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCoursePosts } from "../../../../redux/features/courses/coursesSlice";
+import { Link } from "react-router-dom";
 
 export const JavascriptCourse = () => {
   const dispatch = useDispatch();
@@ -10,7 +11,7 @@ export const JavascriptCourse = () => {
 
   useEffect(() => {
     dispatch(fetchCoursePosts("javascript"));
-  }, [dispatch]);  
+  }, [dispatch]);
 
   return (
     <>
@@ -22,10 +23,12 @@ export const JavascriptCourse = () => {
         <div className="course-map">
           {posts && posts.length > 0 ? (
             posts.map((post) => (
-              <div className="chapter-card" key={post._id}>
-                <h3>{post.title}</h3>
-                <p>{post.description}</p>
-              </div>
+              <Link to={`/javascriptCourse/${post._id}`} key={post._id}>
+                <div className="chapter-card">
+                  <h3>{post.title}</h3>
+                  <p>{post.description}</p>
+                </div>
+              </Link>
             ))
           ) : (
             <p>There are no posts available for this course.</p>

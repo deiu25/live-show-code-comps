@@ -30,8 +30,6 @@ export const getCoursePosts = async (category) => {
   }
 };
 
-
-
 // get course post by id
 export const getCoursePost = async (id) => {
   try {
