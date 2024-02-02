@@ -12,9 +12,9 @@ const initialState = {
 // Add an asynchronous thunk to fetch the posts
 export const fetchCoursePosts = createAsyncThunk(
   "course/fetchCoursePosts",
-  async (_, { rejectWithValue }) => {
+  async (category, { rejectWithValue }) => {
     try {
-      const response = await getCoursePosts();
+      const response = await getCoursePosts(category);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

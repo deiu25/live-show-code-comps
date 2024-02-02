@@ -20,15 +20,16 @@ export const createCoursePost = async (formData) => {
 };
 
 // get all course Posts
-export const getCoursePosts = async () => {
+export const getCoursePosts = async (category) => {
   try {
-    const res = await fetchWithCredentialsBlog(`${API_URL}`);
+    const res = await fetchWithCredentialsBlog(`${API_URL}?category=${category}`);
     return res.items;
   } catch (error) {
     console.log(error);
     return null;
   }
 };
+
 
 
 // get course post by id

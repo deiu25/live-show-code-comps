@@ -9,8 +9,8 @@ export const JavascriptCourse = () => {
   const posts = useSelector((state) => state.coursePosts.items);
 
   useEffect(() => {
-    dispatch(fetchCoursePosts());
-  }, [dispatch]);
+    dispatch(fetchCoursePosts("javascript"));
+  }, [dispatch]);  
 
   return (
     <>
