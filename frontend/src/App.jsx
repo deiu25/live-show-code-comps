@@ -27,7 +27,7 @@ import { BlogPost } from "./aplication/blog/pages/blog-post/BlogPost";
 
 import { JavascriptCourse } from "./aplication/learn/pages/javascript-course/JavascriptCourse";
 import NewCourse from "./aplication/learn/pages/create-course-post/NewCourse";
-import { JavascriptCoursePost } from "./aplication/learn/pages/course-post/JavascriptCoursePost";
+import { JavascriptCoursePost } from "./aplication/learn/pages/javascript-course-post/JavascriptCoursePost";
 
 axios.defaults.withCredentials = true;
 
