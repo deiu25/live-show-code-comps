@@ -7,6 +7,7 @@ import courseModel from "../models/courseModel.js";
 import {
   createPostOrCourse,
   deleteItem,
+  editPostOrCourse,
   getAll,
   getById,
 } from "../controllers/genericController.js";
@@ -68,6 +69,18 @@ genericRouter.delete("/:type/:id", [protect, adminOnly], async (req, res) => {
     return res.status(400).json({ success: false, error: "Invalid type" });
   }
   await deleteItem(model, req, res);
+});
+
+//Edit a post/course
+genericRouter.put("/:type/:id", upload.fields([
+  { name: "images", maxCount: 10 },
+  { name: "contentBlocksImages", maxCount: 10 },
+]), [protect, adminOnly], async (req, res) => {
+  const { model, folder } = getModelAndFolder(req.params.type);
+  if (!model) {
+    return res.status(400).json({ success: false, error: "Invalid type" });
+  }
+  await editPostOrCourse(model, folder, req, res);
 });
 
 // Helper function to get the model and folder

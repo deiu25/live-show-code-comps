@@ -122,5 +122,58 @@ const deleteItem = async (model, req, res) => {
       res.status(500).json({ success: false, error: error.message });
     }
   };
+
+  // Edit Post/Course
+  const editPostOrCourse = async (model, folder, req, res) => {
+    try {
+      const item = await model.findById(req.params.id);
+      if (!item) {
+        return res.status(404).json({ success: false, error: "Item not found" });
+      }
   
-  export { createPostOrCourse, getAll, getById, deleteItem };
+      // Keep the public_ids of the old images to delete them from Cloudinary after the update
+      const oldHeaderImages = item.headerImage.map(image => image.public_id);
+      const oldContentBlockImages = item.contentBlocks
+        .filter(block => block.type === "image" && block.image)
+        .map(block => block.image.public_id);
+  
+      // Upload new images
+      let imagesLinks = [];
+      if (req.files.images) {
+        imagesLinks = await uploadImages(req.files.images, folder);
+      }
+  
+      let contentBlocksImagesLinks = [];
+      if (req.files.contentBlocksImages) {
+        contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages, folder);
+      }
+  
+      // Updates the document with the new images and other data
+      req.body.headerImage = imagesLinks;
+      let imageIndex = 0;
+      if (req.body.contentBlocks) {
+        req.body.contentBlocks = req.body.contentBlocks.map((block) => {
+          if (block.type === "image" && req.files.contentBlocksImages) {
+            block.image = contentBlocksImagesLinks[imageIndex++];
+          }
+          return block;
+        });
+      }
+  
+      // Update the post or course
+      const updatedItem = await model.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+  
+      // After successful update, delete old images from Cloudinary
+      await Promise.all([
+        ...oldHeaderImages,
+        ...oldContentBlockImages
+      ].map(public_id => cloudinary.uploader.destroy(public_id)));
+  
+      res.status(200).json({ success: true, data: updatedItem });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, error: error.message });
+    }
+  };  
+  
+  export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse };
