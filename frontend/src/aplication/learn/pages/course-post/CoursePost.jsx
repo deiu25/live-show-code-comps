@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const CoursePost = ({ post, user, useDeleteCoursePost }) => {
-  const navigate = useNavigate(); // Adaugă această linie
+  const navigate = useNavigate(); 
   const confirmDelete = useDeleteCoursePost();
   const isAdmin = user?.role === "admin";
   const isUserLoggedIn = user !== null;
@@ -11,7 +11,7 @@ const CoursePost = ({ post, user, useDeleteCoursePost }) => {
   const handleEdit = (e, postId) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate(`/editCoursePost/${postId}`); // Navighează către pagina de editare
+    navigate(`/editCoursePost/${postId}`); 
   };
 
   return (
@@ -22,7 +22,7 @@ const CoursePost = ({ post, user, useDeleteCoursePost }) => {
             <div className="card-buttons">
               <button 
                 className="card-button edit"
-                onClick={(e) => handleEdit(e, post._id)} // Adaugă onClick handler aici
+                onClick={(e) => handleEdit(e, post._id)} 
               >
                 Edit
               </button>

@@ -1,53 +1,227 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import { ReactComponent as Edit } from "./edit.svg";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import nightOwlStyle from "react-syntax-highlighter/dist/esm/styles/prism/night-owl";
 import { BlogPostNavbar } from "../../../blog/components/blog-post-navbar/BlogPostNavbar";
-import { getCoursePost, updateCoursePost } from "../../../../redux/features/courses/coursesService";
+import { getCoursePost } from "../../../../redux/features/courses/coursesService";
+import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
+import useFileHandler from "../../../blog/customHooks/useFileHandler";
 
-export const EditCoursePost = () => {
+export const EditCoursePost = ({ user: postUser }) => {
   const { id } = useParams();
-  const navigate = useNavigate(); 
-  const { register, handleSubmit, formState: { errors } } = useForm();
   const [item, setItem] = useState(null);
+  const [isCopied, setIsCopied] = useState(false);
+  const [copiedBlockIndex, setCopiedBlockIndex] = useState(null);
+  const { isAdmin, isUserLoggedIn } = useAuthAdminStatus(postUser);
+
+  const [editMode, setEditMode] = useState(false);
+  const [editedContent, setEditedContent] = useState({});
+
+  const { files, previewSources, handleFileChange, handleDeletePreview } =
+    useFileHandler();
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const copyToClipboard = (code, index) => {
+    navigator.clipboard
+      .writeText(code)
+      .then(() => {
+        setIsCopied(true);
+        setCopiedBlockIndex(index);
+        setTimeout(() => {
+          setIsCopied(false);
+          setCopiedBlockIndex(null);
+        }, 3000);
+      })
+      .catch((err) => {
+        console.error("Could not copy text: ", err);
+      });
+  };
+
+  useEffect(() => {
+    if (previewSources.length > 0) {
+      setEditedContent((prevState) => ({
+        ...prevState,
+        headerImage: previewSources[0],
+      }));
+    }
+  }, [previewSources]);
 
   useEffect(() => {
     const fetchPost = async () => {
       const fetchedPost = await getCoursePost(id);
-      setItem(fetchedPost);
+      if (fetchedPost) {
+        setItem(fetchedPost);
+        // Ensure that headerImage is initialized properly
+        setEditedContent({
+          title: fetchedPost.title,
+          description: fetchedPost.description,
+          headerImage: fetchedPost.headerImage ? fetchedPost.headerImage : [],
+          contentBlocks: fetchedPost.contentBlocks,
+        });
+      }
     };
     fetchPost();
   }, [id]);
-
-  const onSubmit = async (data) => {
-    const response = await updateCoursePost(id, data);
-    if (response.success) {
-      alert('Post updated successfully');
-      navigate(`/coursePost/${id}`); 
-    } else {
-      alert('Failed to update the post');
-    }
-  };
 
   if (!item) {
     return <div>Loading...</div>;
   }
 
+  const handleContentChange = (content, index, type) => {
+    const updatedContentBlocks = [...editedContent.contentBlocks];
+    if (type === "text") {
+      updatedContentBlocks[index].text = content;
+    } else if (type === "code") {
+      updatedContentBlocks[index].code = content;
+    }
+    setEditedContent({ ...editedContent, contentBlocks: updatedContentBlocks });
+  };
+
   return (
     <>
       <BlogPostNavbar />
-      <form onSubmit={handleSubmit(onSubmit)} className="edit-post-form">
-        <label>Title:</label>
-        <input name="title" defaultValue={item.title} ref={register({ required: true })} />
-        {errors.title && <p>Title is required.</p>}
+      <div className="post-body">
+        {isUserLoggedIn && isAdmin && (
+          <div className="edit-post-div">
+            <button onClick={toggleEditMode} className="edit-post-button">
+              <Edit />
+              {editMode ? "Save" : "Edit"}
+            </button>
+          </div>
+        )}
+        <div className="post-profile"></div>
+        <article className="post-article">
+          <section className="content-block">
+            <header className="post-header">
+              <h1 className="post-h1">
+                {editMode ? (
+                  <input
+                    type="text"
+                    value={editedContent.title}
+                    onChange={(e) =>
+                      setEditedContent({
+                        ...editedContent,
+                        title: e.target.value,
+                      })
+                    }
+                    className="post-h1-editable"
+                  />
+                ) : (
+                  <div className="post-headline-1">{item.title}</div>
+                )}
+              </h1>
 
-        <label>Description:</label>
-        <textarea name="description" defaultValue={item.description} ref={register({ required: true })}></textarea>
-        {errors.description && <p>Description is required.</p>}
+              {editMode ? (
+                // Afișați imaginea de previzualizare dacă este în modul de editare și există o previzualizare
+                previewSources.length > 0 ? (
+                  <img
+                    src={previewSources[0]}
+                    alt="Header Preview"
+                    className="post-img"
+                  />
+                ) : (
+                  // Dacă nu există o previzualizare, păstrați logica existentă de afișare a imaginii originale
+                  item.headerImage &&
+                  item.headerImage.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image.url}
+                      alt="Header"
+                      className="post-img"
+                    />
+                  ))
+                )
+              ) : (
+                // Dacă nu suntem în modul de editare, afișați imaginea originală de header
+                item.headerImage &&
+                item.headerImage.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image.url}
+                    alt="Header"
+                    className="post-img"
+                  />
+                ))
+              )}
 
-        {/* Implement additional fields for images and content blocks as needed */}
-        
-        <button type="submit">Update Post</button>
-      </form>
+              {editMode && (
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  multiple
+                  className="post-img-editable"
+                />
+              )}
+            </header>
+
+            <hr className="post-hr" />
+            <section className="post-section">
+              <section className="post-section">
+                {editMode ? (
+                  <textarea
+                    value={editedContent.description}
+                    onChange={(e) =>
+                      setEditedContent({
+                        ...editedContent,
+                        description: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  <p>{item.description}</p>
+                )}
+              </section>
+            </section>
+            <br></br>
+            <hr className="post-hr" />
+          </section>
+        </article>
+
+        <article className="post-article">
+          {item.contentBlocks.map((block, index) => (
+            <section key={index} className="content-block">
+              <hr className="post-hr" />
+              {block.type === "image" && (
+                <img src={block.image.url} alt="Content" className="post-img" />
+              )}
+              {block.type === "text" && (
+                <p className="post-text">{block.text}</p>
+              )}
+              {block.type === "code" && (
+                <div className="code-card">
+                  <div className="code-header">
+                    <div className="code-title">
+                      <p className="code-language">{block.language}</p>
+                    </div>
+                    <button
+                      onClick={() => copyToClipboard(block.code, index)}
+                      className="copy-button"
+                    >
+                      {isCopied && copiedBlockIndex === index
+                        ? "Copied!"
+                        : "Copy Code"}
+                    </button>
+                  </div>
+                  <SyntaxHighlighter
+                    language={
+                      block.language === "react" ? "jsx" : block.code.language
+                    }
+                    className="post-code"
+                    style={nightOwlStyle}
+                  >
+                    {block.code}
+                  </SyntaxHighlighter>
+                </div>
+              )}
+              <hr className="post-hr" />
+            </section>
+          ))}
+        </article>
+      </div>
     </>
   );
 };
