@@ -44,18 +44,23 @@ export const getCoursePost = async (id) => {
 
 // update course post by id
 export const updateCoursePost = async (id, formData) => {
+  // Afișează datele din formData în consolă
+  for (let [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
+
   try {
     const res = await fetchWithCredentialsBlog(`${API_URL}/${id}`, {
       method: "PUT",
       body: formData,
     });
     return res;
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
     return null;
   }
 };
+
 
 // delete course post by id
 export const deleteCoursePostService  = async (id) => {

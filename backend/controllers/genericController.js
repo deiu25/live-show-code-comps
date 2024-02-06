@@ -123,52 +123,64 @@ const deleteItem = async (model, req, res) => {
     }
   };
 
-  // Edit Post/Course
-  const editPostOrCourse = async (model, folder, req, res) => {
-    try {
-      const item = await model.findById(req.params.id);
-      if (!item) {
-        return res.status(404).json({ success: false, error: "Item not found" });
-      }
-  
-      let imagesLinks = item.headerImage; // Păstrăm imaginile existente ca valoare implicită
-  
-      // Verificăm dacă au fost încărcate imagini noi pentru antet
-      if (req.files && req.files.images && req.files.images.length > 0) {
-        // Dacă sunt imagini noi, le încărcăm și actualizăm referințele
-        imagesLinks = await uploadImages(req.files.images, folder);
-  
-        // Eliminăm imaginile vechi de antet de pe Cloudinary sau alt serviciu de stocare
-        const oldHeaderImages = item.headerImage.map(image => image.public_id);
-        await Promise.all(oldHeaderImages.map(public_id => cloudinary.uploader.destroy(public_id)));
-      }
-  
-      // Actualizăm item-ul cu noile link-uri ale imaginilor sau păstrăm cele existente dacă nu sunt noi imagini
-      req.body.headerImage = imagesLinks;
-  
-      // Prelucrare și actualizare contentBlocksImages
-      let contentBlocksImagesLinks = [];
-      if (req.files && req.files.contentBlocksImages) {
-        contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages, folder);
-      }
-  
-      let imageIndex = 0; // Index pentru imagini din content blocks
-      if (req.body.contentBlocks) {
-        req.body.contentBlocks = req.body.contentBlocks.map((block) => {
-          if (block.type === "image" && block.image && req.files.contentBlocksImages && contentBlocksImagesLinks.length > 0) {
-            block.image = contentBlocksImagesLinks[imageIndex++];
-          }
-          return block;
-        });
-      }
-  
-      const updatedItem = await model.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-  
-      res.status(200).json({ success: true, data: updatedItem });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, error: error.message });
+// Edit Post/Course
+const editPostOrCourse = async (model, folder, req, res) => {
+  try {
+    console.log(`Updating post/course with ID: ${req.params.id}`); // Log the ID of the post/course being updated
+
+    const item = await model.findById(req.params.id);
+    if (!item) {
+      console.error("Item not found");
+      return res.status(404).json({ success: false, error: "Item not found" });
     }
-  };  
+
+    console.log("Found item:", item); // Log the found item
+
+    let imagesLinks = item.headerImage; // Keep existing header images as default
+
+    // Check for new header images upload
+    if (req.files && req.files.images && req.files.images.length > 0) {
+      console.log(`Uploading ${req.files.images.length} new header image(s)`); // Log the number of new images
+
+      // If there are new images, upload them and update references
+      imagesLinks = await uploadImages(req.files.images, folder);
+
+      // Remove old header images from Cloudinary or another storage service
+      const oldHeaderImages = item.headerImage.map(image => image.public_id);
+      console.log("Removing old header images:", oldHeaderImages); // Log old header images to be removed
+      await Promise.all(oldHeaderImages.map(public_id => cloudinary.uploader.destroy(public_id)));
+    }
+
+    // Update item with new image links or keep existing ones if no new images
+    req.body.headerImage = imagesLinks;
+
+    // Process and update contentBlocksImages
+    let contentBlocksImagesLinks = [];
+    if (req.files && req.files.contentBlocksImages) {
+      console.log(`Uploading images for content blocks`); // Log uploading action for content blocks images
+      contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages, folder);
+    }
+
+    let imageIndex = 0; // Index for images in content blocks
+    if (req.body.contentBlocks) {
+      req.body.contentBlocks = req.body.contentBlocks.map((block) => {
+        if (block.type === "image" && block.image && req.files.contentBlocksImages && contentBlocksImagesLinks.length > 0) {
+          console.log(`Updating image for content block at index ${imageIndex}`); // Log updating action for each content block image
+          block.image = contentBlocksImagesLinks[imageIndex++];
+        }
+        return block;
+      });
+    }
+
+    const updatedItem = await model.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+
+    console.log("Updated item successfully:", updatedItem); // Log the successfully updated item
+    res.status(200).json({ success: true, data: updatedItem });
+  } catch (error) {
+    console.error("Error updating item:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
   
   export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse };

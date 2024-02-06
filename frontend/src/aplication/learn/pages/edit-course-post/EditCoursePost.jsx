@@ -4,10 +4,7 @@ import { ReactComponent as Edit } from "./edit.svg";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import nightOwlStyle from "react-syntax-highlighter/dist/esm/styles/prism/night-owl";
 import { BlogPostNavbar } from "../../../blog/components/blog-post-navbar/BlogPostNavbar";
-import {
-  getCoursePost,
-  updateCoursePost,
-} from "../../../../redux/features/courses/coursesService";
+import { getCoursePost, updateCoursePost } from "../../../../redux/features/courses/coursesService";
 import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 import useFileHandler from "../../../blog/customHooks/useFileHandler";
 import { useSelector } from "react-redux";
@@ -15,45 +12,14 @@ import { useSelector } from "react-redux";
 export const EditCoursePost = ({ user: postUser }) => {
   const { id } = useParams();
   const [item, setItem] = useState(null);
-  const [isCopied, setIsCopied] = useState(false);
-  const [copiedBlockIndex, setCopiedBlockIndex] = useState(null);
   const { isAdmin, isUserLoggedIn } = useAuthAdminStatus(postUser);
   const { isLoggedIn, isVerified } = useSelector((state) => state.auth);
   const [editMode, setEditMode] = useState(false);
   const [editedContent, setEditedContent] = useState({});
-
-  const { files, previewSources, handleFileChange } = useFileHandler();
-
   const [saveSuccess, setSaveSuccess] = useState(false);
-
-  const toggleEditMode = () => {
-    setEditMode(!editMode);
-  };
-
-  const copyToClipboard = (code, index) => {
-    navigator.clipboard
-      .writeText(code)
-      .then(() => {
-        setIsCopied(true);
-        setCopiedBlockIndex(index);
-        setTimeout(() => {
-          setIsCopied(false);
-          setCopiedBlockIndex(null);
-        }, 3000);
-      })
-      .catch((err) => {
-        console.error("Could not copy text: ", err);
-      });
-  };
-
-  useEffect(() => {
-    if (previewSources.length > 0) {
-      setEditedContent((prevState) => ({
-        ...prevState,
-        headerImage: previewSources[0],
-      }));
-    }
-  }, [previewSources]);
+  const [isCopied, setIsCopied] = useState(false);
+  const [copiedBlockIndex, setCopiedBlockIndex] = useState(null);
+  const { files, previewSources, handleFileChange } = useFileHandler();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -66,60 +32,69 @@ export const EditCoursePost = ({ user: postUser }) => {
           headerImage: fetchedPost.headerImage ? fetchedPost.headerImage : [],
           contentBlocks: fetchedPost.contentBlocks,
         });
-        if (saveSuccess) {
-          // Resetăm starea de succes după ce datele au fost reîncărcate
-          setSaveSuccess(false);
-        }
       }
     };
     fetchPost();
   }, [id, saveSuccess]);
 
+  useEffect(() => {
+    if (previewSources.length > 0) {
+      setEditedContent((prevState) => ({
+        ...prevState,
+        headerImage: previewSources[0],
+      }));
+    }
+  }, [previewSources]);
 
-  if (!item) {
-    return <div>Loading...</div>;
-  }
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const copyToClipboard = (code, index) => {
+    navigator.clipboard.writeText(code).then(() => {
+      setIsCopied(true);
+      setCopiedBlockIndex(index);
+      setTimeout(() => {
+        setIsCopied(false);
+        setCopiedBlockIndex(null);
+      }, 3000);
+    }).catch((err) => {
+      console.error("Could not copy text: ", err);
+    });
+  };
 
   const handleContentChange = (content, index, type) => {
     const updatedContentBlocks = [...editedContent.contentBlocks];
-    if (type === "text") {
-      updatedContentBlocks[index].text = content;
-    } else if (type === "code") {
-      updatedContentBlocks[index].code = content;
-    } else if (type === "image") {
-      const newPreviewUrl = URL.createObjectURL(content);
-      updatedContentBlocks[index].image = {
-        ...updatedContentBlocks[index].image,
-        url: newPreviewUrl,
-      };
+    switch (type) {
+      case "text":
+        updatedContentBlocks[index].text = content;
+        break;
+      case "code":
+        updatedContentBlocks[index].code = content;
+        break;
+      case "image":
+        const newPreviewUrl = URL.createObjectURL(content);
+        updatedContentBlocks[index].image = { url: newPreviewUrl };
+        break;
+      default:
+        console.error("Unknown content type:", type);
     }
     setEditedContent({ ...editedContent, contentBlocks: updatedContentBlocks });
   };
 
   const savePost = async () => {
     if (!editMode) return;
-  
+
     const formData = new FormData();
-  
     formData.append("title", editedContent.title);
     formData.append("description", editedContent.description);
-  
+    files.forEach(file => formData.append("headerImage", file));
     if (files.length > 0) {
-      files.forEach((file) => {
-        formData.append("headerImage", file);
-      });
-    } else if (previewSources.length === 0 && item.headerImage) {
-      formData.append("headerImage", JSON.stringify(item.headerImage));
+      files.forEach(file => formData.append("headerImage", file));
     }
-  
-    // Adaugă blocurile de conținut la formData
     editedContent.contentBlocks.forEach((block, index) => {
+      formData.append(`contentBlocks[${index}][type]`, block.type);
       switch (block.type) {
-        case "image":
-          if (block.image && block.image instanceof File) {
-            formData.append(`contentBlocks[${index}][image]`, block.image);
-          }
-          break;
         case "text":
           formData.append(`contentBlocks[${index}][text]`, block.text);
           break;
@@ -127,24 +102,31 @@ export const EditCoursePost = ({ user: postUser }) => {
           formData.append(`contentBlocks[${index}][code]`, block.code);
           formData.append(`contentBlocks[${index}][language]`, block.language);
           break;
+        case "image":
+          if (block.image && block.image instanceof File) {
+            formData.append(`contentBlocks[${index}][image]`, block.image);
+          }
+          break;
         default:
-          console.error("Unknown block type: ", block.type);
+          console.error("Unsupported block type:", block.type);
       }
-      formData.append(`contentBlocks[${index}][type]`, block.type);
     });
-  
+
     try {
       const result = await updateCoursePost(id, formData);
       if (result && result.success) {
-        setSaveSuccess(true); 
+        setSaveSuccess(true);
         setEditMode(false);
       } else {
-        console.error("Eroare la salvarea postării: ", result.error);
+        console.error("Error saving post:", result.error);
       }
     } catch (error) {
-      console.error("Eroare la salvarea postării: ", error);
+      console.error("Error saving post:", error);
     }
   };
+
+  if (!item) return <div>Loading...</div>;
+
 
   return (
     <>
