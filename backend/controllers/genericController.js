@@ -131,43 +131,38 @@ const deleteItem = async (model, req, res) => {
         return res.status(404).json({ success: false, error: "Item not found" });
       }
   
-      // Keep the public_ids of the old images to delete them from Cloudinary after the update
-      const oldHeaderImages = item.headerImage.map(image => image.public_id);
-      const oldContentBlockImages = item.contentBlocks
-        .filter(block => block.type === "image" && block.image)
-        .map(block => block.image.public_id);
+      let imagesLinks = item.headerImage; // Păstrăm imaginile existente ca valoare implicită
   
-      // Upload new images
-      let imagesLinks = [];
-      if (req.files.images) {
+      // Verificăm dacă au fost încărcate imagini noi pentru antet
+      if (req.files && req.files.images && req.files.images.length > 0) {
+        // Dacă sunt imagini noi, le încărcăm și actualizăm referințele
         imagesLinks = await uploadImages(req.files.images, folder);
+  
+        // Eliminăm imaginile vechi de antet de pe Cloudinary sau alt serviciu de stocare
+        const oldHeaderImages = item.headerImage.map(image => image.public_id);
+        await Promise.all(oldHeaderImages.map(public_id => cloudinary.uploader.destroy(public_id)));
       }
   
+      // Actualizăm item-ul cu noile link-uri ale imaginilor sau păstrăm cele existente dacă nu sunt noi imagini
+      req.body.headerImage = imagesLinks;
+  
+      // Prelucrare și actualizare contentBlocksImages
       let contentBlocksImagesLinks = [];
-      if (req.files.contentBlocksImages) {
+      if (req.files && req.files.contentBlocksImages) {
         contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages, folder);
       }
   
-      // Updates the document with the new images and other data
-      req.body.headerImage = imagesLinks;
-      let imageIndex = 0;
+      let imageIndex = 0; // Index pentru imagini din content blocks
       if (req.body.contentBlocks) {
         req.body.contentBlocks = req.body.contentBlocks.map((block) => {
-          if (block.type === "image" && req.files.contentBlocksImages) {
+          if (block.type === "image" && block.image && req.files.contentBlocksImages && contentBlocksImagesLinks.length > 0) {
             block.image = contentBlocksImagesLinks[imageIndex++];
           }
           return block;
         });
       }
   
-      // Update the post or course
       const updatedItem = await model.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-  
-      // After successful update, delete old images from Cloudinary
-      await Promise.all([
-        ...oldHeaderImages,
-        ...oldContentBlockImages
-      ].map(public_id => cloudinary.uploader.destroy(public_id)));
   
       res.status(200).json({ success: true, data: updatedItem });
     } catch (error) {

@@ -4,9 +4,13 @@ import { ReactComponent as Edit } from "./edit.svg";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import nightOwlStyle from "react-syntax-highlighter/dist/esm/styles/prism/night-owl";
 import { BlogPostNavbar } from "../../../blog/components/blog-post-navbar/BlogPostNavbar";
-import { getCoursePost } from "../../../../redux/features/courses/coursesService";
+import {
+  getCoursePost,
+  updateCoursePost,
+} from "../../../../redux/features/courses/coursesService";
 import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 import useFileHandler from "../../../blog/customHooks/useFileHandler";
+import { useSelector } from "react-redux";
 
 export const EditCoursePost = ({ user: postUser }) => {
   const { id } = useParams();
@@ -14,11 +18,13 @@ export const EditCoursePost = ({ user: postUser }) => {
   const [isCopied, setIsCopied] = useState(false);
   const [copiedBlockIndex, setCopiedBlockIndex] = useState(null);
   const { isAdmin, isUserLoggedIn } = useAuthAdminStatus(postUser);
-
+  const { isLoggedIn, isVerified } = useSelector((state) => state.auth);
   const [editMode, setEditMode] = useState(false);
   const [editedContent, setEditedContent] = useState({});
 
-  const { previewSources, handleFileChange } = useFileHandler();
+  const { files, previewSources, handleFileChange } = useFileHandler();
+
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -54,17 +60,21 @@ export const EditCoursePost = ({ user: postUser }) => {
       const fetchedPost = await getCoursePost(id);
       if (fetchedPost) {
         setItem(fetchedPost);
-        // Ensure that headerImage is initialized properly
         setEditedContent({
           title: fetchedPost.title,
           description: fetchedPost.description,
           headerImage: fetchedPost.headerImage ? fetchedPost.headerImage : [],
           contentBlocks: fetchedPost.contentBlocks,
         });
+        if (saveSuccess) {
+          // Resetăm starea de succes după ce datele au fost reîncărcate
+          setSaveSuccess(false);
+        }
       }
     };
     fetchPost();
-  }, [id]);
+  }, [id, saveSuccess]);
+
 
   if (!item) {
     return <div>Loading...</div>;
@@ -77,9 +87,7 @@ export const EditCoursePost = ({ user: postUser }) => {
     } else if (type === "code") {
       updatedContentBlocks[index].code = content;
     } else if (type === "image") {
-      // Aici presupunem că `content` este un fișier de imagine încărcat
       const newPreviewUrl = URL.createObjectURL(content);
-      // Actualizează blocul specific cu noua imagine de previzualizare
       updatedContentBlocks[index].image = {
         ...updatedContentBlocks[index].image,
         url: newPreviewUrl,
@@ -88,13 +96,72 @@ export const EditCoursePost = ({ user: postUser }) => {
     setEditedContent({ ...editedContent, contentBlocks: updatedContentBlocks });
   };
 
+  const savePost = async () => {
+    if (!editMode) return;
+  
+    const formData = new FormData();
+  
+    formData.append("title", editedContent.title);
+    formData.append("description", editedContent.description);
+  
+    if (files.length > 0) {
+      files.forEach((file) => {
+        formData.append("headerImage", file);
+      });
+    } else if (previewSources.length === 0 && item.headerImage) {
+      formData.append("headerImage", JSON.stringify(item.headerImage));
+    }
+  
+    // Adaugă blocurile de conținut la formData
+    editedContent.contentBlocks.forEach((block, index) => {
+      switch (block.type) {
+        case "image":
+          if (block.image && block.image instanceof File) {
+            formData.append(`contentBlocks[${index}][image]`, block.image);
+          }
+          break;
+        case "text":
+          formData.append(`contentBlocks[${index}][text]`, block.text);
+          break;
+        case "code":
+          formData.append(`contentBlocks[${index}][code]`, block.code);
+          formData.append(`contentBlocks[${index}][language]`, block.language);
+          break;
+        default:
+          console.error("Unknown block type: ", block.type);
+      }
+      formData.append(`contentBlocks[${index}][type]`, block.type);
+    });
+  
+    try {
+      const result = await updateCoursePost(id, formData);
+      if (result && result.success) {
+        setSaveSuccess(true); 
+        setEditMode(false);
+      } else {
+        console.error("Eroare la salvarea postării: ", result.error);
+      }
+    } catch (error) {
+      console.error("Eroare la salvarea postării: ", error);
+    }
+  };
+
   return (
     <>
       <BlogPostNavbar />
       <div className="post-body">
         {isUserLoggedIn && isAdmin && (
           <div className="edit-post-div">
-            <button onClick={toggleEditMode} className="edit-post-button">
+            <button
+              onClick={() => {
+                if (editMode) {
+                  savePost();
+                } else {
+                  toggleEditMode();
+                }
+              }}
+              className="edit-post-button"
+            >
               <Edit />
               {editMode ? "Save" : "Edit"}
             </button>
