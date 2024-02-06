@@ -18,8 +18,7 @@ export const EditCoursePost = ({ user: postUser }) => {
   const [editMode, setEditMode] = useState(false);
   const [editedContent, setEditedContent] = useState({});
 
-  const { files, previewSources, handleFileChange, handleDeletePreview } =
-    useFileHandler();
+  const { previewSources, handleFileChange } = useFileHandler();
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -77,6 +76,14 @@ export const EditCoursePost = ({ user: postUser }) => {
       updatedContentBlocks[index].text = content;
     } else if (type === "code") {
       updatedContentBlocks[index].code = content;
+    } else if (type === "image") {
+      // Aici presupunem că `content` este un fișier de imagine încărcat
+      const newPreviewUrl = URL.createObjectURL(content);
+      // Actualizează blocul specific cu noua imagine de previzualizare
+      updatedContentBlocks[index].image = {
+        ...updatedContentBlocks[index].image,
+        url: newPreviewUrl,
+      };
     }
     setEditedContent({ ...editedContent, contentBlocks: updatedContentBlocks });
   };
@@ -164,6 +171,7 @@ export const EditCoursePost = ({ user: postUser }) => {
                 {editMode ? (
                   <textarea
                     value={editedContent.description}
+                    className="post-description-editable"
                     onChange={(e) =>
                       setEditedContent({
                         ...editedContent,
@@ -182,41 +190,83 @@ export const EditCoursePost = ({ user: postUser }) => {
         </article>
 
         <article className="post-article">
-          {item.contentBlocks.map((block, index) => (
+          {editedContent.contentBlocks.map((block, index) => (
             <section key={index} className="content-block">
               <hr className="post-hr" />
-              {block.type === "image" && (
-                <img src={block.image.url} alt="Content" className="post-img" />
-              )}
-              {block.type === "text" && (
-                <p className="post-text">{block.text}</p>
-              )}
-              {block.type === "code" && (
-                <div className="code-card">
-                  <div className="code-header">
-                    <div className="code-title">
-                      <p className="code-language">{block.language}</p>
-                    </div>
-                    <button
-                      onClick={() => copyToClipboard(block.code, index)}
-                      className="copy-button"
-                    >
-                      {isCopied && copiedBlockIndex === index
-                        ? "Copied!"
-                        : "Copy Code"}
-                    </button>
-                  </div>
-                  <SyntaxHighlighter
-                    language={
-                      block.language === "react" ? "jsx" : block.code.language
+              {block.type === "image" &&
+                (editMode ? (
+                  <>
+                    <input
+                      type="file"
+                      onChange={(e) =>
+                        handleContentChange(e.target.files[0], index, "image")
+                      }
+                      className="post-img-editable"
+                    />
+                    {editedContent.contentBlocks[index].image &&
+                      editedContent.contentBlocks[index].image.url && (
+                        <img
+                          src={editedContent.contentBlocks[index].image.url}
+                          alt="Content"
+                          className="post-img"
+                        />
+                      )}
+                  </>
+                ) : (
+                  <img
+                    src={block.image.url}
+                    alt="Content"
+                    className="post-img"
+                  />
+                ))}
+
+              <section className="post-section">
+                {block.type === "text" &&
+                  (editMode ? (
+                    <textarea
+                      value={block.text}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index, "text")
+                      }
+                      className="post-text-editable"
+                    />
+                  ) : (
+                    <p className="post-text">{block.text}</p>
+                  ))}
+              </section>
+              {block.type === "code" &&
+                (editMode ? (
+                  <textarea
+                    value={block.code}
+                    onChange={(e) =>
+                      handleContentChange(e.target.value, index, "code")
                     }
-                    className="post-code"
-                    style={nightOwlStyle}
-                  >
-                    {block.code}
-                  </SyntaxHighlighter>
-                </div>
-              )}
+                    className="post-code-editable"
+                  />
+                ) : (
+                  <div className="code-card">
+                    <div className="code-header">
+                      <div className="code-title">
+                        <p className="code-language">{block.language}</p>
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard(block.code, index)}
+                        className="copy-button"
+                      >
+                        {isCopied && copiedBlockIndex === index
+                          ? "Copied!"
+                          : "Copy Code"}
+                      </button>
+                    </div>
+                    <SyntaxHighlighter
+                      language={block.language}
+                      className="post-code"
+                      style={nightOwlStyle}
+                    >
+                      {block.code}
+                    </SyntaxHighlighter>
+                  </div>
+                ))}
               <hr className="post-hr" />
             </section>
           ))}
