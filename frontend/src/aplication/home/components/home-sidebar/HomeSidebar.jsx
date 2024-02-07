@@ -64,6 +64,40 @@ export const HomeSidebar = ({
         </div>
       </ShowOnLogin>
 
+      <ul className="nav flex-row theme-buttons">
+        <li key="light" className="nav-item">
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => {
+              document.body.classList.remove("dark");
+            }}
+          >
+            <i className="fas fa-sun"></i>
+          </button>
+        </li>
+        <li key="dark" className="nav-item">
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => {
+              document.body.classList.add("dark");
+            }}
+          >
+            <i className="fas fa-moon"></i>
+          </button>
+        </li>
+        <li key="rainbow" className="nav-item">
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => {
+              document.body.classList.remove("dark");
+              document.body.classList.add("rainbow");
+            }}
+          >
+            <i className="fas fa-rainbow"></i>
+          </button>
+        </li>
+      </ul>
+
       <ul className="nav flex-column">
         <li
           key="home"

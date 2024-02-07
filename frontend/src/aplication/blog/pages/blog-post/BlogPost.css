@@ -1,5 +1,5 @@
 .post-body {
-  background-color: #181819;
+  background-color: rgba(29, 29, 29, 0.5);
   color: #cccccc;
   font-family: 'Georgia', 'Times New Roman', Times, serif;
   padding-bottom: 3em;
@@ -74,7 +74,7 @@
   max-width: 66em;
   height: auto;
   padding: 20px;
-  background: #222226;
+  background-color: rgba(29, 29, 29, 0.5);
   box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.23);
   border-radius: 15px;
 }
@@ -84,7 +84,7 @@
   max-width: 66em;
   height: auto;
   padding: 20px;
-  background: #222226;
+  /* background: #222226; */
   box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.23);
   border-radius: 15px;
 }

@@ -11,7 +11,7 @@ const CoursePost = ({ post, user, useDeleteCoursePost }) => {
   const handleEdit = (e, postId) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate(`/editCoursePost/${postId}`); 
+    navigate(`/javascriptCourse/${postId}`); 
   };
 
   return (

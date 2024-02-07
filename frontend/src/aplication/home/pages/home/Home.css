@@ -427,6 +427,12 @@
 .add-section-buttons {
   margin-top: 20px;
 }
+.theme-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
 @media (max-width: 320px) {
   #wrapper #sidebar {
     width: 100%;
