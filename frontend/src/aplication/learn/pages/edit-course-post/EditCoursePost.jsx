@@ -4,7 +4,10 @@ import { ReactComponent as Edit } from "./edit.svg";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import nightOwlStyle from "react-syntax-highlighter/dist/esm/styles/prism/night-owl";
 import { BlogPostNavbar } from "../../../blog/components/blog-post-navbar/BlogPostNavbar";
-import { getCoursePost, updateCoursePost } from "../../../../redux/features/courses/coursesService";
+import {
+  getCoursePost,
+  updateCoursePost,
+} from "../../../../redux/features/courses/coursesService";
 import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 import useFileHandler from "../../../blog/customHooks/useFileHandler";
 import { useSelector } from "react-redux";
@@ -51,16 +54,19 @@ export const EditCoursePost = ({ user: postUser }) => {
   };
 
   const copyToClipboard = (code, index) => {
-    navigator.clipboard.writeText(code).then(() => {
-      setIsCopied(true);
-      setCopiedBlockIndex(index);
-      setTimeout(() => {
-        setIsCopied(false);
-        setCopiedBlockIndex(null);
-      }, 3000);
-    }).catch((err) => {
-      console.error("Could not copy text: ", err);
-    });
+    navigator.clipboard
+      .writeText(code)
+      .then(() => {
+        setIsCopied(true);
+        setCopiedBlockIndex(index);
+        setTimeout(() => {
+          setIsCopied(false);
+          setCopiedBlockIndex(null);
+        }, 3000);
+      })
+      .catch((err) => {
+        console.error("Could not copy text: ", err);
+      });
   };
 
   const handleContentChange = (content, index, type) => {
@@ -88,9 +94,9 @@ export const EditCoursePost = ({ user: postUser }) => {
     const formData = new FormData();
     formData.append("title", editedContent.title);
     formData.append("description", editedContent.description);
-    files.forEach(file => formData.append("headerImage", file));
+
     if (files.length > 0) {
-      files.forEach(file => formData.append("headerImage", file));
+      formData.append("headerImage", files[0]);
     }
     editedContent.contentBlocks.forEach((block, index) => {
       formData.append(`contentBlocks[${index}][type]`, block.type);
@@ -108,7 +114,7 @@ export const EditCoursePost = ({ user: postUser }) => {
           }
           break;
         default:
-          console.error("Unsupported block type:", block.type);
+          console.error("Unknown content type:", block.type);
       }
     });
 
@@ -117,8 +123,6 @@ export const EditCoursePost = ({ user: postUser }) => {
       if (result && result.success) {
         setSaveSuccess(true);
         setEditMode(false);
-      } else {
-        console.error("Error saving post:", result.error);
       }
     } catch (error) {
       console.error("Error saving post:", error);
@@ -126,7 +130,6 @@ export const EditCoursePost = ({ user: postUser }) => {
   };
 
   if (!item) return <div>Loading...</div>;
-
 
   return (
     <>

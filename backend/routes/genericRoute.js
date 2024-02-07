@@ -73,7 +73,7 @@ genericRouter.delete("/:type/:id", [protect, adminOnly], async (req, res) => {
 
 //Edit a post/course
 genericRouter.put("/:type/:id", upload.fields([
-  { name: "images", maxCount: 10 },
+  { name: "headerImage", maxCount: 10 },
   { name: "contentBlocksImages", maxCount: 10 },
 ]), [protect, adminOnly], async (req, res) => {
   const { model, folder } = getModelAndFolder(req.params.type);

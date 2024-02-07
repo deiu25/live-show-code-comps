@@ -10,11 +10,9 @@ export const createCoursePost = async (formData) => {
       method: "POST",
       body: formData,
     });
-    console.log(res);
     return res;
   }
   catch (error) {
-    console.log(error);
     return null;
   }
 };
@@ -25,7 +23,6 @@ export const getCoursePosts = async (category) => {
     const res = await fetchWithCredentialsBlog(`${API_URL}?category=${category}`);
     return res.items;
   } catch (error) {
-    console.log(error);
     return null;
   }
 };
@@ -37,18 +34,12 @@ export const getCoursePost = async (id) => {
     return res.item;
   }
   catch (error) {
-    console.log(error);
     return null;
   }
 };
 
 // update course post by id
 export const updateCoursePost = async (id, formData) => {
-  // Afișează datele din formData în consolă
-  for (let [key, value] of formData.entries()) {
-    console.log(`${key}:`, value);
-  }
-
   try {
     const res = await fetchWithCredentialsBlog(`${API_URL}/${id}`, {
       method: "PUT",
@@ -56,7 +47,6 @@ export const updateCoursePost = async (id, formData) => {
     });
     return res;
   } catch (error) {
-    console.log(error);
     return null;
   }
 };
@@ -74,7 +64,6 @@ export const deleteCoursePostService  = async (id) => {
       return { success: false, id };
     }
   } catch (error) {
-    console.error('Error deleting course post:', error);
     return { 
       success: false, 
       id, 
