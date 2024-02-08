@@ -6,7 +6,7 @@ import { About } from "./aplication/about/pages/about/About";
 import { Login } from "./aplication/auth/pages/auth/Login";
 import { Signup } from "./aplication/auth/pages/auth/Singup";
 import { useDispatch, useSelector } from "react-redux";
-import {getLoginStatus, getUser, selectIsLoggedIn, selectUser } from "./redux/features/auth/authSlice";
+import {getLoginStatus, getUser, selectIsLoggedIn, selectUser, setTheme } from "./redux/features/auth/authSlice";
 import { useEffect } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ChangePassword } from "./aplication/auth/pages/changePassword/ChangePassword";
@@ -32,6 +32,12 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    dispatch(setTheme(savedTheme));
+    document.body.className = savedTheme;
+  }, [dispatch]);
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);

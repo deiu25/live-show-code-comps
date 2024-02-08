@@ -13,6 +13,7 @@ const initialState = {
   message: "",
   verifiedUsers: 0,
   suspendedUsers: 0,
+  theme: 'rainbow',
 };
 
 // Register User
@@ -347,6 +348,10 @@ const authSlice = createSlice({
       });
       state.suspendedUsers = count;
     },
+    setTheme(state, action) {
+      state.theme = action.payload;
+      localStorage.setItem('theme', action.payload); 
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -668,8 +673,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { RESET, CALC_VERIFIED_USER, CALC_SUSPENDED_USER } =
-  authSlice.actions;
+export const { RESET, CALC_VERIFIED_USER, CALC_SUSPENDED_USER, setTheme  } = authSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 export const selectUser = (state) => state.auth.user;

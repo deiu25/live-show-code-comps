@@ -1,15 +1,21 @@
 import React from "react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
-import { useTheme } from "../../../theme/ThemeContext";
+import { setTheme } from "../../../../redux/features/auth/authSlice";
 
 
 export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSidebar }) => {
-  const { toggleTheme } = useTheme();
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+   const handleChangeTheme = (theme) => {
+    dispatch(setTheme(theme));
+    document.body.className = theme; 
+    localStorage.setItem('theme', theme);
+  };
 
   const sidebarClass = classNames({
     "col-md-3": isSidebarOpen,
@@ -65,7 +71,7 @@ export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSide
         <li key="light" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => toggleTheme('light')}
+            onClick={() => handleChangeTheme('light')}
           >
             <i className="fas fa-sun"></i>
           </button>
@@ -73,7 +79,7 @@ export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSide
         <li key="dark" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => toggleTheme('dark')}
+            onClick={() => handleChangeTheme('dark')}
           >
             <i className="fas fa-moon"></i>
           </button>
@@ -81,7 +87,7 @@ export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSide
         <li key="rainbow" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => toggleTheme('rainbow')}
+            onClick={() => handleChangeTheme('rainbow')}
           >
             <i className="fas fa-rainbow"></i>
           </button>
@@ -89,7 +95,7 @@ export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSide
         <li key="green" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => toggleTheme('green')}
+            onClick={() => handleChangeTheme('green')}
           >
             <i className="fas fa-leaf"></i>
           </button>
@@ -97,7 +103,7 @@ export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSide
         <li key="calm" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => toggleTheme('calm')}
+            onClick={() => handleChangeTheme('calm')}
           >
             <i className = "fas fa-water"></i>
           </button>
@@ -105,7 +111,7 @@ export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSide
         <li key="purple" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => toggleTheme('purple')}
+            onClick={() => handleChangeTheme('purple')}
           >
             <i className = "fas fa-dragon"></i>
           </button>
@@ -113,7 +119,7 @@ export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSide
         <li key="orange" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => toggleTheme('orange')}
+            onClick={() => handleChangeTheme('orange')}
           >
             <i className = "fas fa-fire"></i>
           </button>
@@ -121,7 +127,7 @@ export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSide
         <li key="red" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => toggleTheme('red')}
+            onClick={() => handleChangeTheme('red')}
           >
             <i className = "fas fa-heart"></i>
           </button>
