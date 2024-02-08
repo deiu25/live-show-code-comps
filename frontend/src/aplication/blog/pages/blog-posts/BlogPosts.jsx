@@ -1,7 +1,7 @@
 // BlogPosts.js
 import React, { useEffect } from "react";
 import "./BlogPosts.css";
-import { BlogCard } from "../../components/blog-card/BlogCard";
+import { BlogCard } from "../../components/blog-card/BlogCard copy";
 import { fetchBlogPosts } from "../../../../redux/features/blog/blogSlice";
 import { useDispatch, useSelector } from "react-redux";
 
