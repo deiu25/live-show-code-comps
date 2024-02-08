@@ -3,14 +3,11 @@ import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
+import { useTheme } from "../../../theme/ThemeContext";
 
 
-export const HomeSidebar = ({
-  onTabChange,
-  currentTab,
-  isSidebarOpen,
-  toggleSidebar,
-}) => {
+export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSidebar }) => {
+  const { toggleTheme } = useTheme();
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
@@ -68,9 +65,7 @@ export const HomeSidebar = ({
         <li key="light" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => {
-              document.body.classList.remove("dark");
-            }}
+            onClick={() => toggleTheme('light')}
           >
             <i className="fas fa-sun"></i>
           </button>
@@ -78,9 +73,7 @@ export const HomeSidebar = ({
         <li key="dark" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => {
-              document.body.classList.add("dark");
-            }}
+            onClick={() => toggleTheme('dark')}
           >
             <i className="fas fa-moon"></i>
           </button>
@@ -88,12 +81,49 @@ export const HomeSidebar = ({
         <li key="rainbow" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => {
-              document.body.classList.remove("dark");
-              document.body.classList.add("rainbow");
-            }}
+            onClick={() => toggleTheme('rainbow')}
           >
             <i className="fas fa-rainbow"></i>
+          </button>
+        </li>
+        <li key="green" className="nav-item">
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => toggleTheme('green')}
+          >
+            <i className="fas fa-leaf"></i>
+          </button>
+        </li>
+        <li key="calm" className="nav-item">
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => toggleTheme('calm')}
+          >
+            <i className = "fas fa-water"></i>
+          </button>
+        </li>
+        <li key="purple" className="nav-item">
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => toggleTheme('purple')}
+          >
+            <i className = "fas fa-dragon"></i>
+          </button>
+        </li>
+        <li key="orange" className="nav-item">
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => toggleTheme('orange')}
+          >
+            <i className = "fas fa-fire"></i>
+          </button>
+        </li>
+        <li key="red" className="nav-item">
+          <button
+            className="nav-link anchor-btn"
+            onClick={() => toggleTheme('red')}
+          >
+            <i className = "fas fa-heart"></i>
           </button>
         </li>
       </ul>

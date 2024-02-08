@@ -51,7 +51,6 @@ export const Home = ({ children }) => {
           <div className={`col-md-${isSidebarOpen ? "9" : "11"}`}>
             <div id="main-area">
               {renderCurrentTab()}
-              {/* <HomeFooter /> */}
             </div>
           </div>
         </div>
