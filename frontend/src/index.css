@@ -35,10 +35,16 @@
   --colir-red: #ff0000;
 
   --main-color: rgba(34, 166, 179, 0.2);
+  --border-color: rgba(34, 166, 179, 0.2);
   --secondary-color: rgba(126, 214, 223, 0.5);
   --shadow-color: rgba(48, 51, 107, 1);
   --white-lit-color: rgba(255, 255, 255, 0.4);
   --text-color: #fff;
+  
+  --blog-card-overlay-start: rgba(0, 0, 0, 0.5);
+  --blog-card-overlay-end: rgba(0, 0, 0, 0.5); 
+  --blog-card-overlay: rgba(0, 0, 0, 0.5);
+  --blog-card-hover-button: linear-gradient(to right, blue, rgb(245, 83, 110));
 
   --background-color: linear-gradient(to right, blue, rgb(245, 83, 110));
 }
@@ -62,6 +68,8 @@ body.light {
   --white-lit-color: rgba(199, 199, 199, 0.4);
   --text-color: #333333;
   --background-color: #fff;
+  --border-color: #e6e5e5;
+  --blog-card-hover-button: rgba(0, 0, 0, 0.5);
 }
 
 body.dark {
@@ -71,6 +79,8 @@ body.dark {
   --white-lit-color: rgba(255, 255, 255, 0.4);
   --text-color: #ffffff;
   --background-color: #333;
+  --border-color: #222222;
+  --blog-card-hover-button: rgba(255, 255, 255, 0.5);
 }
 
 body.green {
@@ -80,6 +90,10 @@ body.green {
   --white-lit-color: rgba(20, 90, 50, 0.4); 
   --text-color: #E9F7EF; 
   --background-color: #1D8348; 
+  --border-color: #145A32;
+  --blog-card-overlay-start: rgba(0, 0, 0, 0.5);
+  --blog-card-overlay-end: rgba(0, 0, 0, 0.5); 
+  --blog-card-hover-button: linear-gradient(to right, #1D8348, #145A32);
 }
 
 body.calm {
@@ -89,6 +103,9 @@ body.calm {
   --white-lit-color: rgba(161, 181, 205, 0.4);
   --text-color: #2C3E50;
   --background-color: #D6E6F2;
+  --border-color: #A1B5CD;
+  --blog-card-overlay: rgba(82, 80, 80, 0.5);
+  --blog-card-hover-button: linear-gradient(to right, #B2C8DF, #A1B5CD);
 }
 
 body.purple {
@@ -98,6 +115,8 @@ body.purple {
   --white-lit-color: rgba(122, 1, 119, 0.4);
   --text-color: #F5E1F7;
   --background-color: #9D0191;
+  --border-color: #7A0177;
+  --blog-card-hover-button: linear-gradient(to right, #9D0191, #7A0177);
 }
 
 body.orange {
@@ -107,6 +126,9 @@ body.orange {
   --white-lit-color: rgba(230, 90, 27, 0.4);
   --text-color: #F5E1F7;
   --background-color: #FF7722;
+  --border-color: #E65A1B;
+  --blog-card-overlay: rgba(0, 0, 0, 0.5);
+  --blog-card-hover-button: linear-gradient(to right, #FF7722, #E65A1B);
 }
 
 body.red {
@@ -116,6 +138,9 @@ body.red {
   --white-lit-color: rgba(204, 0, 0, 0.4);
   --text-color: #F5E1F7;
   --background-color: #FF0000;
+  --border-color: #CC0000;
+  --blog-card-overlay: rgba(0, 0, 0, 0.5);
+  --blog-card-hover-button: linear-gradient(to right, #FF0000, #CC0000);
 }
 
 

@@ -22,6 +22,22 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
   const [copiedBlockIndex, setCopiedBlockIndex] = useState(null);
   const { files, previewSources, handleFileChange } = useFileHandler();
 
+  const copyToClipboard = (code, index) => {
+    navigator.clipboard
+      .writeText(code)
+      .then(() => {
+        setIsCopied(true);
+        setCopiedBlockIndex(index);
+        setTimeout(() => {
+          setIsCopied(false);
+          setCopiedBlockIndex(null);
+        }, 3000);
+      })
+      .catch((err) => {
+        console.error("Could not copy text: ", err);
+      });
+  };
+
   useEffect(() => {
     const fetchPost = async () => {
       const fetchedPost = await getCoursePost(id);
@@ -49,22 +65,6 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
-  };
-
-  const copyToClipboard = (code, index) => {
-    navigator.clipboard
-      .writeText(code)
-      .then(() => {
-        setIsCopied(true);
-        setCopiedBlockIndex(index);
-        setTimeout(() => {
-          setIsCopied(false);
-          setCopiedBlockIndex(null);
-        }, 3000);
-      })
-      .catch((err) => {
-        console.error("Could not copy text: ", err);
-      });
   };
 
   const handleContentChange = (content, index, type) => {

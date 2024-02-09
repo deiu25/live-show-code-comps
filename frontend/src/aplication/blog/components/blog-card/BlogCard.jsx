@@ -29,7 +29,7 @@ export const BlogCard = ({ id, title, description, headerImage, user: postUser }
           <ul className="utility-list">
             {isUserLoggedIn && isUserCreator && isAdmin && (
               <>
-                <li><span className="licon icon-edit"></span><Link to={`/edit-blog/${id}`}>Edit</Link></li>
+                <li><span className="licon icon-edit"></span><Link to={`/blog/${id}`}>Edit</Link></li>
                 <li><span className="licon icon-delete"></span>
                   <button onClick={(e) => {
                     e.stopPropagation();

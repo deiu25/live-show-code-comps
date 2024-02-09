@@ -68,7 +68,11 @@
   bottom: 100px;
 }
 .blog-card:hover .color-overlay {
-  background: rgba(64, 64, 70, 0.8);
+  background: linear-gradient(
+    to right, 
+    var(--blog-card-overlay-start), 
+    var(--blog-card-overlay-end)
+  );
 }
 .blog-card .title-content {
   transform: translateY(-70px);
@@ -205,7 +209,7 @@ h3:after {
   font-size: 0.8em;
 }
 .card-info a:hover {
-  background: #8e7c49;
+  background: var(--blog-card-hover-button);
   color: #fff;
 }
 .card-info a:hover span {
