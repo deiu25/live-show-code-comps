@@ -18,12 +18,35 @@ const ContentBlocksManager = ({
       {contentBlocks.map((block, index) => (
         <div key={index}>
           {block.type === "image" ? (
-            <input
-              type="file"
-              onChange={(e) => handleContentBlockFileChange(e, index)}
-            />
+            <>
+              <label htmlFor="subtitle" className="myForm-label">
+                Image Subtitle:
+              </label>
+              <input
+                type="text"
+                className="myForm-input"
+                value={block.subtitle || ""}
+                name="subtitle"
+                onChange={(e) => handleCodeBlockChange(e, index)}
+              />
+              <input
+                type="file"
+                onChange={(e) => handleContentBlockFileChange(e, index)}
+              />
+            </>
           ) : block.type === "code" ? (
             <div className="myForm-field">
+              <label htmlFor="subtitle" className="myForm-label">
+                Code Subtitle:
+              </label>
+              <input
+                type="text"
+                className="myForm-input"
+                value={block.subtitle || ""}
+                name="subtitle"
+                onChange={(e) => handleCodeBlockChange(e, index)}
+              />
+
               <label htmlFor="code" className="myForm-label">
                 Code
               </label>
@@ -61,12 +84,24 @@ const ContentBlocksManager = ({
               />
             </div>
           ) : (
-            <textarea
-              className="myForm-input-textArea"
-              value={block.text}
-              name="text"
-              onChange={(e) => handleContentBlockChange(e, index)}
-            />
+            <>
+              <label htmlFor="subtitle" className="myForm-label">
+                Textarea Subtitle:
+              </label>
+              <input
+                type="text"
+                className="myForm-input"
+                value={block.subtitle || ""}
+                name="subtitle"
+                onChange={(e) => handleCodeBlockChange(e, index)}
+              />
+              <textarea
+                className="myForm-input-textArea"
+                value={block.text}
+                name="text"
+                onChange={(e) => handleContentBlockChange(e, index)}
+              />
+            </>
           )}
           <button className="sett-button" onClick={() => moveBlockUp(index)}>
             <UpSvg />

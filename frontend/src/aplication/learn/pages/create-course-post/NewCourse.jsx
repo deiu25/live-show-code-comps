@@ -120,6 +120,9 @@ const NewCourse = () => {
         formData.append(`contentBlocks[${index}][language]`, block.language);
         formData.append(`contentBlocks[${index}][type]`, "code");
       }
+      if (block.subtitle) {
+        formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
+      }
     });
 
     formData.append("title", inputs.title);

@@ -42,6 +42,7 @@ const postSchema = new mongoose.Schema({
       },
       code: String, 
       language: String, 
+      subtitle: String,
     },
   ],  
   tags: [

@@ -140,11 +140,11 @@
 }
 
 .post-img {
-  width: 100%; /* Asigură că imaginea se extinde pe toată lățimea containerului */
-  height: 50vh; /* Stabilește o înălțime fixă sau procentuală conform designului tău */
-  object-fit: cover; /* Asigură că imaginea acoperă containerul fără a fi distorsionată */
-  margin: 10vh auto; /* Centrarea imaginii în container, elimină marginile verticale dacă nu sunt necesare */
-  display: block; /* Elimină nevoia de flexbox dacă imaginea trebuie să acopere întreaga lățime */
+  width: 100%; 
+  height: 50vh; 
+  object-fit: cover; 
+  margin: 10vh auto; 
+  display: block; 
 }
 
 .post-blockquote {

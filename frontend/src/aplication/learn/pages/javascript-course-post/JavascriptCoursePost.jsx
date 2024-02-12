@@ -94,7 +94,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
     formData.append("title", editedContent.title);
     formData.append("description", editedContent.description);
     formData.append("subtitle", editedContent.subtitle);
-    
+
     if (files.length > 0) {
       formData.append("headerImage", files[0]);
     }
@@ -281,11 +281,17 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                       )}
                   </>
                 ) : (
-                  <img
-                    src={block.image.url}
-                    alt="Content"
-                    className="post-img"
-                  />
+                  <>
+                    {block.subtitle && <h5 className="subtitle-h4">{block.subtitle}</h5>}
+                    {block.image &&
+                      block.image.url && (
+                        <img
+                          src={block.image.url}
+                          alt="Content"
+                          className="post-img"
+                        />
+                      )}
+                  </>
                 ))}
 
               <section className="post-section">
@@ -299,7 +305,14 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                       className="post-text-editable"
                     />
                   ) : (
+                    <>
+                    {block.subtitle && <h5 className="subtitle-h4">{block.subtitle}</h5>}
+           
                     <p className="post-text">{block.text}</p>
+             
+               
+                    
+                    </>
                   ))}
               </section>
               {block.type === "code" &&
@@ -312,28 +325,34 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                     className="post-code-editable"
                   />
                 ) : (
-                  <div className="code-card">
-                    <div className="code-header">
-                      <div className="code-title">
-                        <p className="code-language">{block.language}</p>
+                  <>
+          
+                    {block.subtitle && <h5 className="subtitle-h4">{block.subtitle}</h5>}
+
+                    <br></br>
+                    <div className="code-card">
+                      <div className="code-header">
+                        <div className="code-title">
+                          <p className="code-language">{block.language}</p>
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard(block.code, index)}
+                          className="copy-button"
+                        >
+                          {isCopied && copiedBlockIndex === index
+                            ? "Copied!"
+                            : "Copy Code"}
+                        </button>
                       </div>
-                      <button
-                        onClick={() => copyToClipboard(block.code, index)}
-                        className="copy-button"
+                      <SyntaxHighlighter
+                        language={block.language}
+                        className="post-code"
+                        style={nightOwlStyle}
                       >
-                        {isCopied && copiedBlockIndex === index
-                          ? "Copied!"
-                          : "Copy Code"}
-                      </button>
+                        {block.code}
+                      </SyntaxHighlighter>
                     </div>
-                    <SyntaxHighlighter
-                      language={block.language}
-                      className="post-code"
-                      style={nightOwlStyle}
-                    >
-                      {block.code}
-                    </SyntaxHighlighter>
-                  </div>
+                  </>
                 ))}
               <hr className="post-hr" />
             </section>
