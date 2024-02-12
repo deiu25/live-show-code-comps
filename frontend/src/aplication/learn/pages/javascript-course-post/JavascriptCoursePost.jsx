@@ -81,6 +81,9 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
         const newPreviewUrl = URL.createObjectURL(content);
         updatedContentBlocks[index].image = { url: newPreviewUrl };
         break;
+      case "subtitle":
+        updatedContentBlocks[index].subtitle = content;
+        break;
       default:
         console.error("Unknown content type:", type);
     }
@@ -103,14 +106,17 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
       switch (block.type) {
         case "text":
           formData.append(`contentBlocks[${index}][text]`, block.text);
+          formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
           break;
         case "code":
           formData.append(`contentBlocks[${index}][code]`, block.code);
           formData.append(`contentBlocks[${index}][language]`, block.language);
+          formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
           break;
         case "image":
           if (block.image && block.image instanceof File) {
             formData.append(`contentBlocks[${index}][image]`, block.image);
+            formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
           }
           break;
         default:
@@ -265,6 +271,14 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                 (editMode ? (
                   <>
                     <input
+                      type="text"
+                      value={block.subtitle || ""}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index, "subtitle")
+                      }
+                      className="post-subtitle-editable"
+                    />
+                    <input
                       type="file"
                       onChange={(e) =>
                         handleContentChange(e.target.files[0], index, "image")
@@ -282,21 +296,30 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                   </>
                 ) : (
                   <>
-                    {block.subtitle && <h5 className="subtitle-h4">{block.subtitle}</h5>}
-                    {block.image &&
-                      block.image.url && (
-                        <img
-                          src={block.image.url}
-                          alt="Content"
-                          className="post-img"
-                        />
-                      )}
+                    {block.subtitle && (
+                      <h5 className="subtitle-h4">{block.subtitle}</h5>
+                    )}
+                    {block.image && block.image.url && (
+                      <img
+                        src={block.image.url}
+                        alt="Content"
+                        className="post-img"
+                      />
+                    )}
                   </>
                 ))}
 
-              <section className="post-section">
-                {block.type === "text" &&
-                  (editMode ? (
+              {block.type === "text" &&
+                (editMode ? (
+                  <>
+                    <input
+                      type="text"
+                      value={block.subtitle || ""}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index, "subtitle")
+                      }
+                      className="post-subtitle-editable"
+                    />
                     <textarea
                       value={block.text}
                       onChange={(e) =>
@@ -304,30 +327,42 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                       }
                       className="post-text-editable"
                     />
-                  ) : (
-                    <>
-                    {block.subtitle && <h5 className="subtitle-h4">{block.subtitle}</h5>}
-           
-                    <p className="post-text">{block.text}</p>
-             
-               
-                    
-                    </>
-                  ))}
-              </section>
-              {block.type === "code" &&
-                (editMode ? (
-                  <textarea
-                    value={block.code}
-                    onChange={(e) =>
-                      handleContentChange(e.target.value, index, "code")
-                    }
-                    className="post-code-editable"
-                  />
+                  </>
                 ) : (
                   <>
-          
-                    {block.subtitle && <h5 className="subtitle-h4">{block.subtitle}</h5>}
+                    {block.subtitle && (
+                      <h5 className="subtitle-h4">{block.subtitle}</h5>
+                    )}
+                    <section className="post-section">
+                      <p className="post-text">{block.text}</p>{" "}
+                    </section>
+                  </>
+                ))}
+
+              {block.type === "code" &&
+                (editMode ? (
+                  <>
+                    <input
+                      type="text"
+                      value={block.subtitle || ""}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index, "subtitle")
+                      }
+                      className="post-subtitle-editable"
+                    />
+                    <textarea
+                      value={block.code}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index, "code")
+                      }
+                      className="post-code-editable"
+                    />
+                  </>
+                ) : (
+                  <>
+                    {block.subtitle && (
+                      <h5 className="subtitle-h4">{block.subtitle}</h5>
+                    )}
 
                     <br></br>
                     <div className="code-card">

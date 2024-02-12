@@ -182,6 +182,19 @@
   display: flex;
   flex-direction: column;
   border-radius: 10px;
+  margin: 0 2vw 10vh 2vw;
+}
+
+.post-code-editable {
+  background-color: rgb(1, 22, 39);
+  border-radius: 0 0 5px 5px;
+  padding: 15px;
+  font-family: 'Courier New', monospace !important;
+  font-size: 1.25em;
+  width: 60vw;
+  height: auto;
+  margin: 5vh 2vw 5vh 2vw;
+  color: #cccccc;
 }
 
 .code-header {
@@ -249,23 +262,9 @@
   font-size: 1.5em;
   font-weight: 300;
   color: #000;
-  margin: 0;
   padding: 15px;
-  width: 40vw;
-  height: 40vw;
-}
-
-.post-code-editable {
-  background-color: rgb(1, 22, 39);
-  border-radius: 0 0 5px 5px;
-  padding: 15px;
-  font-family: 'Courier New', monospace !important;
-  font-size: 1.25em;
-  width: 70vw;
-  max-height: 100em;
-  overflow-x: auto;
-  margin-bottom: 2em;
-  color: #cccccc;
+  width: 55vw;
+  height: auto;
 }
 
 .post-text-editable {

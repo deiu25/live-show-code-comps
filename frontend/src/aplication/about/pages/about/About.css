@@ -34,7 +34,7 @@
     background-color: rgba(255, 255, 255, 0.5);
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    animation: wave 2s ease-out infinite 0.5s forwards;
+    animation: wave 2s ease-out 0.5s forwards;
 }
 
 @keyframes wave {

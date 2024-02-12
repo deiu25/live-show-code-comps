@@ -132,15 +132,15 @@ body.orange {
 }
 
 body.red {
-  --main-color: #FF0000;
-  --secondary-color: #CC0000;
+  --main-color: #a10c0c;
+  --secondary-color: #640c0c;
   --shadow-color: #fff;
-  --white-lit-color: rgba(204, 0, 0, 0.4);
+  --white-lit-color: rgba(230, 90, 27, 0.4);
   --text-color: #F5E1F7;
-  --background-color: #FF0000;
-  --border-color: #CC0000;
+  --background-color: #a10c0c;
+  --border-color:  #640c0c;
   --blog-card-overlay: rgba(0, 0, 0, 0.5);
-  --blog-card-hover-button: linear-gradient(to right, #FF0000, #CC0000);
+  --blog-card-hover-button: linear-gradient(to right, #a10c0c, #640c0c);
 }
 
 
