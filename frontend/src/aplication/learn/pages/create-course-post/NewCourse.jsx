@@ -1,8 +1,8 @@
 // NewCourse.jsx
 import "./NewCourse.css";
 import React, { useEffect, useState } from "react";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { NewBlogNavbar } from "../../../blog/components/new-blog-navbar/NewBlogNavbar";
@@ -16,8 +16,7 @@ import useContentBlocks from "../../../blog/customHooks/useContentBlocks";
 import TagsManager from "../../../blog/components/tags-manager/TagsManager";
 import useTagsManager from "../../../blog/customHooks/useTagsManager";
 import useFileHandler from "../../../blog/customHooks/useFileHandler";
-import { validateNewBlogPost } from "../../../blog/utils/validation";
-
+import { validateNewCourse } from "../../../blog/utils/ValidateNewCourse";
 import { createCoursePost } from "../../../../redux/features/courses/coursesService";
 
 const NewCourse = () => {
@@ -32,6 +31,7 @@ const NewCourse = () => {
 
   const [inputs, setInputs] = useState({
     title: "",
+    subtitle: "",
     description: "",
     date: getCurrentDate(),
     tags: "",
@@ -92,11 +92,11 @@ const NewCourse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const formErrors = validateNewBlogPost(inputs, files, isLoggedIn, isVerified);
-  
+
+    const formErrors = validateNewCourse(inputs, files, isLoggedIn, isVerified);
+
     if (Object.keys(formErrors).length > 0) {
-      Object.values(formErrors).forEach(error => {
+      Object.values(formErrors).forEach((error) => {
         toast.error(error);
       });
       return;
@@ -123,6 +123,7 @@ const NewCourse = () => {
     });
 
     formData.append("title", inputs.title);
+    formData.append("subtitle", inputs.subtitle);
     formData.append("description", inputs.description);
     formData.append("date", inputs.date);
     formData.append("category", inputs.category);
@@ -195,6 +196,19 @@ const NewCourse = () => {
               </button>
             </div>
           ))}
+        </div>
+        <div className="myForm-field">
+          <label htmlFor="subtitle" className="myForm-label">
+            Subtitle:
+          </label>
+          <input
+            type="text"
+            id="subtitle"
+            name="subtitle"
+            className="myForm-input"
+            value={inputs.subtitle}
+            onChange={handleChange}
+          />
         </div>
         <div className="myForm-field">
           <label htmlFor="description" className="myForm-label">

@@ -10,7 +10,7 @@ import TagsManager from "../../components/tags-manager/TagsManager";
 import useTagsManager from "../../customHooks/useTagsManager";
 import useContentBlocks from "../../customHooks/useContentBlocks";
 import useFileHandler from "../../customHooks/useFileHandler";
-import { validateNewBlogPost } from "../../utils/validation";
+import { validateNewBlogPost } from "../../utils/ValidateNewBlogPost";
 import { ReactComponent as AddImageIcon } from "../../assets/icons/add-image-svg.svg";
 import { ReactComponent as AddTextIcon } from "../../assets/icons/add-text-svg.svg";
 import { ReactComponent as AddCodeIcon } from "../../assets/icons/add-code-svg.svg";

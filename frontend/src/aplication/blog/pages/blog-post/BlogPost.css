@@ -84,7 +84,6 @@
   max-width: 66em;
   height: auto;
   padding: 20px;
-  /* background: #222226; */
   box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.23);
   border-radius: 15px;
 }
@@ -103,6 +102,20 @@
 .post-h1,
 .post-headline-2 {
   line-height: 1;
+  font-size: 2vw;
+}
+
+.subtitle-h4 {
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #ebcb34; 
+  text-align: start;
+  margin-left: 10vw;
+  margin-bottom: 3vw;
+}
+
+.post-headline-2 {
+  margin-bottom:3vh;
 }
 
 .post-headline-1 {
@@ -127,13 +140,11 @@
 }
 
 .post-img {
-  max-width: 20%;
-  margin-bottom: 1.33em;
-  vertical-align: middle;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  margin: 10vh auto;
+  width: 100%; /* Asigură că imaginea se extinde pe toată lățimea containerului */
+  height: 50vh; /* Stabilește o înălțime fixă sau procentuală conform designului tău */
+  object-fit: cover; /* Asigură că imaginea acoperă containerul fără a fi distorsionată */
+  margin: 10vh auto; /* Centrarea imaginii în container, elimină marginile verticale dacă nu sunt necesare */
+  display: block; /* Elimină nevoia de flexbox dacă imaginea trebuie să acopere întreaga lățime */
 }
 
 .post-blockquote {
@@ -165,18 +176,19 @@
   content: close-quote;
 }
 
-.code-card{
+.code-card {
   max-height: 100%;
   max-width: 100%;
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
 }
 
 .code-header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #222226;
+  border-radius: 10px 10px 0 0;
 }
 
 .code-title {
@@ -185,6 +197,7 @@
   background-color: rgb(1, 22, 39);
   padding: 5px 15px 0 15px;
   text-transform: uppercase;
+  border-radius: 10px 10px 0 0;
 }
 
 .post-code {
@@ -198,6 +211,7 @@
   max-height: 100em;
   overflow-x: auto;
   margin-bottom: 2em;
+  border-radius: 0 0 10px 10px;
 }
 
 .copy-button {
@@ -208,6 +222,7 @@
   width: 120px;
   cursor: pointer;
   margin-left: auto; 
+  border-radius: 10px 10px 0 0;
 }
 
 .copy-button:active {
@@ -221,7 +236,7 @@
 
 /* editable content */
 .post-h1-editable {
-  font-size: 5.5vw;
+  font-size: 3vw;
   font-weight: 400;
   color: #ebcb34; 
   line-height: 1;
@@ -234,10 +249,10 @@
   font-size: 1.5em;
   font-weight: 300;
   color: #000;
-  line-height: 1.5;
   margin: 0;
   padding: 15px;
-  width: 60vw;
+  width: 40vw;
+  height: 40vw;
 }
 
 .post-code-editable {

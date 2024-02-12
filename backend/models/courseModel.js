@@ -5,6 +5,9 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  subtitle: {
+    type: String,
+  },
   headerImage: [
     {
       public_id: {

@@ -45,6 +45,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
         setItem(fetchedPost);
         setEditedContent({
           title: fetchedPost.title,
+          subtitle: fetchedPost.subtitle,
           description: fetchedPost.description,
           headerImage: fetchedPost.headerImage ? fetchedPost.headerImage : [],
           contentBlocks: fetchedPost.contentBlocks,
@@ -92,7 +93,8 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
     const formData = new FormData();
     formData.append("title", editedContent.title);
     formData.append("description", editedContent.description);
-
+    formData.append("subtitle", editedContent.subtitle);
+    
     if (files.length > 0) {
       formData.append("headerImage", files[0]);
     }
@@ -213,6 +215,25 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
             </header>
 
             <hr className="post-hr" />
+
+            <h6 className="subtitle-h4">
+              {editMode ? (
+                <input
+                  type="text"
+                  value={editedContent.subtitle}
+                  onChange={(e) =>
+                    setEditedContent({
+                      ...editedContent,
+                      subtitle: e.target.value,
+                    })
+                  }
+                  className="post-h1-editable"
+                />
+              ) : (
+                <div className="post-headline-2">{item.subtitle}</div>
+              )}
+            </h6>
+
             <section className="post-section">
               <section className="post-section">
                 {editMode ? (
