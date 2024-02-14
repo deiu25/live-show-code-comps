@@ -1,18 +1,16 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { shortenText } from "../../../auth/pages/profile/Profile";
 
 const CoursePost = ({ post, user, useDeleteCoursePost }) => {
-  const navigate = useNavigate(); 
+
+  const shortenedTitle = shortenText(post.title, 30);
+  const shortenedDescription = shortenText(post.description, 58);
+
   const confirmDelete = useDeleteCoursePost();
   const isAdmin = user?.role === "admin";
   const isUserLoggedIn = user !== null;
   const isUserCreatorOfPost = user?._id === post.user._id;
-
-  const handleEdit = (e, postId) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(`/javascriptCourse/${postId}`); 
-  };
 
   return (
     <div className="chapter-card-container">
@@ -20,12 +18,6 @@ const CoursePost = ({ post, user, useDeleteCoursePost }) => {
         <div className="chapter-card">
           {isUserLoggedIn && isUserCreatorOfPost && isAdmin && (
             <div className="card-buttons">
-              <button 
-                className="card-button edit"
-                onClick={(e) => handleEdit(e, post._id)} 
-              >
-                Edit
-              </button>
               <button
                 className="card-button delete"
                 onClick={(e) => {
@@ -38,8 +30,8 @@ const CoursePost = ({ post, user, useDeleteCoursePost }) => {
               </button>
             </div>
           )}
-          <h3>{post.title}</h3>
-          <p>{post.description}</p>
+          <h3>{shortenedTitle}</h3>
+          <p>{shortenedDescription}</p>
         </div>
       </Link>
     </div>

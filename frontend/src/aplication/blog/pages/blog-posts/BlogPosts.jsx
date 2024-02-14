@@ -16,7 +16,6 @@ export const BlogPosts = () => {
 
   return (
     <div className="blog-main">
-      <h1 className="blog-h1">Responsive Card Grid Layout</h1>
         {posts.map((post) => (
           <BlogCard
             key={post._id}

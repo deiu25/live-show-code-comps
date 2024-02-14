@@ -1,6 +1,5 @@
 // HomeAllPosts.jsx
 import React, { useRef } from "react";
-import { PostsHeader } from "../posts-header/PostsHeader";
 import { PostsMap } from "../posts-map/PostsMap";
 import { usePosts } from "../posts-map/usePosts";
 import useLazyLoad from "../../../customHooks/useLazyLoad";
@@ -13,7 +12,7 @@ export const HomeAllPosts = () => {
 
   return (
     <>
-      <PostsHeader />
+      {/* <PostsHeader /> */}
       <PostsMap posts={visiblePosts} title="All Posts" loadMoreRef={loadMoreRef} />
     </>
   );

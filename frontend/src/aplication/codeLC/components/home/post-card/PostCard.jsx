@@ -18,7 +18,6 @@ import { useAuthAdminStatus } from "../../../../customHooks/useAuthAdminStatus";
 function PostCard({ id, title, htmlCode, cssCode, jsCode, user: postUser }) {
   const [showOverlay, setShowOverlay] = useState(true);
   const shortenedTitle = shortenText(title, 20);
-  const [showFullTitle, setShowFullTitle] = useState(false);
   const markupUrl = useIframeUrl(htmlCode, cssCode, jsCode);
   const { likes, userWhoLiked, handleLike } = useLikes(id);
   const confirmDelete = useDeletePost();
@@ -59,7 +58,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, user: postUser }) {
             Delete
           </button> )}
           <p className="post-card-title text-truncate">
-            {showFullTitle ? title : shortenedTitle}
+            {shortenedTitle}
           </p>
           <div className="post-card-icons"  onClick={(e) => { e.stopPropagation(); }}>
             <div className="number-of" onClick={handleLike}>

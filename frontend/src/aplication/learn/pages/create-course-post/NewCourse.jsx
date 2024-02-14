@@ -148,7 +148,7 @@ const NewCourse = () => {
       <NewBlogNavbar />
       <ToastContainer />
       <form onSubmit={handleSubmit} className="myForm-container">
-        <h1 className="myForm-title">Create a new blog post</h1>
+        <h1 className="myForm-title">Create a new course post</h1>
         <div>
           {Object.keys(errors).map((key) => (
             <span key={key} className="myForm-error">

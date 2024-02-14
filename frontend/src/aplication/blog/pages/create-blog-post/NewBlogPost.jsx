@@ -28,9 +28,11 @@ const NewBlogPost = () => {
 
   const [inputs, setInputs] = useState({
     title: "",
+    subtitle: "",
     description: "",
     date: getCurrentDate(),
     tags: "",
+    category: "",
   });
 
   const { files, previewSources, handleFileChange, handleDeletePreview } =
@@ -118,9 +120,13 @@ const NewBlogPost = () => {
         formData.append(`contentBlocks[${index}][language]`, block.language);
         formData.append(`contentBlocks[${index}][type]`, "code");
       }
+      if (block.subtitle) {
+        formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
+      }
     });
 
     formData.append("title", inputs.title);
+    formData.append("subtitle", inputs.subtitle);
     formData.append("description", inputs.description);
     formData.append("date", inputs.date);
     formData.append("tags", inputs.tags);
@@ -191,6 +197,19 @@ const NewBlogPost = () => {
               </button>
             </div>
           ))}
+        </div>
+        <div className="myForm-field">
+          <label htmlFor="subtitle" className="myForm-label">
+            Subtitle:
+          </label>
+          <input
+            type="text"
+            id="subtitle"
+            name="subtitle"
+            className="myForm-input"
+            value={inputs.subtitle}
+            onChange={handleChange}
+          />
         </div>
         <div className="myForm-field">
           <label htmlFor="description" className="myForm-label">
