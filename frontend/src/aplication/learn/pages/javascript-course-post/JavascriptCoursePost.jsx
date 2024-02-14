@@ -114,9 +114,13 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
           formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
           break;
         case "image":
-          if (block.image && block.image instanceof File) {
-            formData.append(`contentBlocks[${index}][image]`, block.image);
-            formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
+          if (block.file && block.file instanceof File) {
+            formData.append("contentBlocksImages", block.file);
+            formData.append(`contentBlocks[${index}][type]`, block.type);
+            formData.append(
+              `contentBlocks[${index}][subtitle]`,
+              block.subtitle
+            );
           }
           break;
         default:
@@ -156,6 +160,14 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
               <Edit />
               {editMode ? "Save" : "Edit"}
             </button>
+            {editMode && (
+              <button
+                onClick={() => setEditMode(false)}
+                className="edit-post-button"
+              >
+                Cancel
+              </button>
+            )}
           </div>
         )}
         <div className="post-profile"></div>
@@ -393,6 +405,19 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
             </section>
           ))}
         </article>
+        {editMode && (
+          <div className="edit-post-div">
+            <button onClick={savePost} className="edit-post-button">
+              Save
+            </button>
+            <button
+              onClick={() => setEditMode(false)}
+              className="edit-post-button"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
