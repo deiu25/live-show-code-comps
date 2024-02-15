@@ -4,9 +4,13 @@ import "./BlogCard.css";
 import { useDeleteBlogPost } from "../../customHooks/useDeleteBlogPost";
 import { Link } from "react-router-dom";
 import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
+import { shortenText } from "../../../auth/pages/profile/Profile";
 
 export const BlogCard = ({ id, title, description, headerImage, user: postUser }) => {
   const { isAdmin, isUserLoggedIn, isUserCreator } = useAuthAdminStatus(postUser);
+
+  const shortenedDescription = shortenText(description, 100);
+
   const confirmDelete = useDeleteBlogPost();
 
   return (
@@ -22,7 +26,7 @@ export const BlogCard = ({ id, title, description, headerImage, user: postUser }
         </div>
 
         <div className="card-info">
-          <div className="blog-card-description">{description}</div>
+          <div className="blog-card-description">{shortenedDescription}</div>
           <Link to={`/blog/${id}`}>Read Article<span className="licon icon-arr icon-black"></span></Link>
         </div>
         <div className="utility-info">

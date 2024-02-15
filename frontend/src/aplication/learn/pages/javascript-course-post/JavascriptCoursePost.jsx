@@ -45,9 +45,9 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
         setItem(fetchedPost);
         setEditedContent({
           title: fetchedPost.title,
+          headerImage: fetchedPost.headerImage ? fetchedPost.headerImage : [],
           subtitle: fetchedPost.subtitle,
           description: fetchedPost.description,
-          headerImage: fetchedPost.headerImage ? fetchedPost.headerImage : [],
           contentBlocks: fetchedPost.contentBlocks,
         });
       }
@@ -251,12 +251,14 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
               )}
 
               {editMode && (
+                <div className="card-editable">
                 <input
                   type="file"
                   onChange={handleFileChange}
                   multiple
                   className="post-img-editable"
                 />
+                </div>
               )}
             </header>
 
@@ -264,6 +266,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
 
             <h6 className="subtitle-h4">
               {editMode ? (
+                <div className="card-editable">
                 <input
                   type="text"
                   value={editedContent.subtitle}
@@ -275,6 +278,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                   }
                   className="post-h1-editable"
                 />
+                </div>
               ) : (
                 <div className="post-headline-2">{item.subtitle}</div>
               )}
@@ -283,6 +287,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
             <section className="post-section">
               <section className="post-section">
                 {editMode ? (
+                  <div className="card-editable">
                   <textarea
                     value={editedContent.description}
                     className="post-description-editable"
@@ -293,6 +298,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                       })
                     }
                   />
+                  </div>
                 ) : (
                   item.description.split("\n").map((line, index) => (
                     <React.Fragment key={index}>
@@ -313,7 +319,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
               <hr className="post-hr" />
               {block.type === "image" &&
                 (editMode ? (
-                  <>
+                  <div className="card-editable">
                     <input
                       type="text"
                       value={block.subtitle || ""}
@@ -337,7 +343,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                           className="post-img"
                         />
                       )}
-                  </>
+                  </div>
                 ) : (
                   <>
                     {block.subtitle && (
@@ -355,7 +361,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
 
               {block.type === "text" &&
                 (editMode ? (
-                  <>
+                  <div className="card-editable">
                     <input
                       type="text"
                       value={block.subtitle || ""}
@@ -371,7 +377,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                       }
                       className="post-text-editable"
                     />
-                  </>
+                  </div>
                 ) : (
                   <>
                     {block.subtitle && (
@@ -389,7 +395,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
 
               {block.type === "code" &&
                 (editMode ? (
-                  <>
+                  <div className="card-editable">
                     <input
                       type="text"
                       value={block.preSubtitle || ""}
@@ -400,9 +406,9 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                           "preSubtitle"
                         )
                       }
-                      className="post-subtitle-editable"
+                      className="post-h1-editable"
                     />
-                    <input
+                    <textarea
                       type="text"
                       value={block.preDescription || ""}
                       onChange={(e) =>
@@ -412,7 +418,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                           "preDescription"
                         )
                       }
-                      className="post-subtitle-editable"
+                      className="post-description-editable"
                     />
                     <textarea
                       value={block.code}
@@ -431,9 +437,9 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                           "postSubtitle"
                         )
                       }
-                      className="post-subtitle-editable"
+                      className="post-h1-editable"
                     />
-                    <input
+                    <textarea
                       type="text"
                       value={block.postDescription || ""}
                       onChange={(e) =>
@@ -443,9 +449,9 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                           "postDescription"
                         )
                       }
-                      className="post-subtitle-editable"
+                      className="post-description-editable"
                     />
-                  </>
+                  </div>
                 ) : (
                   <>
                     {block.preSubtitle && (

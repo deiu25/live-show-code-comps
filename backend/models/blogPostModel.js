@@ -17,6 +17,9 @@ const postSchema = new mongoose.Schema({
       },
     },
   ],
+  subtitle: {
+    type: String,
+  },
   description: {
     type: String,
     required: true,
@@ -39,6 +42,23 @@ const postSchema = new mongoose.Schema({
       },
       code: String, 
       language: String, 
+      subtitle: String,
+      preDescription: {
+        type: String,
+        default: '', 
+      },
+      postDescription: {
+        type: String,
+        default: '', 
+      },
+      preSubtitle: {
+        type: String,
+        default: '', 
+      },
+      postSubtitle: {
+        type: String,
+        default: '', 
+      },
     },
   ],  
   tags: [

@@ -4,7 +4,7 @@ import { shortenText } from "../../../auth/pages/profile/Profile";
 
 const CoursePost = ({ post, user, useDeleteCoursePost }) => {
 
-  const shortenedTitle = shortenText(post.title, 30);
+  const shortenedTitle = shortenText(post.title, 20);
   const shortenedDescription = shortenText(post.description, 58);
 
   const confirmDelete = useDeleteCoursePost();
@@ -30,7 +30,7 @@ const CoursePost = ({ post, user, useDeleteCoursePost }) => {
               </button>
             </div>
           )}
-          <h3>{shortenedTitle}</h3>
+          <h3 className="js-card-title">{shortenedTitle}</h3>
           <p>{shortenedDescription}</p>
         </div>
       </Link>

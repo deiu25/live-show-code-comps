@@ -43,8 +43,9 @@ export const BlogPost = ({ user: postUser }) => {
         setItem(fetchedPost);
         setEditedContent({
           title: fetchedPost.title,
-          description: fetchedPost.description,
           headerImage: fetchedPost.headerImage ? fetchedPost.headerImage : [],
+          subtitle: fetchedPost.subtitle,
+          description: fetchedPost.description,
           contentBlocks: fetchedPost.contentBlocks,
         });
       }
@@ -78,6 +79,21 @@ export const BlogPost = ({ user: postUser }) => {
         const newPreviewUrl = URL.createObjectURL(content);
         updatedContentBlocks[index].image = { url: newPreviewUrl };
         break;
+      case "subtitle":
+        updatedContentBlocks[index].subtitle = content;
+        break;
+      case "preDescription":
+        updatedContentBlocks[index].preDescription = content;
+        break;
+      case "postDescription":
+        updatedContentBlocks[index].postDescription = content;
+        break;
+      case "preSubtitle":
+        updatedContentBlocks[index].preSubtitle = content;
+        break;
+      case "postSubtitle":
+        updatedContentBlocks[index].postSubtitle = content;
+        break;
       default:
         console.error("Unknown content type:", type);
     }
@@ -90,6 +106,7 @@ export const BlogPost = ({ user: postUser }) => {
     const formData = new FormData();
     formData.append("title", editedContent.title);
     formData.append("description", editedContent.description);
+    formData.append("subtitle", editedContent.subtitle);
 
     if (files.length > 0) {
       formData.append("headerImage", files[0]);
@@ -99,14 +116,37 @@ export const BlogPost = ({ user: postUser }) => {
       switch (block.type) {
         case "text":
           formData.append(`contentBlocks[${index}][text]`, block.text);
+          formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
           break;
         case "code":
+          formData.append(
+            `contentBlocks[${index}][preDescription]`,
+            block.preDescription
+          );
+          formData.append(
+            `contentBlocks[${index}][postDescription]`,
+            block.postDescription
+          );
+          formData.append(
+            `contentBlocks[${index}][preSubtitle]`,
+            block.preSubtitle
+          );
+          formData.append(
+            `contentBlocks[${index}][postSubtitle]`,
+            block.postSubtitle
+          );
           formData.append(`contentBlocks[${index}][code]`, block.code);
           formData.append(`contentBlocks[${index}][language]`, block.language);
+          formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
           break;
         case "image":
-          if (block.image && block.image instanceof File) {
-            formData.append(`contentBlocks[${index}][image]`, block.image);
+          if (block.file && block.file instanceof File) {
+            formData.append("contentBlocksImages", block.file);
+            formData.append(`contentBlocks[${index}][type]`, block.type);
+            formData.append(
+              `contentBlocks[${index}][subtitle]`,
+              block.subtitle
+            );
           }
           break;
         default:
@@ -146,6 +186,14 @@ export const BlogPost = ({ user: postUser }) => {
               <Edit />
               {editMode ? "Save" : "Edit"}
             </button>
+            {editMode && (
+              <button
+                onClick={() => setEditMode(false)}
+                className="edit-post-button"
+              >
+                Cancel
+              </button>
+            )}
           </div>
         )}
         <div className="post-profile"></div>
@@ -211,9 +259,31 @@ export const BlogPost = ({ user: postUser }) => {
             </header>
 
             <hr className="post-hr" />
+
+            <h6 className="subtitle-h4">
+              {editMode ? (
+                <div className="card-editable">
+                <input
+                  type="text"
+                  value={editedContent.subtitle}
+                  onChange={(e) =>
+                    setEditedContent({
+                      ...editedContent,
+                      subtitle: e.target.value,
+                    })
+                  }
+                  className="post-h1-editable"
+                />
+                </div>
+              ) : (
+                <div className="post-headline-2">{item.subtitle}</div>
+              )}
+            </h6>
+
             <section className="post-section">
               <section className="post-section">
                 {editMode ? (
+                  <div className="card-editable">
                   <textarea
                     value={editedContent.description}
                     className="post-description-editable"
@@ -224,8 +294,13 @@ export const BlogPost = ({ user: postUser }) => {
                       })
                     }
                   />
+                  </div>
                 ) : (
-                  <p>{item.description}</p>
+                  item.description.split("\n").map((line, index) => (
+                    <React.Fragment key={index}>
+                      <p>{line}</p>
+                    </React.Fragment>
+                  ))
                 )}
               </section>
             </section>
@@ -240,7 +315,15 @@ export const BlogPost = ({ user: postUser }) => {
               <hr className="post-hr" />
               {block.type === "image" &&
                 (editMode ? (
-                  <>
+                  <div className="card-editable">
+                    <input
+                      type="text"
+                      value={block.subtitle || ""}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index, "subtitle")
+                      }
+                      className="post-subtitle-editable"
+                    />
                     <input
                       type="file"
                       onChange={(e) =>
@@ -256,18 +339,33 @@ export const BlogPost = ({ user: postUser }) => {
                           className="post-img"
                         />
                       )}
-                  </>
+                  </div>
                 ) : (
-                  <img
-                    src={block.image.url}
-                    alt="Content"
-                    className="post-img"
-                  />
+                  <>
+                    {block.subtitle && (
+                      <h5 className="subtitle-h4">{block.subtitle}</h5>
+                    )}
+                    {block.image && block.image.url && (
+                      <img
+                        src={block.image.url}
+                        alt="Content"
+                        className="post-img"
+                      />
+                    )}
+                  </>
                 ))}
 
-              <section className="post-section">
-                {block.type === "text" &&
-                  (editMode ? (
+              {block.type === "text" &&
+                (editMode ? (
+                  <div className="card-editable">
+                    <input
+                      type="text"
+                      value={block.subtitle || ""}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index, "subtitle")
+                      }
+                      className="post-subtitle-editable"
+                    />
                     <textarea
                       value={block.text}
                       onChange={(e) =>
@@ -275,47 +373,157 @@ export const BlogPost = ({ user: postUser }) => {
                       }
                       className="post-text-editable"
                     />
-                  ) : (
-                    <p className="post-text">{block.text}</p>
-                  ))}
-              </section>
+                  </div>
+                ) : (
+                  <>
+                    {block.subtitle && (
+                      <h5 className="subtitle-h4">{block.subtitle}</h5>
+                    )}
+                    <section className="post-section">
+                      {block.text.split("\n").map((paragraph, idx) => (
+                        <p key={idx} className="post-text">
+                          {paragraph}
+                        </p>
+                      ))}
+                    </section>
+                  </>
+                ))}
+
               {block.type === "code" &&
                 (editMode ? (
-                  <textarea
-                    value={block.code}
-                    onChange={(e) =>
-                      handleContentChange(e.target.value, index, "code")
-                    }
-                    className="post-code-editable"
-                  />
-                ) : (
-                  <div className="code-card">
-                    <div className="code-header">
-                      <div className="code-title">
-                        <p className="code-language">{block.language}</p>
-                      </div>
-                      <button
-                        onClick={() => copyToClipboard(block.code, index)}
-                        className="copy-button"
-                      >
-                        {isCopied && copiedBlockIndex === index
-                          ? "Copied!"
-                          : "Copy Code"}
-                      </button>
-                    </div>
-                    <SyntaxHighlighter
-                      language={block.language}
-                      className="post-code"
-                      style={nightOwlStyle}
-                    >
-                      {block.code}
-                    </SyntaxHighlighter>
+                  <div className="card-editable">
+                    <input
+                      type="text"
+                      value={block.preSubtitle || ""}
+                      onChange={(e) =>
+                        handleContentChange(
+                          e.target.value,
+                          index,
+                          "preSubtitle"
+                        )
+                      }
+                      className="post-h1-editable"
+                    />
+                    <textarea
+                      type="text"
+                      value={block.preDescription || ""}
+                      onChange={(e) =>
+                        handleContentChange(
+                          e.target.value,
+                          index,
+                          "preDescription"
+                        )
+                      }
+                      className="post-description-editable"
+                    />
+                    <textarea
+                      value={block.code}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index, "code")
+                      }
+                      className="post-code-editable"
+                    />
+                    <input
+                      type="text"
+                      value={block.postSubtitle || ""}
+                      onChange={(e) =>
+                        handleContentChange(
+                          e.target.value,
+                          index,
+                          "postSubtitle"
+                        )
+                      }
+                      className="post-h1-editable"
+                    />
+                    <textarea
+                      type="text"
+                      value={block.postDescription || ""}
+                      onChange={(e) =>
+                        handleContentChange(
+                          e.target.value,
+                          index,
+                          "postDescription"
+                        )
+                      }
+                      className="post-description-editable"
+                    />
                   </div>
+                ) : (
+                  <>
+                    {block.preSubtitle && (
+                      <h5 className="subtitle-h4">{block.preSubtitle}</h5>
+                    )}
+                    {block.preDescription && (
+                      <section className="post-section">
+                        {block.preDescription
+                          .split("\n")
+                          .map((paragraph, idx) => (
+                            <p key={idx} className="post-text">
+                              {paragraph}
+                            </p>
+                          ))}
+                      </section>
+                    )}
+
+                    <br></br>
+                    <div className="code-card">
+                      <div className="code-header">
+                        <div className="code-title">
+                          <p className="code-language">{block.language}</p>
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard(block.code, index)}
+                          className="copy-button"
+                        >
+                          {isCopied && copiedBlockIndex === index
+                            ? "Copied!"
+                            : "Copy Code"}
+                        </button>
+                      </div>
+                      <SyntaxHighlighter
+                        language={block.language}
+                        className="post-code"
+                        style={nightOwlStyle}
+                      >
+                        {block.code}
+                      </SyntaxHighlighter>
+                    </div>
+                    <br></br>
+                    {block.postSubtitle && (
+                      <h5 className="subtitle-h4">{block.postSubtitle}</h5>
+                    )}
+                    {block.postDescription && (
+                      <section className="post-section">
+                        {block.postDescription
+                          .split("\n")
+                          .map((paragraph, idx) => (
+                            <p key={idx} className="post-text">
+                              {paragraph}
+                            </p>
+                          ))}
+                      </section>
+                    )}
+                  </>
                 ))}
               <hr className="post-hr" />
             </section>
           ))}
         </article>
+
+        {editMode && (
+          <div className="edit-post-div">
+            <button onClick={savePost} className="edit-post-button">
+              Save
+            </button>
+            <button
+              onClick={() => setEditMode(false)}
+              className="edit-post-button"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+        
       </div>
     </>
   );

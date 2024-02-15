@@ -5,9 +5,6 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  subtitle: {
-    type: String,
-  },
   headerImage: [
     {
       public_id: {
@@ -20,6 +17,9 @@ const postSchema = new mongoose.Schema({
       },
     },
   ],
+  subtitle: {
+    type: String,
+  },
   description: {
     type: String,
     required: true,
