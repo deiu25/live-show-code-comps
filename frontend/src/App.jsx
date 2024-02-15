@@ -34,7 +34,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem('theme') || 'rainbow';
     dispatch(setTheme(savedTheme));
     document.body.className = savedTheme;
   }, [dispatch]);

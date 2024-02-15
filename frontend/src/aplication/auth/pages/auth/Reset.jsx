@@ -136,7 +136,7 @@ export const Reset = () => {
                         <form onSubmit={reset}>
                           <div className="form-group">
                             <PasswordInput
-                              className="form-style"
+                              className="forgot-input"
                               id="newPassword"
                               autoComplete="off"
                               placeholder="Password"
@@ -148,7 +148,7 @@ export const Reset = () => {
                           </div>
                           <div className="form-group">
                             <PasswordInput
-                              className="form-style"
+                              className="forgot-input"
                               id="repeatPassword"
                               autoComplete="off"
                               placeholder="Repeat Password"

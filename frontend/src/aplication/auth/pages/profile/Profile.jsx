@@ -124,7 +124,7 @@ export const Profile = () => {
                   <h3 className="textColor">Role: {profile.role}</h3>
                 </div>
                 <form onSubmit={saveProfile}>
-                  <label>Change Photo</label>
+                  <label className="profile-label">Change Photo</label>
                   <div className="custom-form-group">
                     <input
                       type="file"
@@ -135,7 +135,7 @@ export const Profile = () => {
                     />
                   </div>
                   <div className="form-group form-group-flex">
-                    <label htmlFor="firstname">First Name</label>
+                    <label htmlFor="firstname" className="profile-label">First Name</label>
                     <span className="input-icon-custom">
                       <i className="uil uil-user"></i>
                     </span>
@@ -143,13 +143,13 @@ export const Profile = () => {
                       type="text"
                       id="firstname"
                       name="firstname"
-                      className="form-control form-style"
+                      className="form-control forgot-input"
                       value={profile?.firstname}
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="form-group form-group-flex">
-                    <label htmlFor="lastname">Last Name</label>
+                    <label htmlFor="lastname" className="profile-label">Last Name</label>
                     <span className="input-icon-custom">
                       <i className="uil uil-user"></i>
                     </span>
@@ -157,7 +157,7 @@ export const Profile = () => {
                       type="text"
                       id="lastname"
                       name="lastname"
-                      className="form-control form-style"
+                      className="form-control forgot-input"
                       value={profile?.lastname}
                       onChange={handleInputChange}
                     />
@@ -166,7 +166,7 @@ export const Profile = () => {
                     className="email-input form-group form-group-flex"
                     style={{ position: "relative" }}
                   >
-                    <label htmlFor="email">
+                    <label htmlFor="email" className="profile-label">
                       Email{" "}
                       <span className="hover-message">
                         You cannot change your email address.
@@ -180,13 +180,13 @@ export const Profile = () => {
                       disabled
                       id="email"
                       name="email"
-                      className="form-style"
+                      className="forgot-input"
                       value={profile?.email}
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="form-group form-group-flex">
-                    <label htmlFor="phone">Phone</label>
+                    <label htmlFor="phone" className="profile-label">Phone</label>
                     <span className="input-icon-custom">
                       <i className="uil uil-phone"></i>
                     </span>
@@ -194,13 +194,13 @@ export const Profile = () => {
                       type="text"
                       id="phone"
                       name="phone"
-                      className="form-control form-style"
+                      className="form-control forgot-input"
                       value={profile?.phone}
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="form-group form-group-flex">
-                    <label htmlFor="bio">Bio</label>
+                    <label htmlFor="bio" className="profile-label">Bio</label>
                     <span className="input-icon-custom">
                       <i className="uil uil-comment"></i>
                     </span>

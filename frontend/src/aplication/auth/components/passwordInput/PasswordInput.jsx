@@ -21,7 +21,7 @@ export const PasswordInput = ({
         name={name}
         value={value}
         required
-        className="form-style"
+        className="forgot-input"
         placeholder={placeholder}
         id={id}
         autoComplete="off"

@@ -81,7 +81,12 @@
   margin: 0;
   padding: 0;
 }
-.form-style {
+.profile-label {
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.forgot-input {
   padding: 13px 20px;
   padding-left: 55px;
   height: 48px;
@@ -93,14 +98,14 @@
   letter-spacing: 0.5px;
   outline: none;
   color: #c4c3ca;
-  background-color: #1f2029;
+  background-color: #000000;
   border: none;
   -webkit-transition: all 200ms linear;
   transition: all 200ms linear;
   box-shadow: 0 4px 8px 0 rgba(21, 21, 21, 0.2);
 }
-.form-style:focus,
-.form-style:active {
+.forgot-input:focus,
+.forgot-input:active {
   border: none;
   outline: none;
   box-shadow: 0 4px 8px 0 rgba(21, 21, 21, 0.2);
@@ -118,7 +123,7 @@
 }
 
 .form-group input:-ms-input-placeholder {
-  color: #c4c3ca;
+  color: #fafafa;
   opacity: 0.7;
   -webkit-transition: all 200ms linear;
   transition: all 200ms linear;

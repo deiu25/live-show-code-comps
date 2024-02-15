@@ -40,7 +40,10 @@
   --shadow-color: rgba(48, 51, 107, 1);
   --white-lit-color: rgba(255, 255, 255, 0.4);
   --text-color: #fff;
-  
+
+  --login-box-shadow: 0px 0px 64px 0px #82e1ff inset, 0px 0px 16px #a8fffaa6;
+  --login-background: rgba(0, 255, 240, 0.52);
+
   --blog-card-overlay-start: rgba(0, 0, 0, 0.5);
   --blog-card-overlay-end: rgba(0, 0, 0, 0.5); 
   --blog-card-overlay: rgba(0, 0, 0, 0.5);
@@ -94,6 +97,7 @@ body.green {
   --blog-card-overlay-start: rgba(0, 0, 0, 0.5);
   --blog-card-overlay-end: rgba(0, 0, 0, 0.5); 
   --blog-card-hover-button: linear-gradient(to right, #1D8348, #145A32);
+  --login-box-shadow: 0px 0px 64px 0px #82e1ff inset, 0px 0px 16px #a8fffaa6;
 }
 
 body.calm {

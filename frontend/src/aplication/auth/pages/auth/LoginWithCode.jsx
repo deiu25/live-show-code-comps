@@ -82,7 +82,7 @@ export const LoginWithCode = () => {
                               type="text"
                               name="LoginCode"
                               value={loginCode}
-                              className="form-style"
+                              className="forgot-input"
                               placeholder="Access Code"
                               id="email"
                               autoComplete="off"

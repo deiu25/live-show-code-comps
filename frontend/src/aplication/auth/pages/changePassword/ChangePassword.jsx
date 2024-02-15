@@ -142,7 +142,7 @@ export const ChangePassword = () => {
               <form onSubmit={updatePassword}>
                 <>
                   <PasswordInput
-                    className="form-style margin-bottom"
+                    className="forgot-input margin-bottom"
                     id="oldPassword"
                     autoComplete="off"
                     placeholder="Old Password"
@@ -154,7 +154,7 @@ export const ChangePassword = () => {
                 </>
                 <>
                   <PasswordInput
-                    className="form-style margin-bottom"
+                    className="forgot-input margin-bottom"
                     id="newPassword"
                     autoComplete="off"
                     placeholder="New Password"
@@ -166,7 +166,7 @@ export const ChangePassword = () => {
                 </>
                 <>
                   <PasswordInput
-                    className="form-style"
+                    className="forgot-input"
                     id="confirmPassword"
                     autoComplete="off"
                     placeholder="Repeat Password"
