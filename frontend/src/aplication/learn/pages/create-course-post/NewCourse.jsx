@@ -58,9 +58,15 @@ const NewCourse = () => {
     setInputs((prevState) => ({ ...prevState, tags }));
   }, [tags]);
 
-  const handleTextAreaKeyDown = (e) => {
-    if (e.keyCode === 10) {
-      e.preventDefault();
+  const handleKeyDown = (e, index, type) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); 
+      const newValue = e.target.value + '\n'; 
+      if (type === 'text') {
+        updateContentBlock(index, { text: newValue });
+      } else if (type === 'code') {
+        updateContentBlock(index, { code: newValue });
+      }
     }
   };
   const handleTextAreaChange = (e) => {
@@ -149,6 +155,8 @@ const NewCourse = () => {
       <ToastContainer />
       <form onSubmit={handleSubmit} className="myForm-container">
         <h1 className="myForm-title">Create a new course post</h1>
+        <br></br>
+        <p>shift+enter for a new line in textarea</p>
         <div>
           {Object.keys(errors).map((key) => (
             <span key={key} className="myForm-error">
@@ -222,8 +230,8 @@ const NewCourse = () => {
             name="description"
             className=" myForm-input-textArea"
             value={inputs.description}
-            onChange={handleChange}
-            onKeyDown={handleTextAreaKeyDown}
+            onChange={handleChange} 
+            onKeyDown={handleKeyDown}
             onKeyUp={handleTextAreaChange}
           />
         </div>

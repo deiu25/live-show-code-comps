@@ -266,7 +266,11 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                     }
                   />
                 ) : (
-                  <p>{item.description}</p>
+                  item.description.split('\n').map((line, index) => (
+                    <React.Fragment key={index}>
+                      <p>{line}</p>
+                    </React.Fragment>
+                  ))
                 )}
               </section>
             </section>
@@ -346,7 +350,11 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                       <h5 className="subtitle-h4">{block.subtitle}</h5>
                     )}
                     <section className="post-section">
-                      <p className="post-text">{block.text}</p>{" "}
+                      {block.text.split("\n").map((paragraph, idx) => (
+                        <p key={idx} className="post-text">
+                          {paragraph}
+                        </p>
+                      ))}
                     </section>
                   </>
                 ))}

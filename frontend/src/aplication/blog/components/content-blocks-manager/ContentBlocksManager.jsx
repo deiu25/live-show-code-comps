@@ -13,6 +13,17 @@ const ContentBlocksManager = ({
   moveBlockUp,
   moveBlockDown,
 }) => {
+
+  const handleKeyDown = (e, index, type) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); // Previne trimiterea formularului sau orice altă acțiune implicită
+      // Logica pentru a insera o nouă linie în text/cod
+      const newValue = e.target.value + '\n'; // Adaugă o nouă linie la valoarea curentă
+      if (type === 'text') {
+        handleContentBlockChange({ target: { name: 'text', value: newValue } }, index);
+      }
+    }
+  };
   return (
     <div className="content-blocks">
       {contentBlocks.map((block, index) => (
@@ -99,6 +110,7 @@ const ContentBlocksManager = ({
                 className="myForm-input-textArea"
                 value={block.text}
                 name="text"
+                onKeyDown={(e) => handleKeyDown(e, index, 'text')}
                 onChange={(e) => handleContentBlockChange(e, index)}
               />
             </>
