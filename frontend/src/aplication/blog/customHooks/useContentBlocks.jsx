@@ -14,7 +14,7 @@ const useContentBlocks = () => {
         newBlock = { type, text: '' };
         break;
       case 'code':
-        newBlock = { type, code: '', language: 'plaintext' }; 
+        newBlock = { type, code: '', language: 'plaintext', preDescription: '', postDescription: '' }; 
         break;
       default:
         return;

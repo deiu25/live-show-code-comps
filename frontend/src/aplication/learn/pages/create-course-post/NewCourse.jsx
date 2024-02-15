@@ -36,6 +36,10 @@ const NewCourse = () => {
     date: getCurrentDate(),
     tags: "",
     category: "",
+    preDescription: "",
+    postDescription: "",
+    preSubtitle: "",
+    postSubtitle: "",
   });
 
   const { files, previewSources, handleFileChange, handleDeletePreview } =
@@ -128,6 +132,18 @@ const NewCourse = () => {
       }
       if (block.subtitle) {
         formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
+      }
+      if (block.preDescription) {
+        formData.append(`contentBlocks[${index}][preDescription]`, block.preDescription);
+      }
+      if (block.postDescription) {
+        formData.append(`contentBlocks[${index}][postDescription]`, block.postDescription);
+      }
+      if (block.preSubtitle) {
+        formData.append(`contentBlocks[${index}][preSubtitle]`, block.preSubtitle);
+      }
+      if (block.postSubtitle) {
+        formData.append(`contentBlocks[${index}][postSubtitle]`, block.postSubtitle);
       }
     });
 
@@ -223,12 +239,12 @@ const NewCourse = () => {
         </div>
         <div className="myForm-field">
           <label htmlFor="description" className="myForm-label">
-            Description
+            Description:
           </label>
           <textarea
             id="description"
             name="description"
-            className=" myForm-input-textArea"
+            className="myForm-input-textArea"
             value={inputs.description}
             onChange={handleChange} 
             onKeyDown={handleKeyDown}
@@ -246,24 +262,31 @@ const NewCourse = () => {
               updateContentBlock(index, { file: e.target.files[0] })
             }
             handleCodeBlockChange={handleCodeBlockChange}
+            handlePreCodeDescriptionChange= {(e, index) => updateContentBlock(index, { preDescription: e.target.value })}
+            handlePostCodeDescriptionChange= {(e, index) => updateContentBlock(index, { postDescription: e.target.value })}
+            handlePreSubtitleChange= {(e, index) => updateContentBlock(index, { preSubtitle: e.target.value })}
+            handlePostSubtitleChange= {(e, index) => updateContentBlock(index, { postSubtitle: e.target.value })}
             handleDeleteContentBlock={deleteContentBlock}
             moveBlockUp={(index) => moveContentBlock(index, "up")}
             moveBlockDown={(index) => moveContentBlock(index, "down")}
           />
           <button
             className="add-button"
+            type="button"
             onClick={() => addContentBlock("image")}
           >
             <AddImageIcon />
           </button>
           <button
             className="add-button"
+            type="button"
             onClick={() => addContentBlock("text")}
           >
             <AddTextIcon />
           </button>
           <button
             className="add-button"
+            type="button"
             onClick={() => addContentBlock("code")}
           >
             <AddCodeIcon />

@@ -84,6 +84,18 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
       case "subtitle":
         updatedContentBlocks[index].subtitle = content;
         break;
+      case "preDescription":
+        updatedContentBlocks[index].preDescription = content;
+        break;
+      case "postDescription":
+        updatedContentBlocks[index].postDescription = content;
+        break;
+      case "preSubtitle":
+        updatedContentBlocks[index].preSubtitle = content;
+        break;
+      case "postSubtitle":
+        updatedContentBlocks[index].postSubtitle = content;
+        break;
       default:
         console.error("Unknown content type:", type);
     }
@@ -109,6 +121,22 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
           formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
           break;
         case "code":
+          formData.append(
+            `contentBlocks[${index}][preDescription]`,
+            block.preDescription
+          );
+          formData.append(
+            `contentBlocks[${index}][postDescription]`,
+            block.postDescription
+          );
+          formData.append(
+            `contentBlocks[${index}][preSubtitle]`,
+            block.preSubtitle
+          );
+          formData.append(
+            `contentBlocks[${index}][postSubtitle]`,
+            block.postSubtitle
+          );
           formData.append(`contentBlocks[${index}][code]`, block.code);
           formData.append(`contentBlocks[${index}][language]`, block.language);
           formData.append(`contentBlocks[${index}][subtitle]`, block.subtitle);
@@ -266,7 +294,7 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                     }
                   />
                 ) : (
-                  item.description.split('\n').map((line, index) => (
+                  item.description.split("\n").map((line, index) => (
                     <React.Fragment key={index}>
                       <p>{line}</p>
                     </React.Fragment>
@@ -364,9 +392,25 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                   <>
                     <input
                       type="text"
-                      value={block.subtitle || ""}
+                      value={block.preSubtitle || ""}
                       onChange={(e) =>
-                        handleContentChange(e.target.value, index, "subtitle")
+                        handleContentChange(
+                          e.target.value,
+                          index,
+                          "preSubtitle"
+                        )
+                      }
+                      className="post-subtitle-editable"
+                    />
+                    <input
+                      type="text"
+                      value={block.preDescription || ""}
+                      onChange={(e) =>
+                        handleContentChange(
+                          e.target.value,
+                          index,
+                          "preDescription"
+                        )
                       }
                       className="post-subtitle-editable"
                     />
@@ -377,11 +421,46 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                       }
                       className="post-code-editable"
                     />
+                    <input
+                      type="text"
+                      value={block.postSubtitle || ""}
+                      onChange={(e) =>
+                        handleContentChange(
+                          e.target.value,
+                          index,
+                          "postSubtitle"
+                        )
+                      }
+                      className="post-subtitle-editable"
+                    />
+                    <input
+                      type="text"
+                      value={block.postDescription || ""}
+                      onChange={(e) =>
+                        handleContentChange(
+                          e.target.value,
+                          index,
+                          "postDescription"
+                        )
+                      }
+                      className="post-subtitle-editable"
+                    />
                   </>
                 ) : (
                   <>
-                    {block.subtitle && (
-                      <h5 className="subtitle-h4">{block.subtitle}</h5>
+                    {block.preSubtitle && (
+                      <h5 className="subtitle-h4">{block.preSubtitle}</h5>
+                    )}
+                    {block.preDescription && (
+                      <section className="post-section">
+                        {block.preDescription
+                          .split("\n")
+                          .map((paragraph, idx) => (
+                            <p key={idx} className="post-text">
+                              {paragraph}
+                            </p>
+                          ))}
+                      </section>
                     )}
 
                     <br></br>
@@ -407,6 +486,21 @@ export const JavascriptCoursePost = ({ user: postUser }) => {
                         {block.code}
                       </SyntaxHighlighter>
                     </div>
+                    <br></br>
+                    {block.postSubtitle && (
+                      <h5 className="subtitle-h4">{block.postSubtitle}</h5>
+                    )}
+                    {block.postDescription && (
+                      <section className="post-section">
+                        {block.postDescription
+                          .split("\n")
+                          .map((paragraph, idx) => (
+                            <p key={idx} className="post-text">
+                              {paragraph}
+                            </p>
+                          ))}
+                      </section>
+                    )}
                   </>
                 ))}
               <hr className="post-hr" />

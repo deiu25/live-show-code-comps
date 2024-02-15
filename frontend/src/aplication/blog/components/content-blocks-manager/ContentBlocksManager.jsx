@@ -9,21 +9,28 @@ const ContentBlocksManager = ({
   handleContentBlockChange,
   handleContentBlockFileChange,
   handleCodeBlockChange,
+  handlePreSubtitleChange,
+  handlePostSubtitleChange,
+  handlePreCodeDescriptionChange,
+  handlePostCodeDescriptionChange,
   handleDeleteContentBlock,
   moveBlockUp,
   moveBlockDown,
 }) => {
 
   const handleKeyDown = (e, index, type) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); // Previne trimiterea formularului sau orice altă acțiune implicită
-      // Logica pentru a insera o nouă linie în text/cod
-      const newValue = e.target.value + '\n'; // Adaugă o nouă linie la valoarea curentă
-      if (type === 'text') {
-        handleContentBlockChange({ target: { name: 'text', value: newValue } }, index);
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); 
+      const newValue = e.target.value + "\n";
+      if (type === "text") {
+        handleContentBlockChange(
+          { target: { name: "text", value: newValue } },
+          index
+        );
       }
     }
   };
+
   return (
     <div className="content-blocks">
       {contentBlocks.map((block, index) => (
@@ -47,17 +54,25 @@ const ContentBlocksManager = ({
             </>
           ) : block.type === "code" ? (
             <div className="myForm-field">
-              <label htmlFor="subtitle" className="myForm-label">
-                Code Subtitle:
+              <label htmlFor="preSubtitle" className="myForm-label">
+                Pre Code Subtitle:
               </label>
               <input
                 type="text"
                 className="myForm-input"
-                value={block.subtitle || ""}
-                name="subtitle"
-                onChange={(e) => handleCodeBlockChange(e, index)}
+                value={block.preSubtitle || ""}
+                name="preSubtitle"
+                onChange={(e) => handlePreSubtitleChange(e, index)}
               />
-
+              <label htmlFor="preDescription" className="myForm-label">
+                Pre Code Description:
+              </label>
+              <textarea
+                className="myForm-input-textArea"
+                value={block.preDescription}
+                name="preDescription"
+                onChange={(e) => handlePreCodeDescriptionChange(e, index)}
+              />
               <label htmlFor="code" className="myForm-label">
                 Code
               </label>
@@ -93,6 +108,25 @@ const ContentBlocksManager = ({
                 name="code"
                 onChange={(e) => handleCodeBlockChange(e, index)}
               />
+              <label htmlFor="postSubtitle" className="myForm-label">
+                Post Code Subtitle:
+              </label>
+              <input
+                type="text"
+                className="myForm-input"
+                value={block.postSubtitle  || ""}
+                name="postSubtitle"
+                onChange={(e) => handlePostSubtitleChange(e, index)}
+              />
+              <label htmlFor="postDescription" className="myForm-label">
+                Post Code Description:
+              </label>
+              <textarea
+                className="myForm-input-textArea"
+                value={block.postDescription}
+                name="postDescription"
+                onChange={(e) => handlePostCodeDescriptionChange(e, index)}
+              />
             </div>
           ) : (
             <>
@@ -110,7 +144,7 @@ const ContentBlocksManager = ({
                 className="myForm-input-textArea"
                 value={block.text}
                 name="text"
-                onKeyDown={(e) => handleKeyDown(e, index, 'text')}
+                onKeyDown={(e) => handleKeyDown(e, index, "text")}
                 onChange={(e) => handleContentBlockChange(e, index)}
               />
             </>
