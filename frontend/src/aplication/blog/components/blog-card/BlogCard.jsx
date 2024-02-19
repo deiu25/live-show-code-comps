@@ -5,11 +5,15 @@ import { useDeleteBlogPost } from "../../customHooks/useDeleteBlogPost";
 import { Link } from "react-router-dom";
 import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 import { shortenText } from "../../../auth/pages/profile/Profile";
+import { useBlogPostLikes } from "../../customHooks/useBlogPostLikes";
 
-export const BlogCard = ({ id, title, description, headerImage, user: postUser }) => {
+export const BlogCard = ({ id, title, description, date, headerImage, user: postUser }) => {
   const { isAdmin, isUserLoggedIn, isUserCreator } = useAuthAdminStatus(postUser);
+  const { likes, handleLike } = useBlogPostLikes(id);
 
   const shortenedDescription = shortenText(description, 100);
+  const dateString = date;
+  const formattedDate = dateString.slice(0, 10);
 
   const confirmDelete = useDeleteBlogPost();
 
@@ -44,10 +48,10 @@ export const BlogCard = ({ id, title, description, headerImage, user: postUser }
                 </li>
               </>
             )}
-            <li><span className="licon icon-like"></span><button className="link-like-button">2</button></li>
-            <li><span className="licon icon-com"></span><button className="link-like-button">12</button></li>
-            <li><span className="licon icon-dat"></span>03 jun 2017</li>
-            <li><span className="licon icon-tag"></span><button className="link-like-button">Photos</button>, <button className="link-like-button">Nice</button></li>
+            <li onClick={handleLike}><span className="licon icon-like"></span>
+            <span className="link-like-button">{likes.likesCount}</span></li>
+            <li><span className="licon icon-com"></span><span className="link-like-button">12</span></li>
+            <li><span className="licon icon-dat"></span><span className="link-like-button">{formattedDate}</span></li>
           </ul>
         </div>
         <div className="gradient-overlay"></div>

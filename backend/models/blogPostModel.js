@@ -72,6 +72,44 @@ const postSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  comments: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
+  likes: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Like",
+    },
+  ],
+  likesCount: {
+    type: Number,
+    default: 0,
+  },
+  views: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "View",
+    },
+  ],
+  viewsCount: {
+    type: Number,
+    default: 0,
+  },
+  shares: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Share",
+    },
+  ],
+  saves: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Save",
+    },
+  ],
 });
 
 export default mongoose.model("BlogPost", postSchema);

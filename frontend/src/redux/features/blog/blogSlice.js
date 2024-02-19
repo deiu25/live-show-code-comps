@@ -1,12 +1,14 @@
 // blogSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { deleteBlogPostService, getBlogPost, getBlogPosts } from "./blogService";
+import { deleteBlogPostService, getBlogPost, getBlogPosts, likeBlogPost } from "./blogService";
+import { getLikesForPost } from "../posts/postSlice";
 
 const initialState = {
   items: [],
   isLoading: false,
   error: null,
   item: null,
+  likesMap: {},
 };
 
 // Add an asynchronous thunk to fetch the posts
@@ -47,11 +49,38 @@ export const deleteBlogPost = createAsyncThunk(
   }
 );
 
+// Create the async thunk for liking or unliking a BlogPost
+export const likeOrUnlikeBlogPost = createAsyncThunk(
+  "blog/likeBlogPost",
+  async (id, thunkAPI) => {
+    const response = await likeBlogPost(id);
+    return response;
+  }
+);
+
+// Create the async thunk to get likes for a BlogPost
+export const getLikesForBlogPost = createAsyncThunk(
+  "blog/getLikesForBlogPost",
+  async (id, thunkAPI) => {
+    const response = await getLikesForPost(id);
+    return response;
+  }
+);
+
+
 const blogPostSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {
-    // ... other reducers
+    // Define the likeBlogPost action
+    likeBlogPost(state, action) {
+      const { postId, userId } = action.payload;
+      if (state.likesMap[postId]) {
+        state.likesMap[postId].push(userId);
+      } else {
+        state.likesMap[postId] = [userId];
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -69,6 +98,12 @@ const blogPostSlice = createSlice({
       builder.addCase(fetchBlogPost.fulfilled, (state, action) => {
         state.item = action.payload;
       });   
+      builder.addCase(likeOrUnlikeBlogPost.fulfilled, (state, action) => {
+        state.likesMap[action.payload.id] = action.payload.likes;
+      });
+      builder.addCase(getLikesForBlogPost.fulfilled, (state, action) => {
+        state.likesMap[action.payload.id] = action.payload.likes;
+      });
   },
 });
 

@@ -281,6 +281,12 @@ h3:after {
   filter: brightness(0);
   opacity: 0.6;
 }
+.icon-like:hover {
+  cursor: pointer;
+}
+.icon-com:hover {
+  cursor: pointer;
+}
 .icon-like:before {
   background-position: -183px -6px;
 }

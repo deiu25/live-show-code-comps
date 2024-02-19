@@ -2,6 +2,8 @@
 import User from "../models/userModel.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
+import LikeBlogPost from "../models/likeBlogPostModel.js";
+import blogPostModel from "../models/blogPostModel.js";
 
 const createPostOrCourse = async (model, folder, req, res) => {
     try {
@@ -168,6 +170,64 @@ const editPostOrCourse = async (model, folder, req, res) => {
   }
 };
 
+// Like or unlike a BlogPost
+const likeOrUnlike = async (model, req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.user._id;
 
+    const item = await blogPostModel.findById(postId);
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: "Item not found.",
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    let like = await LikeBlogPost.findOne({ user: userId, snippet: postId });
+    if (like) {
+      // Dacă există, îl eliminăm
+      await LikeBlogPost.findByIdAndDelete(like._id);
+      await model.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
+    } else {
+      // Dacă nu există, creăm un nou like
+      like = new LikeBlogPost({ user: userId, snippet: postId });
+      await like.save();
+      await blogPostModel.findByIdAndUpdate(postId, {
+        $inc: { likesCount: 1 },
+      });
+    }
+
+    const updatedItem = await blogPostModel.findById(postId);
+
+    res.status(200).json({
+      success: true,
+      likesCount: updatedItem.likesCount,
+    });
+  } catch (error) {
+    console.error("Error in PUT /api/posts/:id/like:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+    
+// Get likes for a BlogPost
+const getLikes = async (model, req, res) => {
+  try {
+    const postId = req.params.id;
+    const likes = await LikeBlogPost.find({ snippet: postId });
+    res.status(200).json({ success: true, likes });
+  } catch (error) {
+    console.error("Error in GET /api/posts/:id/likes:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+}
   
-  export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse };
+  export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse, likeOrUnlike, getLikes };

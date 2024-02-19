@@ -5,7 +5,6 @@ import { BlogCard } from "../../components/blog-card/BlogCard";
 import { fetchBlogPosts } from "../../../../redux/features/blog/blogSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-
 export const BlogPosts = () => {
   const dispatch = useDispatch();
   const posts = useSelector(state => state.blogPosts.items);
@@ -26,6 +25,7 @@ export const BlogPosts = () => {
             headerImage={
             post.headerImage.length > 0 ? post.headerImage[0].url : ""
             }
+            date={post.date}
           />
         ))}
     </div>

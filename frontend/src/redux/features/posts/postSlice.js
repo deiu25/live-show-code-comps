@@ -89,10 +89,8 @@ const postSlice = createSlice({
       if (post) {
         const isLiked = post.likes.find((like) => like.user === userId);
         if (isLiked) {
-          // Dacă utilizatorul a dat deja like, atunci îl scoatem din lista de like-uri
           post.likes = post.likes.filter((like) => like.user !== userId);
         } else {
-          // Altfel, adăugăm utilizatorul în lista de like-uri
           post.likes.push({ user: userId });
         }
       }
