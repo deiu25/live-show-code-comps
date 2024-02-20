@@ -84,6 +84,8 @@ genericRouter.put("/:type/:id", upload.fields([
   await editPostOrCourse(model, folder, req, res);
 });
 
+
+// Like or unlike a post/course
 genericRouter.put("/:type/:id/like", protect, async (req, res) => {
   const { model } = getModelAndFolder(req.params.type);
   if (!model) {

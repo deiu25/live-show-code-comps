@@ -1,12 +1,12 @@
 // BlogCard.js
-import React from "react";
+import React, { useEffect } from "react";
 import "./BlogCard.css";
 import { useDeleteBlogPost } from "../../customHooks/useDeleteBlogPost";
 import { Link } from "react-router-dom";
 import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 import { shortenText } from "../../../auth/pages/profile/Profile";
-import { useDispatch } from "react-redux";
-import { toggleLike } from "../../../../redux/features/blog/blogSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBlogPost, toggleLike } from "../../../../redux/features/blog/blogSlice";
 
 export const BlogCard = ({
   id,
@@ -18,7 +18,7 @@ export const BlogCard = ({
 }) => {
   const { isAdmin, isUserLoggedIn, isUserCreator } =
     useAuthAdminStatus(postUser);
-
+    const { user } = useSelector((state) => state.auth);
   const shortenedDescription = shortenText(description, 100);
   const dateString = date;
   const formattedDate = dateString.slice(0, 10);
@@ -26,10 +26,32 @@ export const BlogCard = ({
   const confirmDelete = useDeleteBlogPost();
 
   const dispatch = useDispatch();
+  
+  const likesCount = useSelector(state => 
+    state.blogPosts.items.find(item => item._id === id)?.likesCount
+  );
+
+  useEffect(() => {
+    dispatch(fetchBlogPost(id));
+}, [dispatch, id, likesCount]);
+
+  
 
   const handleLike = () => {
-    dispatch(toggleLike({ postId: id }));
+    if (!user) {
+      alert("You must be logged in to like a post");
+      return;
+    }
+    console.log(`Attempting to toggle like for post ${id}. Current likes: ${likesCount}`); // Log înainte de dispatch
+    dispatch(toggleLike({ postId: id }))
+      .then(() => {
+        console.log(`Like toggled for post ${id}.`); // Log după dispatch cu succes
+      })
+      .catch((error) => {
+        console.error(`Error toggling like for post ${id}:`, error); // Log în caz de eroare
+      });
   };
+  
 
   return (
     <div className="blog-card-body" id="blog-card-body">
@@ -78,7 +100,7 @@ export const BlogCard = ({
             )}
             <li>
               <span className="licon icon-like" onClick={handleLike}></span>
-              <span className="link-like-button">0</span>
+              <span className="link-like-button">{likesCount}</span>
             </li>
             <li>
               <span className="licon icon-com"></span>

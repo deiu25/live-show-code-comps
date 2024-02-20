@@ -173,23 +173,23 @@ const editPostOrCourse = async (model, folder, req, res) => {
 // Like or unlike a BlogPost
 const likeOrUnlike = async (req, res) => {
   try {
-    console.log(req.params);
     const postId = req.params.id;
     const userId = req.user._id;
 
-    // Verificăm dacă like-ul există
     const like = await LikeBlogPost.findOneAndDelete({ user: userId, blogPost: postId });
+    let operationType = 'unknown';
     if (like) {
-      // Dacă like-ul a fost șters, decrementăm contorul de like-uri
       await blogPostModel.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
+      operationType = 'unlike';
     } else {
-      // Dacă like-ul nu există, îl creăm și incrementăm contorul de like-uri
       await new LikeBlogPost({ user: userId, blogPost: postId }).save();
       await blogPostModel.findByIdAndUpdate(postId, { $inc: { likesCount: 1 } });
+      operationType = 'like';
     }
 
-    // Obținem numărul actualizat de like-uri pentru a-l returna
     const updatedPost = await blogPostModel.findById(postId, 'likesCount');
+    console.log(`Post ${postId} ${operationType}:`, updatedPost.likesCount); // Logarea numărului actualizat de like-uri
+
     res.status(200).json({
       success: true,
       likesCount: updatedPost.likesCount,
@@ -199,5 +199,6 @@ const likeOrUnlike = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
   
   export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse, likeOrUnlike };

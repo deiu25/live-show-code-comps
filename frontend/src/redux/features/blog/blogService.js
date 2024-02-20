@@ -62,16 +62,18 @@ export const toggleLikeBlogPost = async (postId) => {
   try {
     const res = await fetchWithCredentialsBlog(`${API_URL}/${postId}/like`, {
       method: "PUT",
+      // Asigură-te că includi orice header necesar, cum ar fi tokenul de autentificare
     });
-    if (res.status === 200) {
-      return res.json(); 
+    if (res.status !== 200) {
+      throw new Error("Failed to toggle like");
     }
-    throw new Error("Failed to toggle like");
+    return await res.json(); 
   } catch (error) {
     console.error('Error toggling like:', error);
-    return null;
+    throw error; // Important: aruncă eroarea pentru a permite Redux să o prindă
   }
 };
+
 
 
 // delete blog post by id

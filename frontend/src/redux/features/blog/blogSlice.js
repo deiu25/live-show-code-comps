@@ -35,21 +35,23 @@ export const fetchBlogPost = createAsyncThunk(
   }
 );
 
-// Add an asynchronous thunk to toggle like for a post
 export const toggleLike = createAsyncThunk(
   "blog/toggleLike",
   async ({ postId }, { rejectWithValue }) => {
     try {
       const response = await toggleLikeBlogPost(postId);
-      if (!response) {
+      if (!response.success) {
         throw new Error('Failed to toggle like');
       }
       return { postId, likesCount: response.likesCount };
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.error('Error toggling like:', error);
+      return rejectWithValue('Failed to toggle like');
     }
   }
 );
+
+
 
 // Add an asynchronous thunk to delete a post
 export const deleteBlogPost = createAsyncThunk(
@@ -91,9 +93,11 @@ const blogPostSlice = createSlice({
         const { postId, likesCount } = action.payload;
         const index = state.items.findIndex(item => item._id === postId);
         if (index !== -1) {
-          state.items[index].likesCount = likesCount;
+          state.items[index].likesCount = likesCount; 
         }
       });
+      
+      
   },
 });
 
