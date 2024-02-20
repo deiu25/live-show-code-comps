@@ -57,6 +57,23 @@ export const updateBlogPost = async (id, formData) => {
   }
 };
 
+// Like or unlike a blog post
+export const toggleLikeBlogPost = async (postId) => {
+  try {
+    const res = await fetchWithCredentialsBlog(`${API_URL}/${postId}/like`, {
+      method: "PUT",
+    });
+    if (res.status === 200) {
+      return res.json(); 
+    }
+    throw new Error("Failed to toggle like");
+  } catch (error) {
+    console.error('Error toggling like:', error);
+    return null;
+  }
+};
+
+
 // delete blog post by id
 export const deleteBlogPostService  = async (id) => {
   try {
@@ -76,33 +93,5 @@ export const deleteBlogPostService  = async (id) => {
       id, 
       error: { message: error.message, status: error.status } 
     };
-  }
-}
-
-//like or unlike post
-export const likeBlogPost = async (id) => {
-  try {
-    const res = await fetchWithCredentialsBlog(`${API_URL}/${id}/like`, {
-      method: 'PUT',
-    });
-    return res;
-  }
-  catch (error) {
-    console.log(error);
-    return null;
-  }
-};
-
-//get likes for post
-export const getLikesForBlogPost = async (id) => {
-  try {
-    const res = await fetchWithCredentialsBlog(`${API_URL}/${id}/likes`, {
-      method: 'GET',
-    });
-    return res;
-  }
-  catch (error) {
-    console.log(error);
-    return null;
   }
 };

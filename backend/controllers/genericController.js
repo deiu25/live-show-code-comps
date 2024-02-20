@@ -171,63 +171,33 @@ const editPostOrCourse = async (model, folder, req, res) => {
 };
 
 // Like or unlike a BlogPost
-const likeOrUnlike = async (model, req, res) => {
+const likeOrUnlike = async (req, res) => {
   try {
+    console.log(req.params);
     const postId = req.params.id;
     const userId = req.user._id;
 
-    const item = await blogPostModel.findById(postId);
-    if (!item) {
-      return res.status(404).json({
-        success: false,
-        message: "Item not found.",
-      });
-    }
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found.",
-      });
-    }
-
-    let like = await LikeBlogPost.findOne({ user: userId, snippet: postId });
+    // Verificăm dacă like-ul există
+    const like = await LikeBlogPost.findOneAndDelete({ user: userId, blogPost: postId });
     if (like) {
-      // Dacă există, îl eliminăm
-      await LikeBlogPost.findByIdAndDelete(like._id);
-      await model.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
+      // Dacă like-ul a fost șters, decrementăm contorul de like-uri
+      await blogPostModel.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
     } else {
-      // Dacă nu există, creăm un nou like
-      like = new LikeBlogPost({ user: userId, snippet: postId });
-      await like.save();
-      await blogPostModel.findByIdAndUpdate(postId, {
-        $inc: { likesCount: 1 },
-      });
+      // Dacă like-ul nu există, îl creăm și incrementăm contorul de like-uri
+      await new LikeBlogPost({ user: userId, blogPost: postId }).save();
+      await blogPostModel.findByIdAndUpdate(postId, { $inc: { likesCount: 1 } });
     }
 
-    const updatedItem = await blogPostModel.findById(postId);
-
+    // Obținem numărul actualizat de like-uri pentru a-l returna
+    const updatedPost = await blogPostModel.findById(postId, 'likesCount');
     res.status(200).json({
       success: true,
-      likesCount: updatedItem.likesCount,
+      likesCount: updatedPost.likesCount,
     });
   } catch (error) {
     console.error("Error in PUT /api/posts/:id/like:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
-    
-// Get likes for a BlogPost
-const getLikes = async (model, req, res) => {
-  try {
-    const postId = req.params.id;
-    const likes = await LikeBlogPost.find({ snippet: postId });
-    res.status(200).json({ success: true, likes });
-  } catch (error) {
-    console.error("Error in GET /api/posts/:id/likes:", error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-}
   
-  export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse, likeOrUnlike, getLikes };
+  export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse, likeOrUnlike };

@@ -1,14 +1,12 @@
 // blogSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { deleteBlogPostService, getBlogPost, getBlogPosts, likeBlogPost } from "./blogService";
-import { getLikesForPost } from "../posts/postSlice";
+import { deleteBlogPostService, getBlogPost, getBlogPosts, toggleLikeBlogPost } from "./blogService";
 
 const initialState = {
   items: [],
   isLoading: false,
   error: null,
   item: null,
-  likesMap: {},
 };
 
 // Add an asynchronous thunk to fetch the posts
@@ -37,6 +35,22 @@ export const fetchBlogPost = createAsyncThunk(
   }
 );
 
+// Add an asynchronous thunk to toggle like for a post
+export const toggleLike = createAsyncThunk(
+  "blog/toggleLike",
+  async ({ postId }, { rejectWithValue }) => {
+    try {
+      const response = await toggleLikeBlogPost(postId);
+      if (!response) {
+        throw new Error('Failed to toggle like');
+      }
+      return { postId, likesCount: response.likesCount };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // Add an asynchronous thunk to delete a post
 export const deleteBlogPost = createAsyncThunk(
   "blog/deleteBlogPost",
@@ -49,38 +63,13 @@ export const deleteBlogPost = createAsyncThunk(
   }
 );
 
-// Create the async thunk for liking or unliking a BlogPost
-export const likeOrUnlikeBlogPost = createAsyncThunk(
-  "blog/likeBlogPost",
-  async (id, thunkAPI) => {
-    const response = await likeBlogPost(id);
-    return response;
-  }
-);
-
-// Create the async thunk to get likes for a BlogPost
-export const getLikesForBlogPost = createAsyncThunk(
-  "blog/getLikesForBlogPost",
-  async (id, thunkAPI) => {
-    const response = await getLikesForPost(id);
-    return response;
-  }
-);
-
 
 const blogPostSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {
     // Define the likeBlogPost action
-    likeBlogPost(state, action) {
-      const { postId, userId } = action.payload;
-      if (state.likesMap[postId]) {
-        state.likesMap[postId].push(userId);
-      } else {
-        state.likesMap[postId] = [userId];
-      }
-    }
+
   },
   extraReducers: (builder) => {
     builder
@@ -98,11 +87,12 @@ const blogPostSlice = createSlice({
       builder.addCase(fetchBlogPost.fulfilled, (state, action) => {
         state.item = action.payload;
       });   
-      builder.addCase(likeOrUnlikeBlogPost.fulfilled, (state, action) => {
-        state.likesMap[action.payload.id] = action.payload.likes;
-      });
-      builder.addCase(getLikesForBlogPost.fulfilled, (state, action) => {
-        state.likesMap[action.payload.id] = action.payload.likes;
+      builder.addCase(toggleLike.fulfilled, (state, action) => {
+        const { postId, likesCount } = action.payload;
+        const index = state.items.findIndex(item => item._id === postId);
+        if (index !== -1) {
+          state.items[index].likesCount = likesCount;
+        }
       });
   },
 });

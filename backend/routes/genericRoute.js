@@ -11,7 +11,6 @@ import {
   getAll,
   getById,
   likeOrUnlike,
-  getLikes,
 } from "../controllers/genericController.js";
 
 const upload = multer();
@@ -85,23 +84,14 @@ genericRouter.put("/:type/:id", upload.fields([
   await editPostOrCourse(model, folder, req, res);
 });
 
-// Like or unlike a BlogPost
 genericRouter.put("/:type/:id/like", protect, async (req, res) => {
   const { model } = getModelAndFolder(req.params.type);
   if (!model) {
     return res.status(400).json({ success: false, error: "Invalid type" });
   }
-  await likeOrUnlike(model, req, res);
+  await likeOrUnlike(req, res); 
 });
 
-// Get likes for a BlogPost
-genericRouter.get("/:type/:id/likes", async (req, res) => {
-  const { model } = getModelAndFolder(req.params.type);
-  if (!model) {
-    return res.status(400).json({ success: false, error: "Invalid type" });
-  }
-  await getLikes(model, req, res);
-});
 
 
 // Helper function to get the model and folder
