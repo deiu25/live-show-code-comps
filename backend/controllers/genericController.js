@@ -176,8 +176,10 @@ const likeOrUnlike = async (req, res) => {
     const postId = req.params.id;
     const userId = req.user._id;
 
+
     const like = await LikeBlogPost.findOneAndDelete({ user: userId, blogPost: postId });
     let operationType = 'unknown';
+    console.log("Received like/unlike request for post:", postId, "from user:", userId);
     if (like) {
       await blogPostModel.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
       operationType = 'unlike';
@@ -188,17 +190,29 @@ const likeOrUnlike = async (req, res) => {
     }
 
     const updatedPost = await blogPostModel.findById(postId, 'likesCount');
-    console.log(`Post ${postId} ${operationType}:`, updatedPost.likesCount); // Logarea numărului actualizat de like-uri
 
     res.status(200).json({
       success: true,
+      operationType,
       likesCount: updatedPost.likesCount,
     });
-  } catch (error) {
-    console.error("Error in PUT /api/posts/:id/like:", error);
+  }
+  catch (error) {
+    console.error("Error liking/unliking post:", error);
     res.status(500).json({ success: false, error: error.message });
   }
-};
+}
 
-  
-  export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse, likeOrUnlike };
+// Get likesCount for a BlogPost
+const getLikesCount = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await blogPostModel.findById(postId, 'likesCount');
+    res.status(200).json({ success: true, likesCount: post.likesCount });
+  } catch (error) {
+    console.error("Error getting likes count:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+}
+
+export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse, likeOrUnlike, getLikesCount };

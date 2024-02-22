@@ -62,17 +62,45 @@ export const toggleLikeBlogPost = async (postId) => {
   try {
     const res = await fetchWithCredentialsBlog(`${API_URL}/${postId}/like`, {
       method: "PUT",
-      // Asigură-te că includi orice header necesar, cum ar fi tokenul de autentificare
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ }),
     });
-    if (res.status !== 200) {
-      throw new Error("Failed to toggle like");
+    
+    // Log the entire response for debugging
+    console.log("Full response from server:", res);
+
+    // Check if the response was ok
+    if (!res.ok) {
+      console.error("Response status:", res.status);
+      throw new Error(`Failed to toggle like, server responded with status: ${res.status}`);
     }
-    return await res.json(); 
+
+
+    const data = await res.json();
+    console.log("Toggle like response data:", data);
+    return data;
   } catch (error) {
     console.error('Error toggling like:', error);
-    throw error; // Important: aruncă eroarea pentru a permite Redux să o prindă
+    throw error;
   }
 };
+
+// get likes count for blog post
+export const getLikesCountForBlogPost = async (postId) => {
+  try {
+    // Directly use the result, as fetchWithCredentialsBlog already parses the response as JSON.
+    const data = await fetchWithCredentialsBlog(`${API_URL}/${postId}/getLikesCount`);
+    // Assuming data is the parsed JSON object, you can directly access likesCount.
+    return data.likesCount;
+  } catch (error) {
+    console.error('Error getting likes count:', error);
+    throw error;
+  }
+};
+
+
 
 
 

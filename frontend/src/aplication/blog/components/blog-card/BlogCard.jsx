@@ -1,12 +1,13 @@
 // BlogCard.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./BlogCard.css";
 import { useDeleteBlogPost } from "../../customHooks/useDeleteBlogPost";
 import { Link } from "react-router-dom";
 import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 import { shortenText } from "../../../auth/pages/profile/Profile";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBlogPost, toggleLike } from "../../../../redux/features/blog/blogSlice";
+import { fetchBlogPosts, toggleLike, updateLikesCountForPost } from "../../../../redux/features/blog/blogSlice";
+import { getLikesCountForBlogPost } from "../../../../redux/features/blog/blogService";
 
 export const BlogCard = ({
   id,
@@ -18,40 +19,40 @@ export const BlogCard = ({
 }) => {
   const { isAdmin, isUserLoggedIn, isUserCreator } =
     useAuthAdminStatus(postUser);
-    const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const shortenedDescription = shortenText(description, 100);
   const dateString = date;
   const formattedDate = dateString.slice(0, 10);
+  const [likesCount, setLikesCount] = useState(0);
+  const dispatch = useDispatch();
 
   const confirmDelete = useDeleteBlogPost();
 
-  const dispatch = useDispatch();
-  
-  const likesCount = useSelector(state => 
-    state.blogPosts.items.find(item => item._id === id)?.likesCount
-  );
-
+  // Funcție pentru a actualiza numărul de like-uri din backend
+  const fetchAndSetLikesCount = async () => {
+    const count = await getLikesCountForBlogPost(id);
+    setLikesCount(count);
+  };
+ 
   useEffect(() => {
-    dispatch(fetchBlogPost(id));
-}, [dispatch, id, likesCount]);
-
+    fetchAndSetLikesCount();
+  }, []);
   
-
-  const handleLike = () => {
+  const handleLike = async () => {
     if (!user) {
       alert("You must be logged in to like a post");
       return;
     }
-    console.log(`Attempting to toggle like for post ${id}. Current likes: ${likesCount}`); // Log înainte de dispatch
-    dispatch(toggleLike({ postId: id }))
-      .then(() => {
-        console.log(`Like toggled for post ${id}.`); // Log după dispatch cu succes
-      })
-      .catch((error) => {
-        console.error(`Error toggling like for post ${id}:`, error); // Log în caz de eroare
-      });
+    try {
+      await dispatch(toggleLike({ postId: id })).unwrap();
+      // Trigger refetching of blog posts to reflect updated likes count.
+      dispatch(fetchBlogPosts());
+    } catch (error) {
+      console.error(`Error toggling like for post ${id}:`, error);
+    }
   };
   
+
 
   return (
     <div className="blog-card-body" id="blog-card-body">
@@ -100,7 +101,7 @@ export const BlogCard = ({
             )}
             <li>
               <span className="licon icon-like" onClick={handleLike}></span>
-              <span className="link-like-button">{likesCount}</span>
+              <span className="link-like-button">{likesCount ?? 0}</span>
             </li>
             <li>
               <span className="licon icon-com"></span>

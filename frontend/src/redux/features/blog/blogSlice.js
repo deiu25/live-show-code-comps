@@ -7,6 +7,8 @@ const initialState = {
   isLoading: false,
   error: null,
   item: null,
+  postId: null,
+  likesCount: 0,
 };
 
 // Add an asynchronous thunk to fetch the posts
@@ -35,23 +37,6 @@ export const fetchBlogPost = createAsyncThunk(
   }
 );
 
-export const toggleLike = createAsyncThunk(
-  "blog/toggleLike",
-  async ({ postId }, { rejectWithValue }) => {
-    try {
-      const response = await toggleLikeBlogPost(postId);
-      if (!response.success) {
-        throw new Error('Failed to toggle like');
-      }
-      return { postId, likesCount: response.likesCount };
-    } catch (error) {
-      console.error('Error toggling like:', error);
-      return rejectWithValue('Failed to toggle like');
-    }
-  }
-);
-
-
 
 // Add an asynchronous thunk to delete a post
 export const deleteBlogPost = createAsyncThunk(
@@ -65,13 +50,40 @@ export const deleteBlogPost = createAsyncThunk(
   }
 );
 
+//Add an asynchronous thunk to toggle a like
+export const toggleLike = createAsyncThunk(
+  "blog/toggleLike",
+  async ({ postId }, { rejectWithValue }) => {
+    try {
+      const data = await toggleLikeBlogPost(postId);
+      console.log('Toggle like successful, response:', data);
+
+      // Asigură-te că datele conțin câmpurile așteptate
+      if (!data.likesCount) {
+        throw new Error("Response from toggleLikeBlogPost does not contain likesCount");
+      }
+
+      return { postId, likesCount: data.likesCount };
+    } catch (error) {
+      console.error('Error toggling like in thunk:', error);
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+
 
 const blogPostSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {
-    // Define the likeBlogPost action
-
+    updateLikesCountForPost: (state, action) => {
+      const { postId, likesCount } = action.payload;
+      const index = state.items.findIndex(post => post._id === postId);
+      if (index !== -1) {
+        state.items[index].likesCount = likesCount;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -90,15 +102,15 @@ const blogPostSlice = createSlice({
         state.item = action.payload;
       });   
       builder.addCase(toggleLike.fulfilled, (state, action) => {
-        const { postId, likesCount } = action.payload;
-        const index = state.items.findIndex(item => item._id === postId);
+        const index = state.items.findIndex(post => post._id === action.payload.postId);
         if (index !== -1) {
-          state.items[index].likesCount = likesCount; 
+          state.items[index].likesCount = action.payload.likesCount;
         }
-      });
-      
+      });      
       
   },
 });
+
+export const { updateLikesCountForPost } = blogPostSlice.actions;
 
 export default blogPostSlice.reducer;
