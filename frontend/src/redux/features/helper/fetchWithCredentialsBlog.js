@@ -14,11 +14,13 @@ export const fetchWithCredentialsBlog = async (url, options = {}) => {
     credentials: "include",
   });
 
+  const text = await response.text();
+  
   if (!response.ok) {
     throw new Error(
       `Network response was not ok, status code: ${response.status}`
     );
   }
-  const text = await response.text();
+  
   return text.length ? JSON.parse(text) : {};
 };

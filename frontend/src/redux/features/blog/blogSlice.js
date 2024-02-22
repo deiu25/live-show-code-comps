@@ -56,14 +56,12 @@ export const toggleLike = createAsyncThunk(
   async ({ postId }, { rejectWithValue }) => {
     try {
       const data = await toggleLikeBlogPost(postId);
-      console.log('Toggle like successful, response:', data);
 
-      // Asigură-te că datele conțin câmpurile așteptate
-      if (!data.likesCount) {
+      if (data.likesCount !== undefined) {
+        return { postId, likesCount: data.likesCount };
+      } else {
         throw new Error("Response from toggleLikeBlogPost does not contain likesCount");
       }
-
-      return { postId, likesCount: data.likesCount };
     } catch (error) {
       console.error('Error toggling like in thunk:', error);
       return rejectWithValue(error.toString());
@@ -71,19 +69,11 @@ export const toggleLike = createAsyncThunk(
   }
 );
 
-
-
 const blogPostSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {
-    updateLikesCountForPost: (state, action) => {
-      const { postId, likesCount } = action.payload;
-      const index = state.items.findIndex(post => post._id === postId);
-      if (index !== -1) {
-        state.items[index].likesCount = likesCount;
-      }
-    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -106,7 +96,7 @@ const blogPostSlice = createSlice({
         if (index !== -1) {
           state.items[index].likesCount = action.payload.likesCount;
         }
-      });      
+      });  
       
   },
 });

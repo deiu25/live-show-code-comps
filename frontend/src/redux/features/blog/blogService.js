@@ -57,59 +57,35 @@ export const updateBlogPost = async (id, formData) => {
   }
 };
 
-// Like or unlike a blog post
+// Like or unlike a blog post direct folosind fetch nativ
 export const toggleLikeBlogPost = async (postId) => {
   try {
-    const res = await fetchWithCredentialsBlog(`${API_URL}/${postId}/like`, {
+    const response = await fetch(`${API_URL}/${postId}/like`, {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ }),
+      credentials: "include", 
     });
-    
-    // Log the entire response for debugging
-    console.log("Full response from server:", res);
 
-    // Check if the response was ok
-    if (!res.ok) {
-      console.error("Response status:", res.status);
-      throw new Error(`Failed to toggle like, server responded with status: ${res.status}`);
+    if (!response.ok) {
+      throw new Error(`Failed to toggle like, server responded with status: ${response.status}`);
     }
 
+    const data = await response.json();
 
-    const data = await res.json();
-    console.log("Toggle like response data:", data);
     return data;
   } catch (error) {
-    console.error('Error toggling like:', error);
     throw error;
   }
 };
-
-// get likes count for blog post
-export const getLikesCountForBlogPost = async (postId) => {
-  try {
-    // Directly use the result, as fetchWithCredentialsBlog already parses the response as JSON.
-    const data = await fetchWithCredentialsBlog(`${API_URL}/${postId}/getLikesCount`);
-    // Assuming data is the parsed JSON object, you can directly access likesCount.
-    return data.likesCount;
-  } catch (error) {
-    console.error('Error getting likes count:', error);
-    throw error;
-  }
-};
-
-
-
-
 
 // delete blog post by id
-export const deleteBlogPostService  = async (id) => {
+export const deleteBlogPostService = async (id) => {
   try {
     const res = await fetchWithCredentialsBlog(`${API_URL}/${id}`, {
       method: 'DELETE',
-    });    
+    });
 
     if (res.status === 204) {
       return { success: true, id };
@@ -118,10 +94,10 @@ export const deleteBlogPostService  = async (id) => {
     }
   } catch (error) {
     console.error('Error deleting blog post:', error);
-    return { 
-      success: false, 
-      id, 
-      error: { message: error.message, status: error.status } 
+    return {
+      success: false,
+      id,
+      error: { message: error.message, status: error.status }
     };
   }
 };

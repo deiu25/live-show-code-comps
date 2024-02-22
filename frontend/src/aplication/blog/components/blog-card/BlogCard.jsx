@@ -1,5 +1,5 @@
 // BlogCard.js
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./BlogCard.css";
 import { useDeleteBlogPost } from "../../customHooks/useDeleteBlogPost";
 import { Link } from "react-router-dom";
@@ -15,6 +15,7 @@ export const BlogCard = ({
   date,
   headerImage,
   user: postUser,
+  postId = id,
 }) => {
   const { isAdmin, isUserLoggedIn, isUserCreator } =
     useAuthAdminStatus(postUser);
@@ -24,8 +25,8 @@ export const BlogCard = ({
   const formattedDate = dateString.slice(0, 10);
   const dispatch = useDispatch();
 
-  const post = useSelector(state =>
-    state.blogPosts.items.find(post => post._id === id)
+  const post = useSelector(state => 
+    state.blogPosts.items.find(post => post._id === postId)
   );
 
   const confirmDelete = useDeleteBlogPost();
@@ -36,16 +37,12 @@ export const BlogCard = ({
       return;
     }
     try {
-      // Acțiunea toggleLike ar trebui să fie suficientă pentru a actualiza UI-ul, asigurându-se
-      // că reducer-ul corespunzător actualizează starea globală Redux.
       await dispatch(toggleLike({ postId: id })).unwrap();
     } catch (error) {
       console.error(`Error toggling like for post ${id}:`, error);
     }
   };
   
-
-
   return (
     <div className="blog-card-body" id="blog-card-body">
       <div className="blog-card spring-fever">

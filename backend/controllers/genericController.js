@@ -6,38 +6,38 @@ import LikeBlogPost from "../models/likeBlogPostModel.js";
 import blogPostModel from "../models/blogPostModel.js";
 
 const createPostOrCourse = async (model, folder, req, res) => {
-    try {
-        const user = await User.findById(req.user._id);
-        let imagesLinks = [];
-        if (req.files.images) {
-            imagesLinks = await uploadImages(req.files.images, folder);
-        }
-
-        let contentBlocksImagesLinks = [];
-        if (req.files.contentBlocksImages) {
-            contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages, folder);
-        }
-
-        req.body.headerImage = imagesLinks;
-        req.body.user = user._id;
-
-        let imageIndex = 0;
-        
-        if (req.body.contentBlocks) {
-            req.body.contentBlocks = req.body.contentBlocks.map((block) => {
-                if (block.type === "image") {
-                    block.image = contentBlocksImagesLinks[imageIndex++];
-                }
-                return block;
-            });
-        }  
-
-        const post = await model.create(req.body);
-        res.status(201).json({ success: true, post });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, error: error.message });
+  try {
+    const user = await User.findById(req.user._id);
+    let imagesLinks = [];
+    if (req.files.images) {
+      imagesLinks = await uploadImages(req.files.images, folder);
     }
+
+    let contentBlocksImagesLinks = [];
+    if (req.files.contentBlocksImages) {
+      contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages, folder);
+    }
+
+    req.body.headerImage = imagesLinks;
+    req.body.user = user._id;
+
+    let imageIndex = 0;
+
+    if (req.body.contentBlocks) {
+      req.body.contentBlocks = req.body.contentBlocks.map((block) => {
+        if (block.type === "image") {
+          block.image = contentBlocksImagesLinks[imageIndex++];
+        }
+        return block;
+      });
+    }
+
+    const post = await model.create(req.body);
+    res.status(201).json({ success: true, post });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 };
 
 async function uploadImages(files, folder) {
@@ -78,57 +78,62 @@ const getAll = async (model, req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-  
-  // Get Post/Course by ID
-  const getById = async (model, req, res) => {
-    try {
-      const item = await model.findById(req.params.id).populate("user", "name");
-      if (!item) {
-        return res.status(404).json({ success: false, error: "Item not found" });
-      }
-      res.status(200).json({ success: true, item });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, error: error.message });
+
+// Get Post/Course by ID
+const getById = async (model, req, res) => {
+  try {
+    const item = await model.findById(req.params.id).populate("user", "name");
+    if (!item) {
+      return res.status(404).json({ success: false, error: "Item not found" });
     }
-  };
+    res.status(200).json({ success: true, item });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
 
 // Delete Post/Course
 const deleteItem = async (model, req, res) => {
-    try {
-      const item = await model.findById(req.params.id);
-      if (!item) {
-        return res.status(404).json({ success: false, error: "Item not found" });
-      }
-  
-      // Delete header images
-      if (item.headerImage && item.headerImage.length > 0) {
-        const headerImageDeletionPromises = item.headerImage
-          .filter(image => image.public_id)
-          .map(image => cloudinary.uploader.destroy(image.public_id));
-        await Promise.all(headerImageDeletionPromises);
-      }
-  
-      // Delete contentBlocks images
-      if (item.contentBlocks && item.contentBlocks.length > 0) {
-        const contentBlocksImageDeletionPromises = item.contentBlocks
-            .filter(block => block.type === "image" && block.image && block.image.public_id)
-            .map(block => cloudinary.uploader.destroy(block.image.public_id));
-        await Promise.all(contentBlocksImageDeletionPromises);
-      }
-  
-      await model.deleteOne({ _id: item._id });
-      res.status(204).json({ success: true });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, error: error.message });
+  try {
+    const itemId = req.params.id;
+    const item = await model.findById(itemId);
+    if (!item) {
+      return res.status(404).json({ success: false, error: "Item not found" });
     }
-  };
+
+    // Delete header images
+    if (item.headerImage && item.headerImage.length > 0) {
+      const headerImageDeletionPromises = item.headerImage
+        .filter(image => image.public_id)
+        .map(image => cloudinary.uploader.destroy(image.public_id));
+      await Promise.all(headerImageDeletionPromises);
+    }
+
+    // Delete contentBlocks images
+    if (item.contentBlocks && item.contentBlocks.length > 0) {
+      const contentBlocksImageDeletionPromises = item.contentBlocks
+        .filter(block => block.type === "image" && block.image && block.image.public_id)
+        .map(block => cloudinary.uploader.destroy(block.image.public_id));
+      await Promise.all(contentBlocksImageDeletionPromises);
+    }
+
+    // Delete asociated likes
+    await LikeBlogPost.deleteMany({ blogPost: itemId });
+
+    await model.deleteOne({ _id: itemId });
+    res.status(204).json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 
 // Edit Post/Course
 const editPostOrCourse = async (model, folder, req, res) => {
   try {
-    
+
     const item = await model.findById(req.params.id);
 
     if (!item) {
@@ -136,10 +141,10 @@ const editPostOrCourse = async (model, folder, req, res) => {
       return res.status(404).json({ success: false, error: "Item not found" });
     }
 
-    let imagesLinks = item.headerImage; 
+    let imagesLinks = item.headerImage;
 
     if (req.files && req.files.headerImage && req.files.headerImage.length > 0) {
-      imagesLinks = await uploadImages(req.files.headerImage, folder); 
+      imagesLinks = await uploadImages(req.files.headerImage, folder);
       const oldHeaderImages = item.headerImage.map(image => image.public_id);
       await Promise.all(oldHeaderImages.map(public_id => cloudinary.uploader.destroy(public_id)));
     }
@@ -151,7 +156,7 @@ const editPostOrCourse = async (model, folder, req, res) => {
       contentBlocksImagesLinks = await uploadImages(req.files.contentBlocksImages, folder);
     }
 
-    let imageIndex = 0; 
+    let imageIndex = 0;
     if (req.body.contentBlocks) {
       req.body.contentBlocks = req.body.contentBlocks.map((block) => {
         if (block.type === "image" && block.image && req.files.contentBlocksImages && contentBlocksImagesLinks.length > 0) {
@@ -160,7 +165,7 @@ const editPostOrCourse = async (model, folder, req, res) => {
         return block;
       });
     }
-    
+
     const updatedItem = await model.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
     res.status(200).json({ success: true, data: updatedItem });
@@ -173,13 +178,21 @@ const editPostOrCourse = async (model, folder, req, res) => {
 // Like or unlike a BlogPost
 const likeOrUnlike = async (req, res) => {
   try {
-    const postId = req.params.id;
-    const userId = req.user._id;
+    const { id: postId } = req.params;
+    const { _id: userId } = req.user;
 
+    const postExists = await blogPostModel.findById(postId);
+    if (!postExists) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
+    const userExists = await User.findById(userId);
+    if (!userExists) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
 
     const like = await LikeBlogPost.findOneAndDelete({ user: userId, blogPost: postId });
     let operationType = 'unknown';
-    console.log("Received like/unlike request for post:", postId, "from user:", userId);
+
     if (like) {
       await blogPostModel.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
       operationType = 'unlike';
@@ -196,23 +209,10 @@ const likeOrUnlike = async (req, res) => {
       operationType,
       likesCount: updatedPost.likesCount,
     });
-  }
-  catch (error) {
-    console.error("Error liking/unliking post:", error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-}
-
-// Get likesCount for a BlogPost
-const getLikesCount = async (req, res) => {
-  try {
-    const postId = req.params.id;
-    const post = await blogPostModel.findById(postId, 'likesCount');
-    res.status(200).json({ success: true, likesCount: post.likesCount });
   } catch (error) {
-    console.error("Error getting likes count:", error);
+
     res.status(500).json({ success: false, error: error.message });
   }
-}
+};
 
-export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse, likeOrUnlike, getLikesCount };
+export { createPostOrCourse, getAll, getById, deleteItem, editPostOrCourse, likeOrUnlike };
