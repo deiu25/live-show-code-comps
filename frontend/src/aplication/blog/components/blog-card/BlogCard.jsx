@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 import { shortenText } from "../../../auth/pages/profile/Profile";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBlogPosts, toggleLike, updateLikesCountForPost } from "../../../../redux/features/blog/blogSlice";
-import { getLikesCountForBlogPost } from "../../../../redux/features/blog/blogService";
+import { toggleLike } from "../../../../redux/features/blog/blogSlice";
 
 export const BlogCard = ({
   id,
@@ -23,20 +22,13 @@ export const BlogCard = ({
   const shortenedDescription = shortenText(description, 100);
   const dateString = date;
   const formattedDate = dateString.slice(0, 10);
-  const [likesCount, setLikesCount] = useState(0);
   const dispatch = useDispatch();
 
-  const confirmDelete = useDeleteBlogPost();
+  const post = useSelector(state =>
+    state.blogPosts.items.find(post => post._id === id)
+  );
 
-  // Funcție pentru a actualiza numărul de like-uri din backend
-  const fetchAndSetLikesCount = async () => {
-    const count = await getLikesCountForBlogPost(id);
-    setLikesCount(count);
-  };
- 
-  useEffect(() => {
-    fetchAndSetLikesCount();
-  }, []);
+  const confirmDelete = useDeleteBlogPost();
   
   const handleLike = async () => {
     if (!user) {
@@ -44,9 +36,9 @@ export const BlogCard = ({
       return;
     }
     try {
+      // Acțiunea toggleLike ar trebui să fie suficientă pentru a actualiza UI-ul, asigurându-se
+      // că reducer-ul corespunzător actualizează starea globală Redux.
       await dispatch(toggleLike({ postId: id })).unwrap();
-      // Trigger refetching of blog posts to reflect updated likes count.
-      dispatch(fetchBlogPosts());
     } catch (error) {
       console.error(`Error toggling like for post ${id}:`, error);
     }
@@ -101,7 +93,7 @@ export const BlogCard = ({
             )}
             <li>
               <span className="licon icon-like" onClick={handleLike}></span>
-              <span className="link-like-button">{likesCount ?? 0}</span>
+              <span className="link-like-button">{post?.likesCount ?? 0}</span>
             </li>
             <li>
               <span className="licon icon-com"></span>
