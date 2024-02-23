@@ -62,18 +62,19 @@ export const deletePost = createAsyncThunk(
 // Create the async thunk for liking or unliking a post
 export const likePost = createAsyncThunk(
   "posts/likePost",
-  async (id, thunkAPI) => {
-    const response = await postService.likePost(id);
-    return response;
-  }
-);
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const data = await postService.likePost(id);
 
-// Create the async thunk to get likes for a post
-export const getLikesForPost = createAsyncThunk(
-  "posts/getLikesForPost",
-  async (id, thunkAPI) => {
-    const response = await postService.getLikesForPost(id);
-    return response;
+      if (data.likesCount !== undefined) {
+        return { postId: id, likeCount: data.likesCount };
+      } else {
+        throw new Error("Response from likePost does not contain likesCount");
+      }
+    } catch (error) {
+      console.error("Error liking post in thunk:", error);
+      return rejectWithValue(error.toString());
+    }
   }
 );
 
@@ -81,21 +82,7 @@ export const getLikesForPost = createAsyncThunk(
 const postSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {
-    // Define the likePost action
-    likePost(state, action) {
-      const { postId, userId } = action.payload;
-      const post = state.posts.find((post) => post.id === postId);
-      if (post) {
-        const isLiked = post.likes.find((like) => like.user === userId);
-        if (isLiked) {
-          post.likes = post.likes.filter((like) => like.user !== userId);
-        } else {
-          post.likes.push({ user: userId });
-        }
-      }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     // Tratează stările pentru savePost
     builder
@@ -176,42 +163,18 @@ const postSlice = createSlice({
       });
 
     // Tratează stările pentru likePost or unlikePost
-    builder
-      .addCase(likePost.pending, (state) => {
-        console.log('Like post request is pending...');
-        state.isLoading = true;
-      })
-      .addCase(likePost.fulfilled, (state, action) => {
-        const { postId, likeCount } = action.payload;
-        // Actualizăm numărul de like-uri pentru postarea specifică
-        state.likesMap[postId] = likeCount;
-      })
-      .addCase(likePost.rejected, (state, action) => {
-        console.log('Like post request failed:', action.error.message);
-        state.isLoading = false;
-        state.error = action.error.message;
-      });
-
-    // Tratează stările pentru getLikesForPost
-    builder
-      .addCase(getLikesForPost.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getLikesForPost.fulfilled, (state, action) => {
-        state.isLoading = false;
-        const postId = action.meta.arg;
-        const likesCount = action.payload.likesCount;
-        const usersWhoLiked = action.payload.data.map(like => like.user);
-        state.likesMap[postId] = {
-          likesCount,
-          users: usersWhoLiked,
-        };
-      })
-      .addCase(getLikesForPost.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
-      });
+    builder.addCase(likePost.fulfilled, (state, action) => {
+      const index = state.data.findIndex(
+        (post) => post._id === action.payload.postId
+      );
+      if (index !== -1) {
+        state.data[index].likesCount = action.payload.likeCount;
+      }
+      state.isLoading = false;
+    });
   },
 });
+
+export const { updateLikesCountForPost } = postSlice.actions;
 
 export default postSlice.reducer;

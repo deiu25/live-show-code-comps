@@ -35,17 +35,26 @@ const updatePost = (id, post) => {
 };
 
 //like or unlike post
-const likePost = (id) => {
-  return fetchWithCredentials(`${API_URL}${id}/like`, {
-    method: 'PUT',
-  });
-};
+export const likePost = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}${id}/like`, {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: "include",
+    });
 
-//get likes for post
-const getLikesForPost = (id) => {
-  return fetchWithCredentials(`${API_URL}${id}/likes`, {
-    method: 'GET',
-  });
+    if (!response.ok) {
+      throw new Error(`Failed to toggle like, server responded with status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 //delete post
@@ -62,7 +71,6 @@ const postService = {
   updatePost,
   deletePost,
   likePost,
-  getLikesForPost,
 };
 
 export default postService;

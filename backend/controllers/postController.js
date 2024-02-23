@@ -141,83 +141,42 @@ export const updatePost = async (req, res, next) => {
 // Like or unlike a post
 export const likeOrUnlikePost = async (req, res, next) => {
   try {
-    const postId = req.params.id;
-    const userId = req.user._id;
+    const { id: postId } = req.params;
+    const { _id: userId } = req.user;
 
-    const post = await Post.findById(postId);
-    if (!post) {
-      return res.status(404).json({
-        success: false,
-        message: "Post not found.",
-      });
+    const postExists = await Post.findById(postId);
+    if (!postExists) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
+    const userExists = await User.findById(userId);
+    if (!userExists) {
+      return res.status(404).json({ success: false, error: "User not found" });
     }
 
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found.",
-      });
-    }
-
-    // Verificăm dacă utilizatorul a dat deja like la postare
-    let like = await Like.findOne({ user: userId, snippet: postId });
+    const like = await Like.findOneAndDelete({ user: userId, post: postId });
+    let operationType = 'unknown';
 
     if (like) {
-      // Dacă există, îl eliminăm
-      await Like.findByIdAndDelete(like._id);
       await Post.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
+      operationType = 'unlike';
     } else {
-      // Dacă nu există, creăm un nou like
-      like = new Like({ user: userId, snippet: postId });
-      await like.save();
+      await new Like({ user: userId, post: postId }).save();
       await Post.findByIdAndUpdate(postId, { $inc: { likesCount: 1 } });
+      operationType = 'like';
     }
 
-    const updatedPost = await Post.findById(postId);
+    const updatedPost = await Post.findById(postId, 'likesCount');
 
     res.status(200).json({
       success: true,
+      operationType,
       likesCount: updatedPost.likesCount,
     });
   } catch (error) {
-    console.error('Error in PUT /api/posts/:id/like:', error);
-    res.status(500).json({
-      success: false,
-      message: "An error occurred while liking the post.",
-      error: error.message,
-    });
+    console.error("Eroare la procesarea like/unlike", error);
+    res.status(500).json({ success: false, error: error.message });
   }
 };
-
-// Get likes for a post
-export const getLikesForPost = async (req, res, next) => {
-  try {
-    const postId = req.params.id;
-
-    const post = await Post.findById(postId);
-    if (!post) {
-      return res.status(404).json({
-        success: false,
-        message: "Post not found.",
-      });
-    }
-
-    const likes = await Like.find({ snippet: postId }).populate("user", "lastname");
-
-    res.status(200).json({
-      success: true,
-      likesCount: post.likesCount,
-      data: likes,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "An error occurred while getting likes for the post.",
-      error: error.message,
-    });
-  }
-}
 
 // Delete post
 export const deletePost = async (req, res, next) => {
@@ -241,17 +200,20 @@ export const deletePost = async (req, res, next) => {
       });
     }
 
-    // Use findByIdAndDelete to delete the post.
+    await Like.deleteMany({ post: req.params.id });
+
     await Post.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
       success: true,
       data: {},
+      message: "Post and associated likes successfully deleted.",
     });
   } catch (error) {
+    console.error("An error occurred while deleting the post and its likes.", error);
     res.status(500).json({
       success: false,
-      message: "An error occurred while deleting the post.",
+      message: "An error occurred while deleting the post and its likes.",
       error: error.message,
     });
   }

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const likeSchema = new mongoose.Schema({
-  snippet: {
+  post: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Snippet',
     required: true
