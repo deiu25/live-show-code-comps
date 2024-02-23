@@ -43,12 +43,15 @@ export const registerUser = asyncHandler(async (req, res) => {
   const ua = parser(req.headers["user-agent"]);
   const userAgent = [ua.ua];
 
-  //   Create new user
+  // Hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  //  Create new user
   const user = await User.create({
     firstname,
     lastname,
     email,
-    password,
+    password: hashedPassword,
     userAgent,
   });
 
@@ -65,29 +68,25 @@ export const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    const {
-      _id,
-      firstname,
-      lastname,
-      email,
-      phone,
-      bio,
-      photo,
-      role,
-      isVerified,
-    } = user;
+    // Generate Token
+    const token = generateToken(user._id);
+
+    // Send HTTP-only cookie
+    res.cookie("token", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400), // 1 day
+      sameSite: "none",
+      secure: true,
+    });
+
+    // Convert the user document to an object and exclude the password field
+    const userObject = user.toObject();
+    delete userObject.password; // Ensure the password is not included
 
     res.status(201).json({
-      _id,
-      firstname,
-      lastname,
-      email,
-      phone,
-      bio,
-      photo,
-      role,
-      isVerified,
-      token,
+      ...userObject,
+      token, // Include the token in the response
     });
   } else {
     res.status(400);
@@ -127,7 +126,6 @@ export const loginUser = asyncHandler(async (req, res) => {
   if (!allowedAgent) {
     // Generate 6 digit code
     const loginCode = Math.floor(100000 + Math.random() * 900000);
-    console.log(loginCode);
 
     // Encrypt login code before saving to DB
     const encryptedLoginCode = cryptr.encrypt(loginCode.toString());
@@ -163,29 +161,11 @@ export const loginUser = asyncHandler(async (req, res) => {
       secure: true,
     });
 
-    const {
-      _id,
-      firstname,
-      lastname,
-      email,
-      phone,
-      bio,
-      photo,
-      role,
-      isVerified,
-    } = user;
-
     res.status(200).json({
-      _id,
-      firstname,
-      lastname,
-      email,
-      phone,
-      bio,
-      photo,
-      role,
-      isVerified,
-      token,
+      user: {
+        ...user.toObject(),
+        token
+      }
     });
   } else {
     res.status(500);
@@ -209,35 +189,16 @@ export const logoutUser = asyncHandler(async (req, res) => {
 export const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
-  if (user) {
-    const {
-      _id,
-      firstname,
-      lastname,
-      email,
-      phone,
-      bio,
-      photo,
-      role,
-      isVerified,
-    } = user;
-
-    res.status(200).json({
-      _id,
-      firstname,
-      lastname,
-      email,
-      phone,
-      bio,
-      photo,
-      role,
-      isVerified,
-    });
-  } else {
+  if (!user) {
     res.status(404);
     throw new Error("User not found");
   }
+
+  res.status(200).json({
+    ...user.toObject(), 
+  });
 });
+
 
 // Update User
 export const updateUser = asyncHandler(async (req, res) => {
@@ -820,3 +781,20 @@ export const loginWithGoogle = asyncHandler(async (req, res) => {
     });
   }
 });
+
+//update user theme
+export const changeUserTheme = asyncHandler(async (req, res) => {
+  const { theme } = req.body;
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+  user.theme = theme;
+  await user.save();
+
+  res.json({ message: 'Theme updated successfully', theme: user.theme });
+});
+

@@ -13,7 +13,7 @@ const initialState = {
   message: "",
   verifiedUsers: 0,
   suspendedUsers: 0,
-  theme: 'rainbow',
+  theme: '',
 };
 
 // Register User
@@ -309,6 +309,19 @@ export const loginWithGoogle = createAsyncThunk(
   }
 );
 
+// authSlice.js
+export const updateTheme = createAsyncThunk(
+  'auth/updateTheme',
+  async ({ theme }, { getState, dispatch }) => {
+    const token = getState().auth.user.token;
+    const response = await authService.changeTheme(theme, token);
+    if (response) {
+      dispatch(setTheme(theme)); 
+      return theme; 
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -350,7 +363,6 @@ const authSlice = createSlice({
     },
     setTheme(state, action) {
       state.theme = action.payload;
-      localStorage.setItem('theme', action.payload); 
     },
   },
   extraReducers: (builder) => {
@@ -449,10 +461,16 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.user = action.payload;
         state.isVerified = action.payload.isVerified;
-
+      
         // Store user ID in local storage.
         localStorage.setItem("userId", state.user._id);
+
+        if (action.payload.theme) {
+          document.body.className = action.payload.theme; 
+          state.theme = action.payload.theme;
+        }
       })
+      
       .addCase(getUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
@@ -670,6 +688,15 @@ const authSlice = createSlice({
         state.user = null;
         toast.error(action.payload);
       });
+
+    // updateTheme
+    builder.addCase(updateTheme.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.theme = action.payload; // Actualizați starea temei cu tema primită
+      document.body.className = action.payload; // Actualizați clasa body pentru a reflecta noua temă
+      toast.success("Theme Updated");
+    });
   },
 });
 
@@ -677,5 +704,11 @@ export const { RESET, CALC_VERIFIED_USER, CALC_SUSPENDED_USER, setTheme  } = aut
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 export const selectUser = (state) => state.auth.user;
+
+// Selectors
+export const selectIsSuccess = (state) => state.auth.isSuccess;
+export const selectIsError = (state) => state.auth.isError;
+export const selectMessage = (state) => state.auth.message;
+export const selectIsLoading = (state) => state.auth.isLoading;
 
 export default authSlice.reducer;

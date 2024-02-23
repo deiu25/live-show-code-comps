@@ -53,6 +53,11 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: [],
     },
+    theme: {
+      type: String,
+      required: true,
+      default: 'rainbow',
+    },
   },
   {
     timestamps: true,

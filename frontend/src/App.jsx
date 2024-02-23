@@ -6,7 +6,12 @@ import { About } from "./aplication/about/pages/about/About";
 import { Login } from "./aplication/auth/pages/auth/Login";
 import { Signup } from "./aplication/auth/pages/auth/Singup";
 import { useDispatch, useSelector } from "react-redux";
-import {getLoginStatus, getUser, selectIsLoggedIn, selectUser, setTheme } from "./redux/features/auth/authSlice";
+import {
+  getLoginStatus,
+  getUser,
+  selectIsLoggedIn,
+  setTheme,
+} from "./redux/features/auth/authSlice";
 import { useEffect } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ChangePassword } from "./aplication/auth/pages/changePassword/ChangePassword";
@@ -31,23 +36,24 @@ import { JavascriptCoursePost } from "./aplication/learn/pages/javascript-course
 axios.defaults.withCredentials = true;
 
 function App() {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'rainbow';
-    dispatch(setTheme(savedTheme));
-    document.body.className = savedTheme;
-  }, [dispatch]);
-
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const user = useSelector(selectUser);
-
-  useEffect(() => {
-    dispatch(getLoginStatus());
-    if (isLoggedIn && user === null) {
-      dispatch(getUser());
-    }
-  }, [dispatch, isLoggedIn, user]);
+    dispatch(getLoginStatus()).then(() => {
+      if (isLoggedIn) {
+        dispatch(getUser()).then((action) => {
+          if (action.type.endsWith("fulfilled")) {
+            const theme = action.payload.theme;
+            if (theme) {
+              document.body.className = theme;
+              dispatch(setTheme(theme));
+            }
+          }
+        });
+      }
+    });
+  }, [dispatch, isLoggedIn]);
 
   return (
     <>
@@ -60,17 +66,20 @@ function App() {
 
             <Route path="/blog" element={<BlogPosts />} />
             <Route path="/blog/:id" element={<BlogPost />} />
-            
+
             <Route path="/about" element={<About />} />
 
             <Route path="/javascriptCourse" element={<JavascriptCourse />} />
-            <Route path="/javascriptCourse/:id" element={<JavascriptCoursePost />} />
-            
+            <Route
+              path="/javascriptCourse/:id"
+              element={<JavascriptCoursePost />}
+            />
+
             {isLoggedIn && (
               <>
-              <Route path="/NewProject" element={<NewProject />} />
-              <Route path="/NewBlogPost" element={<NewBlogPost />} />
-              <Route path="/NewCourse" element={<NewCourse />} />
+                <Route path="/NewProject" element={<NewProject />} />
+                <Route path="/NewBlogPost" element={<NewBlogPost />} />
+                <Route path="/NewCourse" element={<NewCourse />} />
               </>
             )}
             <Route path="/login" element={<Login />} />
@@ -78,15 +87,7 @@ function App() {
             <Route path="/forgot" element={<Forgot />} />
             <Route path="/resetPassword/:resetToken" element={<Reset />} />
             <Route path="/loginWithCode/:email" element={<LoginWithCode />} />
-
-            <Route
-              path="/verify/:verificationToken"
-              element={
-                <Leyout>
-                  <Verify />
-                </Leyout>
-              }
-            />
+            <Route path="/verify/:verificationToken" element={<Verify />} />
 
             <Route
               path="/profile"
@@ -112,7 +113,6 @@ function App() {
                 </Leyout>
               }
             />
-            
           </Routes>
         </GoogleOAuthProvider>
       </BrowserRouter>

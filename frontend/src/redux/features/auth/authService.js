@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setTheme } from "./authSlice";
 
 const BACKEND_URL = "http://localhost:5000";
 export const API_URL = `${BACKEND_URL}/api/users/`;
@@ -135,6 +136,18 @@ const loginWithGoogle = async (userToken) => {
   }
 };
 
+// Change Theme
+const changeTheme = async (theme, token) => {
+  const response = await axios.put(API_URL + "updateTheme",
+    { theme },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
 
 const authService = {
   register,
@@ -154,6 +167,7 @@ const authService = {
   sendLoginCode,
   loginWithCode,
   loginWithGoogle,
+  changeTheme,
 };
 
 export default authService;

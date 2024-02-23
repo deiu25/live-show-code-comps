@@ -3,19 +3,19 @@ import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
-import { setTheme } from "../../../../redux/features/auth/authSlice";
-
+import { updateTheme } from "../../../../redux/features/auth/authSlice";
 
 export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSidebar }) => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-   const handleChangeTheme = (theme) => {
-    dispatch(setTheme(theme));
-    document.body.className = theme; 
-    localStorage.setItem('theme', theme);
-  };
+   // Sidebar component
+const handleChangeTheme = (theme) => {
+  dispatch(updateTheme({ theme }));
+  document.body.className = theme;
+};
+
 
   const sidebarClass = classNames({
     "col-md-3": isSidebarOpen,

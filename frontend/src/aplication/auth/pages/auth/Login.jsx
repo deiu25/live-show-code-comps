@@ -95,6 +95,7 @@ export const Login = () => {
         />
         <input
           className="login-form-content"
+          type="password"
           id="loginPassword"
           autoComplete="off"
           placeholder="Password"

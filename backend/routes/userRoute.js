@@ -11,7 +11,7 @@ import {
   registerUser, loginUser, logoutUser, getUser, updateUser, deleteUser, getUsers,
   loginStatus, upgradeUser, sendAutomatedEmail, sendVerificationEmail,
   verifyUser, forgotPassword, resetPassword, changePassword, sendLoginCode, 
-  loginWithCode, loginWithGoogle,
+  loginWithCode, loginWithGoogle, changeUserTheme,
 } from "../controllers/userController.js";
 
 import upload from "../utils/cloudinaryConfig.js";
@@ -38,5 +38,7 @@ router.post("/sendLoginCode/:email", sendLoginCode);
 router.post("/loginWithCode/:email", loginWithCode);
 
 router.post("/google/callback", loginWithGoogle);
+
+router.put("/updateTheme", protect, changeUserTheme);
 
 export default router;
