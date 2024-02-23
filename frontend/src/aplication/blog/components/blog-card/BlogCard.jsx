@@ -31,12 +31,12 @@ export const BlogCard = ({
   const formattedDate = dateString.slice(0, 10);
   const dispatch = useDispatch();
 
-  const post = useSelector(state => 
-    state.blogPosts.items.find(post => post._id === postId)
+  const post = useSelector((state) =>
+    state.blogPosts.items.find((post) => post._id === postId)
   );
 
   const confirmDelete = useDeleteBlogPost();
-  
+
   const handleLike = async () => {
     if (!user) {
       alert("You must be logged in to like a post");
@@ -48,7 +48,7 @@ export const BlogCard = ({
       console.error(`Error toggling like for post ${id}:`, error);
     }
   };
-  
+
   return (
     <div className="blog-card-body" id="blog-card-body">
       <div className="blog-card spring-fever">
@@ -81,13 +81,19 @@ export const BlogCard = ({
                   <Link to={`/blog/${id}`}>Edit</Link>
                 </li>
                 <li>
-                  <Delete className="licon"></Delete>
-                  <button
+                  <Delete
+                    className="licon"
                     onClick={(e) => {
                       e.stopPropagation();
                       confirmDelete(id);
                     }}
+                  ></Delete>
+                  <button
                     className="link-like-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      confirmDelete(id);
+                    }}
                   >
                     Delete
                   </button>

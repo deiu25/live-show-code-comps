@@ -7,7 +7,7 @@ const courses = [
   { name: "JavaScript", link: "/JavascriptCourse", color: "#00afaf" },
   { name: "React", link: "/ReactCourse", color: "#00bb00" },
   { name: "Node.js", link: "/NodejsCourse", color: "#0f2bff" },
-  { name: "Redux", link: "/AngularCourse", color: "#ff6a2f" },
+  { name: "Redux", link: "/Redux", color: "#ff6a2f" },
 ];
 
 export const Courses = () => {

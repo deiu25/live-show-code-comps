@@ -32,6 +32,9 @@ import { BlogPost } from "./aplication/blog/pages/blog-post/BlogPost";
 import { JavascriptCourse } from "./aplication/learn/pages/javascript-course/JavascriptCourse";
 import NewCourse from "./aplication/learn/pages/create-course-post/NewCourse";
 import { JavascriptCoursePost } from "./aplication/learn/pages/javascript-course-post/JavascriptCoursePost";
+import { ReduxCourse } from "./aplication/learn/pages/redux-course/ReduxCourse";
+import { ReactCourse } from "./aplication/learn/pages/react-course/ReactCourse";
+import { NodejsCourse } from "./aplication/learn/pages/node-course/NodejsCourse";
 
 axios.defaults.withCredentials = true;
 
@@ -74,6 +77,10 @@ function App() {
               path="/javascriptCourse/:id"
               element={<JavascriptCoursePost />}
             />
+
+            <Route path="/reactCourse" element={<ReactCourse />} />
+            <Route path="/nodejsCourse" element={<NodejsCourse />} />
+            <Route path="/redux" element={<ReduxCourse />} />
 
             {isLoggedIn && (
               <>
