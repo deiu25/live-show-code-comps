@@ -7,6 +7,12 @@ import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 import { shortenText } from "../../../auth/pages/profile/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleLike } from "../../../../redux/features/blog/blogSlice";
+import { ReactComponent as Like } from "../../assets/icons/like-icon.svg";
+import { ReactComponent as Message } from "../../assets/icons/message-svg.svg";
+import { ReactComponent as Share } from "../../assets/icons/shortcut.svg";
+import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
+import { ReactComponent as Edit } from "../../assets/icons/edit.svg";
+import { ReactComponent as Date } from "../../assets/icons/date.svg";
 
 export const BlogCard = ({
   id,
@@ -71,11 +77,11 @@ export const BlogCard = ({
             {isUserLoggedIn && isUserCreator && isAdmin && (
               <>
                 <li>
-                  <span className="licon icon-edit"></span>
+                  <Edit className="licon"></Edit>
                   <Link to={`/blog/${id}`}>Edit</Link>
                 </li>
                 <li>
-                  <span className="licon icon-delete"></span>
+                  <Delete className="licon"></Delete>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -89,15 +95,19 @@ export const BlogCard = ({
               </>
             )}
             <li>
-              <span className="licon icon-like" onClick={handleLike}></span>
+              <Like className="licon" onClick={handleLike}></Like>
               <span className="link-like-button">{post?.likesCount ?? 0}</span>
             </li>
             <li>
-              <span className="licon icon-com"></span>
+              <Message className="licon"></Message>
               <span className="link-like-button">12</span>
             </li>
             <li>
-              <span className="licon icon-dat"></span>
+              <Share className="licon"></Share>
+              <span className="link-like-button">07</span>
+            </li>
+            <li>
+              <Date className="licon"></Date>
               <span className="link-like-button">{formattedDate}</span>
             </li>
           </ul>

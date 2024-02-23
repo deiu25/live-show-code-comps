@@ -90,7 +90,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, user: postUser }) {
               <Like className="soc-icons" />
               <span className="soc-number">{post?.likesCount ?? 0}</span>
             </div>
-            <div className="number-of">
+            {/* <div className="number-of">
               <Coment className="soc-icons" />
               <span className="soc-number">0</span>
             </div>
@@ -105,7 +105,7 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, user: postUser }) {
             <div className="number-of">
               <Bookmark className="soc-icons" />
               <span className="soc-number">0</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
