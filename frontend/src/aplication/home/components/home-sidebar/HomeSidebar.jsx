@@ -2,20 +2,27 @@ import React from "react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
+import {
+  ShowOnLogin,
+  ShowOnLogout,
+} from "../../../auth/components/protect/hiddenLink";
 import { updateTheme } from "../../../../redux/features/auth/authSlice";
 
-export const HomeSidebar = ({ onTabChange, currentTab, isSidebarOpen, toggleSidebar }) => {
+export const HomeSidebar = ({
+  onTabChange,
+  currentTab,
+  isSidebarOpen,
+  toggleSidebar,
+}) => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-   // Sidebar component
-const handleChangeTheme = (theme) => {
-  dispatch(updateTheme({ theme }));
-  document.body.className = theme;
-};
-
+  const handleChangeTheme = (theme) => {
+    localStorage.setItem('theme', theme);
+    dispatch(updateTheme({ theme }));
+    document.body.className = theme;
+  };
 
   const sidebarClass = classNames({
     "col-md-3": isSidebarOpen,
@@ -71,7 +78,7 @@ const handleChangeTheme = (theme) => {
         <li key="light" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => handleChangeTheme('light')}
+            onClick={() => handleChangeTheme("light")}
           >
             <i className="fas fa-sun"></i>
           </button>
@@ -79,7 +86,7 @@ const handleChangeTheme = (theme) => {
         <li key="dark" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => handleChangeTheme('dark')}
+            onClick={() => handleChangeTheme("dark")}
           >
             <i className="fas fa-moon"></i>
           </button>
@@ -87,7 +94,7 @@ const handleChangeTheme = (theme) => {
         <li key="rainbow" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => handleChangeTheme('rainbow')}
+            onClick={() => handleChangeTheme("rainbow")}
           >
             <i className="fas fa-rainbow"></i>
           </button>
@@ -95,7 +102,7 @@ const handleChangeTheme = (theme) => {
         <li key="green" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => handleChangeTheme('green')}
+            onClick={() => handleChangeTheme("green")}
           >
             <i className="fas fa-leaf"></i>
           </button>
@@ -103,33 +110,33 @@ const handleChangeTheme = (theme) => {
         <li key="calm" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => handleChangeTheme('calm')}
+            onClick={() => handleChangeTheme("calm")}
           >
-            <i className = "fas fa-water"></i>
+            <i className="fas fa-water"></i>
           </button>
         </li>
         <li key="purple" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => handleChangeTheme('purple')}
+            onClick={() => handleChangeTheme("purple")}
           >
-            <i className = "fas fa-dragon"></i>
+            <i className="fas fa-dragon"></i>
           </button>
         </li>
         <li key="orange" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => handleChangeTheme('orange')}
+            onClick={() => handleChangeTheme("orange")}
           >
-            <i className = "fas fa-fire"></i>
+            <i className="fas fa-fire"></i>
           </button>
         </li>
         <li key="red" className="nav-item">
           <button
             className="nav-link anchor-btn"
-            onClick={() => handleChangeTheme('red')}
+            onClick={() => handleChangeTheme("red")}
           >
-            <i className = "fas fa-heart"></i>
+            <i className="fas fa-heart"></i>
           </button>
         </li>
       </ul>
@@ -229,9 +236,7 @@ const handleChangeTheme = (theme) => {
                 }}
               >
                 <i className="fas fa-plus"></i>
-                {isSidebarOpen && (
-                  <span className="nav-text"> Add Course</span>
-                )}
+                {isSidebarOpen && <span className="nav-text"> Add Course</span>}
               </button>
             </li>
           </div>
@@ -245,9 +250,7 @@ const handleChangeTheme = (theme) => {
             SyntaxSeeker.
           </p>
         ) : (
-          <p>
-            &copy; 2023 Syntax Seeker.
-          </p>
+          <p>&copy; 2023 Syntax Seeker.</p>
         )}
       </div>
     </div>

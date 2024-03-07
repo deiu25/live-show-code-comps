@@ -43,21 +43,25 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.body.className = savedTheme;
+    }
     dispatch(getLoginStatus()).then(() => {
       if (isLoggedIn) {
         dispatch(getUser()).then((action) => {
-          if (action.type.endsWith("fulfilled")) {
-            const theme = action.payload.theme;
-            if (theme) {
-              document.body.className = theme;
-              dispatch(setTheme(theme));
+          if (action.type.endsWith("fulfilled") && action.payload.theme) {
+            if (action.payload.theme !== savedTheme) {
+              localStorage.setItem('theme', action.payload.theme);
+              document.body.className = action.payload.theme;
+              dispatch(setTheme(action.payload.theme));
             }
           }
         });
       }
     });
   }, [dispatch, isLoggedIn]);
-
+  
   return (
     <>
       <BrowserRouter>

@@ -309,7 +309,7 @@ export const loginWithGoogle = createAsyncThunk(
   }
 );
 
-// authSlice.js
+// updateTheme
 export const updateTheme = createAsyncThunk(
   'auth/updateTheme',
   async ({ theme }, { getState, dispatch }) => {
@@ -396,12 +396,18 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.user = action.payload;
         toast.success("Login Successful");
-
-        // Store user ID in local storage.
+      
+        // Store user ID and token in local storage.
         localStorage.setItem("userId", state.user._id);
-        // Store token in local storage.
         localStorage.setItem("token", state.user.token);
-      })
+      
+        // Set theme from local storage
+        if (action.payload.theme) {
+          localStorage.setItem('theme', action.payload.theme);
+          document.body.className = action.payload.theme; 
+          state.theme = action.payload.theme; 
+        }
+      })      
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
@@ -693,8 +699,8 @@ const authSlice = createSlice({
     builder.addCase(updateTheme.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
-      state.theme = action.payload; // Actualizați starea temei cu tema primită
-      document.body.className = action.payload; // Actualizați clasa body pentru a reflecta noua temă
+      state.theme = action.payload; 
+      document.body.className = action.payload; 
       toast.success("Theme Updated");
     });
   },
