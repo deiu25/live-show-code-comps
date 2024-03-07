@@ -25,7 +25,7 @@ export const BlogPostNavbar = () => {
           <ShowOnLogout>
             <Link to="/login">
               {" "}
-              <button>Auth</button>
+              <button className="login-button">Auth</button>
             </Link>
           </ShowOnLogout>
           <ShowOnLogin>

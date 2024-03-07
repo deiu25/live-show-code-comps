@@ -11,10 +11,10 @@ import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-icon.
 
 import { useIframeUrl } from "../../../customHooks/useIframeUrl";
 import useDeletePost from "../../../customHooks/useDeletePost";
-import { shortenText } from "../../../../auth/pages/profile/Profile";
 import { useAuthAdminStatus } from "../../../../customHooks/useAuthAdminStatus";
 import { useDispatch, useSelector } from "react-redux";
 import { likePost } from "../../../../../redux/features/posts/postSlice";
+import { shortenText } from "../../../../customHooks/shortenText";
 
 function PostCard({ id, title, htmlCode, cssCode, jsCode, user: postUser }) {
   const [showOverlay, setShowOverlay] = useState(true);

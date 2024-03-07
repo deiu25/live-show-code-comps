@@ -105,6 +105,18 @@
   cursor: pointer;
   border: #ddd 1.8px solid;
 }
+.login-button {
+  background-color: transparent;
+  color: white;
+  outline: none;
+  font-size: 1.1rem;
+  font-weight: 400;
+  border-radius: 5px;
+  padding: 4px;
+  margin-left: 3vh;
+  cursor: pointer;
+  border: #ddd 1.8px solid;
+}
 .new-proj-acc-logo {
   height: 40px;
   width: 40px;

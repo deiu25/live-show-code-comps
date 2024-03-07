@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { shortenText } from "../../../auth/pages/profile/Profile";
+import { shortenText } from "../../../customHooks/shortenText";
 
 const CoursePost = ({ post, user, useDeleteCoursePost }) => {
 

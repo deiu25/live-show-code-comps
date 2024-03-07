@@ -5,6 +5,29 @@ import streamifier from "streamifier";
 import LikeBlogPost from "../models/likeBlogPostModel.js";
 import blogPostModel from "../models/blogPostModel.js";
 
+async function uploadImages(files, folder) {
+  return Promise.all(
+    files.map(async (file) => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: "auto", folder: folder },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve({
+                public_id: result.public_id,
+                url: result.secure_url,
+              });
+            }
+          }
+        );
+        streamifier.createReadStream(file.buffer).pipe(uploadStream);
+      });
+    })
+  );
+}
+
 const createPostOrCourse = async (model, folder, req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -39,29 +62,6 @@ const createPostOrCourse = async (model, folder, req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
-async function uploadImages(files, folder) {
-  return Promise.all(
-    files.map(async (file) => {
-      return new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          { resource_type: "auto", folder: folder },
-          (error, result) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve({
-                public_id: result.public_id,
-                url: result.secure_url,
-              });
-            }
-          }
-        );
-        streamifier.createReadStream(file.buffer).pipe(uploadStream);
-      });
-    })
-  );
-}
 
 // Get All Posts/Courses
 const getAll = async (model, req, res) => {

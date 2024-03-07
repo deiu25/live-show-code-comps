@@ -6,7 +6,7 @@ import { ReactComponent as Edit } from "../../assets/icons/edit.svg";
 import { ReactComponent as SaveTitle } from "../../assets/icons/check-circle.svg";
 import { ReactComponent as Save } from "../../assets/icons/save-project.svg";
 import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
-
+import { shortenText } from "../../../customHooks/shortenText";
 
 export const PostNavigation = ({
   title,
@@ -20,6 +20,8 @@ export const PostNavigation = ({
 }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const isAdmin = user?.role === "admin";
+  const isUserLoggedIn = user !== null;
 
   const goProfile = () => {
       navigate("/profile");
@@ -37,10 +39,11 @@ export const PostNavigation = ({
             <img src={livecodeshowlogo1} alt='logo' className='editor-nav-logo' />
            </Link>
             </div>
+            {isUserLoggedIn && isAdmin && (
             <div className="new-proj-nav-title">
               {!isEditingTitle ? (
                 <>
-                  <h5 className="new-proj-title">{title}</h5>
+                  <h5 className="new-proj-title">{shortenText(title, 20)}</h5>
                   <div onClick={handleTitleEdit} className="new-proj-nav-title-icon" aria-label="Edit title">
                     <Edit />
                   </div>
@@ -66,12 +69,14 @@ export const PostNavigation = ({
                 <div className="create-proj-error-message">{error}</div>
               )}
             </div>
+            )}
           </div>
+          
           <div className="new-proj-nav-right">
             <ShowOnLogout>
               <Link to="/login">
                 {" "}
-                <button>Auth</button>
+                <button className="login-button">Auth</button>
               </Link>
             </ShowOnLogout>
             <ShowOnLogin>

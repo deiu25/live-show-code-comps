@@ -11,15 +11,7 @@ import {
 import { toast } from "react-toastify";
 import { Notification } from "../../components/notification/Notification";
 import Button from "../../components/button/Button";
-
-export const shortenText = (text, maxLength) => {
-  if (typeof text !== "string" || text.length <= maxLength) {
-    return text;
-  }
-
-  const shortened = text.substr(0, maxLength) + "...";
-  return shortened;
-};
+import { shortenText } from "../../../customHooks/shortenText";
 
 export const Profile = () => {
   useRedirectLoggedOutUser("/auth");

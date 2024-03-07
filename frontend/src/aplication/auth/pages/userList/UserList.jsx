@@ -10,13 +10,13 @@ import { ChangeRole } from "../../components/changeRole/ChangeRole";
 import { useRedirectLoggedOutUser } from "../../customHook/useRedirectLoggedOutUser";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, getUsers } from "../../../../redux/features/auth/authSlice";
-import { shortenText } from "../profile/Profile";
 import { Spinner } from "../../components/loader/Loader";
 import {
   FILTER_USERS,
   selectUsers,
 } from "../../../../redux/features/auth/filterSlice";
 import ReactPaginate from "react-paginate";
+import { shortenText } from "../../../customHooks/shortenText";
 
 export const UserList = () => {
   useRedirectLoggedOutUser("/auth");
