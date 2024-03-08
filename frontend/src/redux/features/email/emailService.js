@@ -1,5 +1,7 @@
 import axios from "axios";
-import { API_URL } from "../auth/authService";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API_URL = `${BACKEND_URL}/api/users/`;
 
 // Send Automated Email
 const sendAutomatedEmail = async (emailData) => {

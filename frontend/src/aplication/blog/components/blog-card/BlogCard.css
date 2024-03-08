@@ -259,6 +259,7 @@ h3:after {
   display: inline-block;
   vertical-align: middle;
   cursor: pointer;
+  top: -3px;
 }
 .licon:before {
   content: "";
