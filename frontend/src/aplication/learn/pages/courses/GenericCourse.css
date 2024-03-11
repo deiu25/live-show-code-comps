@@ -1,0 +1,181 @@
+.course-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 120px;
+    background-color: transparent;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .course-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    background-color: rgba(29, 29, 29, 0.5);
+  }
+  
+  .course-body h2 {
+    margin: 0;
+  }
+  
+  .course-body p {
+    color: #b4b4b4;
+  }
+  
+  .course-body .course-lessons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .course-body .course-lessons .lesson-card {
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  
+  .course-body .course-lessons .lesson-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .course-body .course-lessons .lesson-card h3 {
+    margin: 0;
+    color: #fff;
+  }
+  
+  .course-body .course-lessons .lesson-card p {
+    color: #b4b4b4;
+  }
+  
+  .course-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .course-map {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: transparent;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .chapter-card {
+    background-color: rgba(29, 29, 29, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  
+  .chapter-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .chapter-card h3 {
+    margin: 0;
+    color: #fff;
+  }
+  
+  .chapter-card p {
+    color: #b4b4b4;
+  }
+  
+  .chapter-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  
+  .card-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px; 
+  }
+  
+  .card-button {
+    padding: 5px 10px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .card-button.edit {
+    background-color: #ffc107; 
+    color: #000;
+  }
+  
+  .card-button.delete {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .card-button:hover {
+    opacity: 0.8;
+  }
+  
+  
+  
+  @media (max-width: 1024px) {
+      .chapter-card {
+        flex: 0 0 calc(33.33% - 20px);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .chapter-card {
+        flex: 0 0 calc(50% - 20px);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .chapter-card {
+        flex: 0 0 100%;
+      }
+      .course-map {
+        border-radius: 0;
+        box-shadow: none; 
+      }
+    }
+  
+    @media (max-width: 392px) {
+      .course-header {
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+    

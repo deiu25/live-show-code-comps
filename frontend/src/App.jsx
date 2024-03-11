@@ -29,12 +29,9 @@ import NewBlogPost from "./aplication/blog/pages/create-blog-post/NewBlogPost";
 import { BlogPosts } from "./aplication/blog/pages/blog-posts/BlogPosts";
 import { BlogPost } from "./aplication/blog/pages/blog-post/BlogPost";
 
-import { JavascriptCourse } from "./aplication/learn/pages/javascript-course/JavascriptCourse";
 import NewCourse from "./aplication/learn/pages/create-course-post/NewCourse";
 import { JavascriptCoursePost } from "./aplication/learn/pages/javascript-course-post/JavascriptCoursePost";
-import { ReduxCourse } from "./aplication/learn/pages/redux-course/ReduxCourse";
-import { ReactCourse } from "./aplication/learn/pages/react-course/ReactCourse";
-import { NodejsCourse } from "./aplication/learn/pages/node-course/NodejsCourse";
+import { GenericCourse } from "./aplication/learn/pages/courses/GenericCourse";
 
 axios.defaults.withCredentials = true;
 
@@ -76,15 +73,15 @@ function App() {
 
             <Route path="/about" element={<About />} />
 
-            <Route path="/javascriptCourse" element={<JavascriptCourse />} />
+            <Route path="/JavascriptCourse" element={<GenericCourse courseName="javascript" title="JavaScript Course" />} />
+            <Route path="/ReactCourse" element={<GenericCourse courseName="react" title="React Course" />} />
+            <Route path="/NodejsCourse" element={<GenericCourse courseName="nodejs" title="Node.js Course" />} />
+            <Route path="/Redux" element={<GenericCourse courseName="redux" title="Redux Course" />} />
+
             <Route
               path="/javascriptCourse/:id"
               element={<JavascriptCoursePost />}
             />
-
-            <Route path="/reactCourse" element={<ReactCourse />} />
-            <Route path="/nodejsCourse" element={<NodejsCourse />} />
-            <Route path="/redux" element={<ReduxCourse />} />
 
             {isLoggedIn && (
               <>

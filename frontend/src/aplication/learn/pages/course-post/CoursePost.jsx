@@ -13,7 +13,7 @@ const CoursePost = ({ post, user, useDeleteCoursePost }) => {
   const isUserCreatorOfPost = user?._id === post.user._id;
 
   return (
-    <div className="chapter-card-container">
+    <>
       <Link to={`/javascriptCourse/${post._id}`} className="chapter-card-link">
         <div className="chapter-card">
           {isUserLoggedIn && isUserCreatorOfPost && isAdmin && (
@@ -34,7 +34,7 @@ const CoursePost = ({ post, user, useDeleteCoursePost }) => {
           <p>{shortenedDescription}</p>
         </div>
       </Link>
-    </div>
+    </>
   );
 };
 
