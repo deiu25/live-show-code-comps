@@ -34,7 +34,7 @@ const EditorComponentVertical = ({ language, value, onChange, setActiveLanguage 
 
   return (
 <div>
-      <div className="code-editor-head">
+<div className="code-editor-head-horizontal">
         <div className="language-icons-btn">
           <HtmlIcon onClick={() => setActiveLanguage('html')} />
           <CssIcon onClick={() => setActiveLanguage('css')} />
