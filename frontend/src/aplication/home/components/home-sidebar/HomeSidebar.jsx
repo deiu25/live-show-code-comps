@@ -53,31 +53,35 @@ export const HomeSidebar = ({
           onClick={toggleSidebar}
         />
       )}
-      <ShowOnLogout>
-        <button
-          className="nav-link anchor-btn"
-          onClick={() => {
-            navigate("/login");
-          }}
-        >
-          <i className="far fa-user"></i>
-          {isSidebarOpen && <span className="nav-text"> Auth</span>}
-        </button>
-      </ShowOnLogout>
-      <ShowOnLogin>
-        <div className={logoClass} onClick={goProfile}>
-          <img
-            className="sidebar-acc-logo"
-            src={user ? user.photo : "https://www.gravatar.com/av"}
-            alt="logo"
-          />
+      <div className="nav flex-column">
+        <div key="logo" className="nav-item">
+          <ShowOnLogout>
+            <button
+              className="anchor-btn"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              <i className="far fa-user"></i>
+              {isSidebarOpen && <span className="nav-text"> Auth</span>}
+            </button>
+          </ShowOnLogout>
+          <ShowOnLogin>
+            <div className={logoClass} onClick={goProfile}>
+              <img
+                className="sidebar-acc-logo"
+                src={user ? user.photo : "https://www.gravatar.com/av"}
+                alt="logo"
+              />
+            </div>
+          </ShowOnLogin>
         </div>
-      </ShowOnLogin>
+      </div>
 
       <ul className="nav flex-row theme-buttons">
         <li key="light" className="nav-item">
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => handleChangeTheme("light")}
           >
             <i className="fas fa-sun"></i>
@@ -85,7 +89,7 @@ export const HomeSidebar = ({
         </li>
         <li key="dark" className="nav-item">
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => handleChangeTheme("dark")}
           >
             <i className="fas fa-moon"></i>
@@ -93,7 +97,7 @@ export const HomeSidebar = ({
         </li>
         <li key="rainbow" className="nav-item">
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => handleChangeTheme("rainbow")}
           >
             <i className="fas fa-rainbow"></i>
@@ -101,7 +105,7 @@ export const HomeSidebar = ({
         </li>
         <li key="green" className="nav-item">
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => handleChangeTheme("green")}
           >
             <i className="fas fa-leaf"></i>
@@ -109,7 +113,7 @@ export const HomeSidebar = ({
         </li>
         <li key="calm" className="nav-item">
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => handleChangeTheme("calm")}
           >
             <i className="fas fa-water"></i>
@@ -117,7 +121,7 @@ export const HomeSidebar = ({
         </li>
         <li key="purple" className="nav-item">
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => handleChangeTheme("purple")}
           >
             <i className="fas fa-dragon"></i>
@@ -125,7 +129,7 @@ export const HomeSidebar = ({
         </li>
         <li key="orange" className="nav-item">
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => handleChangeTheme("orange")}
           >
             <i className="fas fa-fire"></i>
@@ -133,7 +137,7 @@ export const HomeSidebar = ({
         </li>
         <li key="red" className="nav-item">
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => handleChangeTheme("red")}
           >
             <i className="fas fa-heart"></i>
@@ -147,7 +151,7 @@ export const HomeSidebar = ({
           className={`nav-item ${currentTab === "home" ? "active" : ""}`}
         >
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => onTabChange("home")}
           >
             <i className="fas fa-home"></i>
@@ -159,7 +163,7 @@ export const HomeSidebar = ({
           className={`nav-item ${currentTab === "posts" ? "active" : ""}`}
         >
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => onTabChange("posts")}
           >
             <i className="fas fa-tasks"></i>
@@ -171,7 +175,7 @@ export const HomeSidebar = ({
           className={`nav-item ${currentTab === "blog" ? "active" : ""}`}
         >
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => onTabChange("blog")}
           >
             <i className="fas fa-blog"></i>
@@ -183,7 +187,7 @@ export const HomeSidebar = ({
           className={`nav-item ${currentTab === "learn" ? "active" : ""}`}
         >
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => onTabChange("learn")}
           >
             <i className="fas fa-book"></i>
@@ -195,7 +199,7 @@ export const HomeSidebar = ({
           className={`nav-item ${currentTab === "about" ? "active" : ""}`}
         >
           <button
-            className="nav-link anchor-btn"
+            className="anchor-btn"
             onClick={() => onTabChange("about")}
           >
             <i className="fas fa-info-circle"></i>
@@ -206,7 +210,7 @@ export const HomeSidebar = ({
           <div className="add-section-buttons">
             <li key="addPost" className="nav-item">
               <button
-                className="nav-link anchor-btn"
+                className="anchor-btn"
                 onClick={() => {
                   navigate("/NewProject");
                 }}
@@ -217,7 +221,7 @@ export const HomeSidebar = ({
             </li>
             <li key="addBlogPost" className="nav-item">
               <button
-                className="nav-link anchor-btn"
+                className="anchor-btn"
                 onClick={() => {
                   navigate("/NewBlogPost");
                 }}
@@ -230,7 +234,7 @@ export const HomeSidebar = ({
             </li>
             <li key="addCourse" className="nav-item">
               <button
-                className="nav-link anchor-btn"
+                className="anchor-btn"
                 onClick={() => {
                   navigate("/NewCourse");
                 }}
