@@ -1,0 +1,43 @@
+.code-editor-head-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 46px;
+}
+.language-icons-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #282c34;
+  padding: 5px;
+  cursor: pointer;
+}
+.language-icons-btn svg {
+  width: 40px;
+  height: 40px;
+}
+.language-icons-btn svg:hover {
+  cursor: pointer;
+  background-color: #555;
+}
+.language-icons-btn svg:active {
+  background-color: #555;
+}
+
+.code-editor-horizontal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100vw;
+  height: 100%;
+  padding: 10px;
+  background-color: #282c34;
+  border: 1px solid #282c34;
+  border-radius: 5px;
+  overflow: none;
+}

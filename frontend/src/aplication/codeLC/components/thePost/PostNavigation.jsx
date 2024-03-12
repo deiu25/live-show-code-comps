@@ -16,7 +16,8 @@ export const PostNavigation = ({
   setProjectTitle,
   handleTitleSave,
   handleSavePost,
-  error
+  error,
+  toggleEditorLayout,
 }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
@@ -24,71 +25,74 @@ export const PostNavigation = ({
   const isUserLoggedIn = user !== null;
 
   const goProfile = () => {
-      navigate("/profile");
+    navigate("/profile");
   };
 
   const handleProjectTitleChange = (e) => {
-      setProjectTitle(e.target.value);
+    setProjectTitle(e.target.value);
   };
 
-    return (
-        <div className="new-proj-nav">
-          <div className="new-proj-nav-left">
-            <div className="new-proj-nav-left-logo">
-            <Link to='/' className=''>
+  return (
+    <div className="new-proj-nav">
+      <div className="new-proj-nav-left">
+        <div className="new-proj-nav-left-logo">
+          <Link to='/' className=''>
             <img src={livecodeshowlogo1} alt='logo' className='editor-nav-logo' />
-           </Link>
-            </div>
-            {isUserLoggedIn && isAdmin && (
-            <div className="new-proj-nav-title">
-              {!isEditingTitle ? (
-                <>
-                  <h5 className="new-proj-title">{shortenText(title, 20)}</h5>
-                  <div onClick={handleTitleEdit} className="new-proj-nav-title-icon" aria-label="Edit title">
-                    <Edit />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <input
-                    type="text"
-                    value={projectTitle}
-                    onChange={handleProjectTitleChange}
-                    autoFocus
-                    aria-label="Project title"
-                  />
-                  <div className="new-proj-nav-title-icon" onClick={handleTitleSave}>
-                    <SaveTitle />
-                  </div>
-                </>
-              )}
-              <button className="save-proj-button" onClick={handleSavePost}>
-                <Save /> Save
-              </button>
-              {error && (
-                <div className="create-proj-error-message">{error}</div>
-              )}
-            </div>
-            )}
-          </div>
-          
-          <div className="new-proj-nav-right">
-            <ShowOnLogout>
-              <Link to="/login">
-                {" "}
-                <button className="login-button">Auth</button>
-              </Link>
-            </ShowOnLogout>
-            <ShowOnLogin>
-              <div className="new-proj-logo-login" onClick={goProfile}>
-                <img
-                  className="new-proj-acc-logo"
-                  src={user ? user.photo : "https://www.gravatar.com/av"}
-                  alt="logo"
-                />
-              </div>
-            </ShowOnLogin>
-          </div>
+          </Link>
         </div>
-      );
+        <div className="new-proj-nav-title">
+          {!isEditingTitle ? (
+            <>
+              <h5 className="new-proj-title">{shortenText(title, 20)}</h5>
+              {isUserLoggedIn && isAdmin && (
+                <div onClick={handleTitleEdit} className="new-proj-nav-title-icon" aria-label="Edit title">
+                  <Edit />
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <input
+                type="text"
+                value={projectTitle}
+                onChange={handleProjectTitleChange}
+                autoFocus
+                aria-label="Project title"
+              />
+              <div className="new-proj-nav-title-icon" onClick={handleTitleSave}>
+                <SaveTitle />
+              </div>
+            </>
+          )}
+          {isUserLoggedIn && isAdmin && (
+            <button className="save-proj-button" onClick={handleSavePost}>
+              <Save /> Save
+            </button>
+          )}
+          {error && (
+            <div className="create-proj-error-message">{error}</div>
+          )}
+        </div>
+      </div>
+      
+      <div className="new-proj-nav-right">
+      <button className="layot-button" onClick={toggleEditorLayout}>Change Editor Layout</button>
+        <ShowOnLogout>
+          <Link to="/login">
+            {" "}
+            <button className="login-button">Auth</button>
+          </Link>
+        </ShowOnLogout>
+        <ShowOnLogin>
+          <div className="new-proj-logo-login" onClick={goProfile}>
+            <img
+              className="new-proj-acc-logo"
+              src={user ? user.photo : ""}
+              alt="logo"
+            />
+          </div>
+        </ShowOnLogin>
+      </div>
+    </div>
+  );
 };

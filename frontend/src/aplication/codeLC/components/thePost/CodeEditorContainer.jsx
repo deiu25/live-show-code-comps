@@ -9,6 +9,8 @@ import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
 import { CodeEditorToolbar } from "./CodeEditorToolbar";
 import EditorComponent from "./EditorComponent";
 import { useIframeUrl } from "../../customHooks/useIframeUrl";
+import EditorComponentHorizontal from "../editor-components/editor-component-horizontal/EditorComponentHorizontal";
+
 
 export const CodeEditorContainer = ({
   title,
@@ -18,10 +20,13 @@ export const CodeEditorContainer = ({
   onHtmlChange,
   onCssChange,
   onJsChange,
+  editorLayout,
+  setEditorLayout,
 }) => {
   const [htmlCode, setHtmlCode] = useState(initialHtml);
   const [cssCode, setCssCode] = useState(initialCss);
   const [jsCode, setJsCode] = useState(initialJs);
+  const [activeLanguage, setActiveLanguage] = useState("html");
 
   const markupUrl = useIframeUrl(htmlCode, cssCode, jsCode);
 
@@ -55,7 +60,22 @@ export const CodeEditorContainer = ({
   }, [initialHtml, initialCss, initialJs]);
 
   return (
-    <SplitPane
+    <>
+      {/* <CodeEditorToolbar /> */}
+      {editorLayout === "horizontal" ? (
+        <> 
+      <EditorComponentHorizontal
+        language={activeLanguage}
+        value={activeLanguage === "html" ? htmlCode : activeLanguage === "css" ? cssCode : jsCode}
+        onChange={handleCodeChange}
+        setActiveLanguage={setActiveLanguage}
+      />
+      <div className="output-section">
+        <iframe title={title} src={markupUrl}></iframe>
+      </div>
+      </>
+      ) : (
+         <SplitPane
       sizes={horizontalSizes}
       onChange={(sizes) => setHorizontalSizes(sizes)}
     >
@@ -94,5 +114,7 @@ export const CodeEditorContainer = ({
         </div>
       </div>
     </SplitPane>
+    )}
+    </>
   );
 };
