@@ -3,11 +3,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./PostCard.css";
-import { ReactComponent as Coment } from "../../../assets/icons/coments.svg";
+// import { ReactComponent as Coment } from "../../../assets/icons/coments.svg";
 import { ReactComponent as Like } from "../../../assets/icons/like-icon.svg";
-import { ReactComponent as Shortcut } from "../../../assets/icons/shortcut.svg";
-import { ReactComponent as EyeLook } from "../../../assets/icons/eye-look-icon.svg";
-import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-icon.svg";
+// import { ReactComponent as Shortcut } from "../../../assets/icons/shortcut.svg";
+// import { ReactComponent as EyeLook } from "../../../assets/icons/eye-look-icon.svg";
+// import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-icon.svg";
 
 import { useIframeUrl } from "../../../customHooks/useIframeUrl";
 import useDeletePost from "../../../customHooks/useDeletePost";

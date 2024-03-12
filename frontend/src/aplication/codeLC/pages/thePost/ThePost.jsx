@@ -19,7 +19,7 @@ export const ThePost = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const [error, setError] = useState("");
 
-  const [editorLayout, setEditorLayout] = useState("vertical");
+  const [editorLayout, setEditorLayout] = useState("horizontal");
 
   const toggleEditorLayout = () => {
     setEditorLayout(editorLayout === "horizontal" ? "vertical" : "horizontal");

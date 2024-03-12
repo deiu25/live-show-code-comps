@@ -4,33 +4,41 @@ import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { javascript } from "@codemirror/lang-javascript";
 import "./EditorComponentHorizontal.css";
-
+import { EditorView } from "@codemirror/view";
 import { ReactComponent as HtmlIcon } from "../../../assets/icons/html.svg";
 import { ReactComponent as CssIcon } from "../../../assets/icons/css.svg";
 import { ReactComponent as JsIcon } from "../../../assets/icons/js.svg";
-import { ReactComponent as SettingsIcon } from "../../../assets/icons/setings.svg";
-import { ReactComponent as AngleDown } from "../../../assets/icons/down.svg";
+// import { ReactComponent as SettingsIcon } from "../../../assets/icons/setings.svg";
+// import { ReactComponent as AngleDown } from "../../../assets/icons/down.svg";
 
-const layoutCSS = {
-  height: "100%",
-};
-
-const EditorComponentHorizontal = ({ language, value, onChange, setActiveLanguage }) => {
+const EditorComponentHorizontal = ({
+  language,
+  value,
+  onChange,
+  setActiveLanguage,
+}) => {
   const extensions = useMemo(() => {
+    let baseExtensions = [EditorView.lineWrapping];
+
     switch (language) {
       case "html":
-        return [html()];
+        baseExtensions.push(html());
+        break;
       case "css":
-        return [css()];
+        baseExtensions.push(css());
+        break;
       case "javascript":
-        return [javascript()];
+        baseExtensions.push(javascript());
+        break;
       default:
-        return [];
+        break;
     }
+
+    return baseExtensions;
   }, [language]);
 
   return (
-    <div style={layoutCSS}>
+    <div>
       <div className="code-editor-head-horizontal">
         <div className="language-icons-btn">
           <HtmlIcon onClick={() => setActiveLanguage("html")} />
@@ -43,14 +51,16 @@ const EditorComponentHorizontal = ({ language, value, onChange, setActiveLanguag
         </div> */}
       </div>
       <>
-        <CodeMirror
-          value={value}
-          height="50vh"
-          width="100vw"
-          theme="dark"
-          extensions={extensions}
-          onChange={onChange}
-        />
+        <div className="code-editor">
+          <CodeMirror
+            value={value}
+            height="80vh"
+            width="100vw"
+            theme="dark"
+            extensions={extensions}
+            onChange={onChange}
+          />
+        </div>
       </>
     </div>
   );
