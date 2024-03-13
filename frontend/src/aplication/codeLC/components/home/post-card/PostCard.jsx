@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import "./PostCard.css";
 // import { ReactComponent as Coment } from "../../../assets/icons/coments.svg";
 import { ReactComponent as Like } from "../../../assets/icons/like-icon.svg";
+import { ReactComponent as Eye } from "../../../assets/icons/eye-look-icon.svg";
+import { ReactComponent as Delete } from "../../../assets/icons/delete.svg";
 // import { ReactComponent as Shortcut } from "../../../assets/icons/shortcut.svg";
 // import { ReactComponent as EyeLook } from "../../../assets/icons/eye-look-icon.svg";
 // import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-icon.svg";
@@ -46,6 +48,12 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, user: postUser }) {
     setShowOverlay(true);
   }, []);
 
+  const handleCardClick = () => {
+    if (window.innerWidth > 768) {
+      setShowOverlay(false); 
+    }
+  };
+
   useEffect(() => {
     document.addEventListener("mousemove", handleMouseMove);
     return () => {
@@ -61,24 +69,10 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, user: postUser }) {
 
   return (
     <div className="card">
-      <div
-        className="card-body"
-        onClick={() => setShowOverlay(false)}
-        onMouseMove={() => setShowOverlay(true)}
-      >
+      <div className="card-body" onClick={handleCardClick} onMouseMove={() => setShowOverlay(true)}>
         <iframe title={title} src={markupUrl} className="iframe"></iframe>
         <div className={`overlay ${!showOverlay && "overlay-hidden"}`}>
-          <Link to={`/post/${id}`} className="btn view-btn">
-            View
-          </Link>
-          {isUserLoggedIn && isUserCreator && isAdmin && (
-            <button
-              onClick={() => confirmDelete(id)}
-              className="btn btn-danger"
-            >
-              Delete
-            </button>
-          )}
+        <button className="close-overlay-btn" onClick={() => setShowOverlay(false)}>×</button>
           <p className="post-card-title text-truncate">{shortenedTitle}</p>
           <div
             className="post-card-icons"
@@ -86,6 +80,14 @@ function PostCard({ id, title, htmlCode, cssCode, jsCode, user: postUser }) {
               e.stopPropagation();
             }}
           >
+            <Link to={`/post/${id}`} className="eye-look-btn">
+              <Eye className="view-icon" />
+            </Link>
+          {isUserLoggedIn && isUserCreator && isAdmin && (
+            <button onClick={() => confirmDelete(id)} className="delete-snippet-btn">
+              <Delete className="delete-icon" />
+            </button>
+          )}
             <div className="number-of" onClick={handleLike}>
               <Like className="soc-icons" />
               <span className="soc-number">{post?.likesCount ?? 0}</span>

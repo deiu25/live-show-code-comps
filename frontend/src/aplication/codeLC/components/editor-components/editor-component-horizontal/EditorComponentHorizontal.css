@@ -4,6 +4,8 @@
   align-items: center;
   justify-content: space-between;
   height: 46px;
+  margin: 0;
+  background-color: #17191d;
 }
 .language-icons-btn {
   display: flex;
@@ -14,6 +16,7 @@
   background-color: #282c34;
   padding: 5px;
   cursor: pointer;
+  height: 46px;
 }
 .language-icons-btn svg {
   width: 40px;

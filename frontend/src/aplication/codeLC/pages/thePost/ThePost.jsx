@@ -1,5 +1,4 @@
 //ThePost.jsx
-import "./ThePost.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,11 +18,22 @@ export const ThePost = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const [error, setError] = useState("");
 
-  const [editorLayout, setEditorLayout] = useState("horizontal");
+  const [editorLayout, setEditorLayout] = useState(
+    window.innerWidth > 768 ? "horizontal" : "vertical"
+  );
 
   const toggleEditorLayout = () => {
     setEditorLayout(editorLayout === "horizontal" ? "vertical" : "horizontal");
   };
+
+  const updateLayoutOnResize = () => {
+    setEditorLayout(window.innerWidth > 768 ? "vertical" : "horizontal");
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateLayoutOnResize);
+    return () => window.removeEventListener("resize", updateLayoutOnResize);
+  }, []);
 
   const {
     title: initialTitle,

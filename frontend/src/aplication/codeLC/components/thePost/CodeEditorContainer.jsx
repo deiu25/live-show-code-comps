@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 
-import { ReactComponent as HtmlIcon } from "../../assets/icons/html.svg";
-import { ReactComponent as CssIcon } from "../../assets/icons/css.svg";
-import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
+// import { ReactComponent as HtmlIcon } from "../../assets/icons/html.svg";
+// import { ReactComponent as CssIcon } from "../../assets/icons/css.svg";
+// import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
 
 import { CodeEditorToolbar } from "./CodeEditorToolbar";
 import { useIframeUrl } from "../../customHooks/useIframeUrl";
@@ -68,6 +68,7 @@ export const CodeEditorContainer = ({
             onChange={handleCodeChange}
             setActiveLanguage={setActiveLanguage}
           />
+          <CodeEditorToolbar />
           <div className="output-section">
             <iframe title={title} src={markupUrl}></iframe>
           </div>

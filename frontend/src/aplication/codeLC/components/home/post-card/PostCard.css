@@ -9,6 +9,7 @@
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   transition: box-shadow 0.3s ease;
   border-radius: 20px;
+  
 }
 
 .card-body {
@@ -27,7 +28,6 @@
   left: -2px;
   transform: scale(0.5);
   transform-origin: top left;
-  opacity: 1;
   border-radius: 20px;
 }
 
@@ -37,7 +37,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,6 +47,8 @@
   pointer-events: none;
   gap: 10px;
   border-radius: 5px;
+  box-shadow: 0 0 15px 5px var(--shadow-color);
+  --webkit-backdrop-filter: blur(5px);
 }
 
 .overlay-hidden {
@@ -99,11 +101,11 @@
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
   margin: 0;
-  margin-bottom: 5px;
-  background: linear-gradient(to right, #162e61, #004ea1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin-top: 15vh; 
+  background: none;
+  -webkit-text-fill-color: initial;
   letter-spacing: 1px;
+  text-align: center; 
 }
 
 .post-card-icons {
@@ -112,25 +114,38 @@
   justify-content: center;
   gap: 15px;
   cursor: pointer;
+  margin-top: 20px;
 }
 
+
 .number-of {
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px; 
+  color: #007bff; 
   font-weight: bold;
-  color: black;
-  background-color: #5899df;
-  border-radius: 5px;
-  padding: 3px;
+  padding: 5px 10px;
+  border-radius: 50px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.number-of:hover {
+  background-color: rgba(255, 255, 255, 1);
+  transform: scale(1.05); 
 }
 
 .soc-icons {
-  height: 20px;
-  width: 20px;
+  fill: #007bff; 
+  width: 16px; 
+  height: 16px; 
 }
 
 .soc-number {
   font-size: 15px;
-  margin-left: 2px;
+  color: #007bff; 
 }
 
 .text-truncate {
@@ -142,4 +157,113 @@
 .ref-style {
   height: 20px;
    margin: 10px 0;
+}
+
+.close-overlay-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  border: none;
+  background: none;
+  color: white; 
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.close-overlay-btn:hover {
+  color: #ff0000;
+}
+
+.eye-look-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 50%; 
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.8);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.eye-look-btn:hover, .eye-look-btn:focus {
+  background-color: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+.eye-look-btn svg {
+  fill: #007bff; 
+  width: 24px; 
+  height: 24px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.0; }
+}
+
+.view-icon {
+  animation: blink 1.5s infinite; 
+}
+
+.view-icon:hover {
+  animation: none; 
+}
+
+.delete-snippet-btn {
+  background-color: transparent;
+  border: none; 
+  cursor: pointer;
+  padding: 5px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+.delete-icon {
+  fill: #ff0000; 
+  width: 20px; 
+  height: 20px;
+  transition: transform 0.3s ease; 
+}
+
+.delete-snippet-btn:hover .delete-icon {
+  transform: scale(1.1); 
+}
+
+@media (max-width: 768px) {
+  .overlay, .overlay-hidden {
+    opacity: 1;
+    pointer-events: auto; 
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    box-shadow: none; 
+    --webkit-backdrop-filter: none; 
+  }
+
+  .iframe {
+    width: 100%; 
+    height: 100%; 
+    transform: scale(1); 
+  }
+
+  .post-card-title {
+    font-size: 16px; 
+    background: none;
+    -webkit-text-fill-color: initial; 
+  }
+
+  .post-card-icons {
+    gap: 10px; 
+  }
+
+  .number-of, .view-btn {
+    padding: 5px 10px; 
+    font-size: 12px;
+  }
+
+  .soc-icons {
+    height: 15px; 
+    width: 15px;
+  }
 }

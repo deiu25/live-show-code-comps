@@ -45,7 +45,7 @@
   --login-background: rgba(0, 255, 240, 0.52);
 
   --blog-card-overlay-start: rgba(0, 0, 0, 0.5);
-  --blog-card-overlay-end: rgba(0, 0, 0, 0.5); 
+  --blog-card-overlay-end: rgba(0, 0, 0, 0.5);
   --blog-card-overlay: rgba(0, 0, 0, 0.5);
   --blog-card-hover-button: linear-gradient(to right, blue, rgb(245, 83, 110));
 
@@ -64,6 +64,38 @@ body {
   font-family: var(--font-family);
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+*::-webkit-scrollbar {
+  width: 14px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--secondary-color); 
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--main-color); 
+  border: 2px solid var(--secondary-color); 
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--shadow-color);
+}
+
+* {
+  scrollbar-color: var(--main-color);
+}
+
+
 body.light {
   --main-color: #ffffff;
   --secondary-color: #e6e5e5;
@@ -73,6 +105,7 @@ body.light {
   --background-color: #fff;
   --border-color: #e6e5e5;
   --blog-card-hover-button: rgba(0, 0, 0, 0.5);
+  overflow-y: hidden;
 }
 
 body.dark {
@@ -84,55 +117,60 @@ body.dark {
   --background-color: #333;
   --border-color: #222222;
   --blog-card-hover-button: rgba(255, 255, 255, 0.5);
+  overflow-y: hidden;
 }
 
 body.green {
-  --main-color: #1D8348; 
-  --secondary-color: #145A32; 
-  --shadow-color: rgba(144, 212, 173, 0.5); 
-  --white-lit-color: rgba(20, 90, 50, 0.4); 
-  --text-color: #E9F7EF; 
-  --background-color: #1D8348; 
-  --border-color: #145A32;
+  --main-color: #1d8348;
+  --secondary-color: #145a32;
+  --shadow-color: rgba(144, 212, 173, 0.5);
+  --white-lit-color: rgba(20, 90, 50, 0.4);
+  --text-color: #e9f7ef;
+  --background-color: #1d8348;
+  --border-color: #145a32;
   --blog-card-overlay-start: rgba(0, 0, 0, 0.5);
-  --blog-card-overlay-end: rgba(0, 0, 0, 0.5); 
-  --blog-card-hover-button: linear-gradient(to right, #1D8348, #145A32);
+  --blog-card-overlay-end: rgba(0, 0, 0, 0.5);
+  --blog-card-hover-button: linear-gradient(to right, #1d8348, #145a32);
   --login-box-shadow: 0px 0px 64px 0px #82e1ff inset, 0px 0px 16px #a8fffaa6;
+  overflow-y: hidden;
 }
 
 body.calm {
-  --main-color: #B2C8DF;
-  --secondary-color: #A1B5CD;
+  --main-color: #b2c8df;
+  --secondary-color: #a1b5cd;
   --shadow-color: rgba(0, 0, 0, 0.5);
   --white-lit-color: rgba(161, 181, 205, 0.4);
-  --text-color: #2C3E50;
-  --background-color: #D6E6F2;
-  --border-color: #A1B5CD;
+  --text-color: #2c3e50;
+  --background-color: #d6e6f2;
+  --border-color: #a1b5cd;
   --blog-card-overlay: rgba(82, 80, 80, 0.5);
-  --blog-card-hover-button: linear-gradient(to right, #B2C8DF, #A1B5CD);
+  --blog-card-hover-button: linear-gradient(to right, #b2c8df, #a1b5cd);
+  overflow-y: hidden;
 }
 
 body.purple {
-  --main-color: #9D0191;
-  --secondary-color: #7A0177;
+  --main-color: #9d0191;
+  --secondary-color: #7a0177;
   --shadow-color: rgba(240, 205, 236, 0.5);
   --white-lit-color: rgba(122, 1, 119, 0.4);
-  --text-color: #F5E1F7;
-  --background-color: #9D0191;
-  --border-color: #7A0177;
-  --blog-card-hover-button: linear-gradient(to right, #9D0191, #7A0177);
+  --text-color: #f5e1f7;
+  --background-color: #9d0191;
+  --border-color: #7a0177;
+  --blog-card-hover-button: linear-gradient(to right, #9d0191, #7a0177);
+  overflow-y: hidden;
 }
 
 body.orange {
-  --main-color: #FF7722;
-  --secondary-color: #E65A1B;
+  --main-color: #ff7722;
+  --secondary-color: #e65a1b;
   --shadow-color: rgba(0, 0, 0, 0.5);
   --white-lit-color: rgba(230, 90, 27, 0.4);
-  --text-color: #F5E1F7;
-  --background-color: #FF7722;
-  --border-color: #E65A1B;
+  --text-color: #f5e1f7;
+  --background-color: #ff7722;
+  --border-color: #e65a1b;
   --blog-card-overlay: rgba(0, 0, 0, 0.5);
-  --blog-card-hover-button: linear-gradient(to right, #FF7722, #E65A1B);
+  --blog-card-hover-button: linear-gradient(to right, #ff7722, #e65a1b);
+  overflow-y: hidden;
 }
 
 body.red {
@@ -140,13 +178,13 @@ body.red {
   --secondary-color: #640c0c;
   --shadow-color: #fff;
   --white-lit-color: rgba(230, 90, 27, 0.4);
-  --text-color: #F5E1F7;
+  --text-color: #f5e1f7;
   --background-color: #a10c0c;
-  --border-color:  #640c0c;
+  --border-color: #640c0c;
   --blog-card-overlay: rgba(0, 0, 0, 0.5);
   --blog-card-hover-button: linear-gradient(to right, #a10c0c, #640c0c);
+  overflow-y: hidden;
 }
-
 
 .--pad {
   max-width: 100%;

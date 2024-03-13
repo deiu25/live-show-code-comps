@@ -55,7 +55,7 @@ const EditorComponentHorizontal = ({
           <CodeMirror
             value={value}
             height="80vh"
-            width="100vw"
+            width="99vw"
             theme="dark"
             extensions={extensions}
             onChange={onChange}

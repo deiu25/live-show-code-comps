@@ -76,7 +76,7 @@ export const PostNavigation = ({
       </div>
       
       <div className="new-proj-nav-right">
-      <button className="layot-button" onClick={toggleEditorLayout}>Change Editor Layout</button>
+      <button className="layot-button" onClick={toggleEditorLayout}>Change Layout</button>
         <ShowOnLogout>
           <Link to="/login">
             {" "}
