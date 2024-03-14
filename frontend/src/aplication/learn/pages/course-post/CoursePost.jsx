@@ -4,7 +4,7 @@ import { shortenText } from "../../../customHooks/shortenText";
 
 const CoursePost = ({ post, user, useDeleteCoursePost }) => {
 
-  const shortenedTitle = shortenText(post.title, 20);
+  const shortenedTitle = shortenText(post.title, 15);
   const shortenedDescription = shortenText(post.description, 58);
 
   const confirmDelete = useDeleteCoursePost();

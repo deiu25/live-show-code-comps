@@ -134,11 +134,6 @@
     cursor: pointer;
   }
   
-  .card-button.edit {
-    background-color: #ffc107; 
-    color: #000;
-  }
-  
   .card-button.delete {
     background-color: #dc3545;
     color: #fff;
@@ -148,6 +143,9 @@
     opacity: 0.8;
   }
   
+  .js-card-title {
+    font-size: 20px;
+  }
   
   
   @media (max-width: 1024px) {

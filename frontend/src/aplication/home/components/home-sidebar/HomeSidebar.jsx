@@ -167,7 +167,7 @@ export const HomeSidebar = ({
             onClick={() => onTabChange("posts")}
           >
             <i className="fas fa-tasks"></i>
-            {isSidebarOpen && <span className="nav-text"> Posts</span>}
+            {isSidebarOpen && <span className="nav-text"> Snippets</span>}
           </button>
         </li>
         <li

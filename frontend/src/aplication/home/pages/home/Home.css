@@ -240,10 +240,14 @@
 }
 
 .copyright {
-  width: calc(100% - 40px);
   position: absolute;
   bottom: 0;
+  text-align: center;
+  width: 74%;
+  color: var(--text-color);
+  font-size: 14px;
 }
+
 .copyright p {
   font-size: 14px;
 }
@@ -602,6 +606,9 @@
 }
 
 @media (max-width: 768px) {
+  #wrapper #sidebar .copyright {
+    display: none;
+  }
   .container-card {
     max-width: 720px;
   }
