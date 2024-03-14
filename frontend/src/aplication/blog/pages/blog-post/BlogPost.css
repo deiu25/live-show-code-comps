@@ -125,7 +125,7 @@
 .post-section {
   /* 2 columns */
   /* column-width: 20em; */  
-  column-gap: 1.33em;
+  /* column-gap: 1.33em; */
   padding: 0 3em;
   text-align: justify;
 }
@@ -186,6 +186,12 @@
   margin: 0 2vw 10vh 2vw;
 }
 
+pre, code {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
 .card-editable {
   display: flex;
   flex-direction: column;
@@ -214,14 +220,15 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   border-radius: 10px 10px 0 0;
 }
 
 .code-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   background-color: rgb(1, 22, 39);
-  padding: 5px 15px 0 15px;
+  padding: 5px 15px 2px 15px;
   text-transform: uppercase;
   border-radius: 10px 10px 0 0;
 }
@@ -241,13 +248,14 @@
 }
 
 .copy-button {
+  font-size: 16px;
+  font-weight: bold;
   background-color: rgb(1, 22, 39);
   color: white;
   border: none;
-  height: 48px;
-  width: 120px;
-  cursor: pointer;
-  margin-left: auto; 
+  padding: 11px 15px 12px 15px;
+  text-transform: uppercase;
+  cursor: pointer; 
   border-radius: 10px 10px 0 0;
 }
 
@@ -294,4 +302,43 @@
   width: 60vw;
   resize: vertical;
   overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .post-section {
+    padding: 0 0.1em; 
+  }
+
+  .post-h1,
+  .subtitle-h4,
+  .post-headline-1,
+  .post-headline-2 {
+    font-size: 4vw; 
+  }
+
+  .post-text-editable,
+  .post-description-editable,
+  .post-code-editable,
+  .post-h1-editable {
+    width: 100%; 
+    padding: 0.5em; 
+    font-size: 4vw; 
+  }
+
+  .copy-button {
+    padding: 12px 5px;
+    max-width: 100%;
+  }
+
+  .code-language {
+    font-size: 2vw; 
+    padding: 5px 5px;
+    max-width: 100%; 
+  }
+  
+
+  .code-card, .copy-button, .post-code {
+    max-width: 100%;
+    font-size: 3vw; 
+  }
 }

@@ -5,7 +5,10 @@ import "./BlogPost.css";
 import { BlogPostNavbar } from "../../components/blog-post-navbar/BlogPostNavbar";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import nightOwlStyle from "react-syntax-highlighter/dist/esm/styles/prism/night-owl";
-import { getBlogPost, updateBlogPost } from "../../../../redux/features/blog/blogService";
+import {
+  getBlogPost,
+  updateBlogPost,
+} from "../../../../redux/features/blog/blogService";
 import { useAuthAdminStatus } from "../../../customHooks/useAuthAdminStatus";
 import useFileHandler from "../../customHooks/useFileHandler";
 
@@ -263,17 +266,17 @@ export const BlogPost = ({ user: postUser }) => {
             <h6 className="subtitle-h4">
               {editMode ? (
                 <div className="card-editable">
-                <input
-                  type="text"
-                  value={editedContent.subtitle}
-                  onChange={(e) =>
-                    setEditedContent({
-                      ...editedContent,
-                      subtitle: e.target.value,
-                    })
-                  }
-                  className="post-h1-editable"
-                />
+                  <input
+                    type="text"
+                    value={editedContent.subtitle}
+                    onChange={(e) =>
+                      setEditedContent({
+                        ...editedContent,
+                        subtitle: e.target.value,
+                      })
+                    }
+                    className="post-h1-editable"
+                  />
                 </div>
               ) : (
                 <div className="post-headline-2">{item.subtitle}</div>
@@ -284,16 +287,16 @@ export const BlogPost = ({ user: postUser }) => {
               <section className="post-section">
                 {editMode ? (
                   <div className="card-editable">
-                  <textarea
-                    value={editedContent.description}
-                    className="post-description-editable"
-                    onChange={(e) =>
-                      setEditedContent({
-                        ...editedContent,
-                        description: e.target.value,
-                      })
-                    }
-                  />
+                    <textarea
+                      value={editedContent.description}
+                      className="post-description-editable"
+                      onChange={(e) =>
+                        setEditedContent({
+                          ...editedContent,
+                          description: e.target.value,
+                        })
+                      }
+                    />
                   </div>
                 ) : (
                   item.description.split("\n").map((line, index) => (
@@ -468,9 +471,7 @@ export const BlogPost = ({ user: postUser }) => {
                     <br></br>
                     <div className="code-card">
                       <div className="code-header">
-                        <div className="code-title">
-                          <p className="code-language">{block.language}</p>
-                        </div>
+                        <p className="code-language">{block.language}</p>
                         <button
                           onClick={() => copyToClipboard(block.code, index)}
                           className="copy-button"
@@ -523,9 +524,7 @@ export const BlogPost = ({ user: postUser }) => {
             </button>
           </div>
         )}
-        
       </div>
     </>
   );
 };
-
