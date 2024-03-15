@@ -24,6 +24,15 @@ export const NewProject = () => {
     handleTitleSave,
   } = useProjectTitle();
 
+  
+  const [editorLayout, setEditorLayout] = useState(
+    window.innerWidth > 768 ? "vertical" : "horizontal"
+  );
+
+  const toggleEditorLayout = () => {
+    setEditorLayout(editorLayout === "horizontal" ? "vertical" : "horizontal");
+  };
+  
   const handleErrors = useCallback(() => {
     if (!isLoggedIn) {
       return "You must be logged in to save a snippet";
@@ -59,8 +68,13 @@ export const NewProject = () => {
   };
 
   return (
-    <div className="container-full">
-      <div className="new-proj-container">
+    <div
+      className={`new-proj-container ${
+        editorLayout === "vertical"
+          ? "new-proj-container-horizontal"
+          : "new-proj-container"
+      }`}
+    >
         <PostNavigation
           title={title || "Untitled"}
           isEditingTitle={isEditingTitle}
@@ -70,6 +84,7 @@ export const NewProject = () => {
           handleTitleSave={handleTitleSave}
           handleSavePost={handleSavePost}
           error={error}
+          toggleEditorLayout={toggleEditorLayout}
         />
         <CodeEditorContainer
           code={code}
@@ -78,8 +93,8 @@ export const NewProject = () => {
           onHtmlChange={(value) => updateCode('html', value)}
           onCssChange={(value) => updateCode('css', value)}
           onJsChange={(value) => updateCode('js', value)}
+          setEditorLayout={setEditorLayout}
         />
       </div>
-    </div>
   );
 };
