@@ -37,6 +37,13 @@ const EditorComponentHorizontal = ({
     return baseExtensions;
   }, [language]);
 
+  const scrollToOutput = () => {
+    const outputSection = document.querySelector('.output-section');
+    if (outputSection) {
+      outputSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };  
+
   return (
     <div>
       <div className="code-editor-head-horizontal">
@@ -45,6 +52,7 @@ const EditorComponentHorizontal = ({
           <CssIcon onClick={() => setActiveLanguage("css")} />
           <JsIcon onClick={() => setActiveLanguage("javascript")} />
         </div>
+        <button className="scroll-to-output-btn" onClick={scrollToOutput}>Jump to Output</button>
         {/* <div className="right-tools">
           <SettingsIcon />
           <AngleDown />

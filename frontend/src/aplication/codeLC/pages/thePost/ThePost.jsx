@@ -19,21 +19,12 @@ export const ThePost = () => {
   const [error, setError] = useState("");
 
   const [editorLayout, setEditorLayout] = useState(
-    window.innerWidth > 768 ? "horizontal" : "vertical"
+    window.innerWidth > 768 ? "vertical" : "horizontal"
   );
 
   const toggleEditorLayout = () => {
     setEditorLayout(editorLayout === "horizontal" ? "vertical" : "horizontal");
   };
-
-  const updateLayoutOnResize = () => {
-    setEditorLayout(window.innerWidth > 768 ? "vertical" : "horizontal");
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", updateLayoutOnResize);
-    return () => window.removeEventListener("resize", updateLayoutOnResize);
-  }, []);
 
   const {
     title: initialTitle,
