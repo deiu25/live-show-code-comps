@@ -208,7 +208,7 @@
   margin: 0;
 }
 
-.html-icon {
+.lang-icon {
   min-width: min-content;
   width: 90px;
   height: 30px;
@@ -217,19 +217,25 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 15px;
   border-top: 3px solid dimgrey;
   padding: 0 15px;
+  cursor: pointer;
 }
 
-.html-icon p {
+.lang-icon:hover {
+  background-color: #282c34;
+  border-top: 3px solid white;
+}
+
+.lang-icon p {
   color: white;
   font-size: 1rem;
   font-weight: 600;
   margin: 0;
 }
 
-.html-icon svg {
+.lang-icon svg {
   width: 23px;
   height: 23px;
 }
@@ -258,9 +264,47 @@
   cursor: pointer;
 }
 
+.code-editor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
+}
+
+.language-switcher {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background-color: #282c34;
+  padding: 5px;
+  border-radius: 5px 5px 0 0;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.language-switcher button {
+  background-color: #282c34;
+  color: white;
+  outline: none;
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.code-editor, .output-section {
+  width: 100%; 
+  height: 100%; 
+}
+
 .code-editor {
   background-color: rgb(61, 61, 61);
-  height: calc(100% - 5vh);
   overflow: auto;
 }
 
