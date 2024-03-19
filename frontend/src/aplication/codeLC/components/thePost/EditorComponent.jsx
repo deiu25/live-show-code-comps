@@ -10,7 +10,7 @@ import { ReactComponent as JsIcon } from "../../assets/icons/js.svg";
 import { ReactComponent as SetingsIcon } from "../../assets/icons/setings.svg";
 import { ReactComponent as AngleDown } from "../../assets/icons/down.svg";
 
-const EditorComponent = ({ language, icon: Icon, value, onChange, onTabChange }) => {
+const EditorComponent = ({ language, value, onChange, onTabChange }) => {
   const extensions = useMemo(() => {
     let baseExtensions = [EditorView.lineWrapping];
 
@@ -31,13 +31,22 @@ const EditorComponent = ({ language, icon: Icon, value, onChange, onTabChange })
     return baseExtensions;
   }, [language]);
 
+  const getIconStyle = (iconLanguage) => {
+    return {
+      width: "30px",
+      height: "30px",
+      cursor: "pointer",
+      backgroundColor: language === iconLanguage ? "black" : "transparent",
+    };
+  };
+
   return (
-    <div>
+    <div className="code-editor-component">
       <div className="code-editor-head">
         <div className="lang-icon">
-          <HtmlIcon onClick={() => onTabChange("html")} />
-          <CssIcon onClick={() => onTabChange("css")} />
-          <JsIcon onClick={() => onTabChange("js")} />
+          <HtmlIcon style={getIconStyle("html")} onClick={() => onTabChange("html")} />
+          <CssIcon style={getIconStyle("css")} onClick={() => onTabChange("css")} />
+          <JsIcon style={getIconStyle("javascript")} onClick={() => onTabChange("js")} />
         </div>
         <div className="right-tools">
           <SetingsIcon />
@@ -47,7 +56,7 @@ const EditorComponent = ({ language, icon: Icon, value, onChange, onTabChange })
       <div className="code-editor">
         <CodeMirror
           value={value}
-          height="75vh"
+          height="100%"
           width="100%"
           theme="dark"
           extensions={extensions}

@@ -26,14 +26,23 @@ export const CodeEditorContainer = ({
 
   const markupUrl = useIframeUrl(htmlCode, cssCode, jsCode);
 
-  useEffect(() => {
-    return () => {
-      URL.revokeObjectURL(markupUrl);
-    };
-  }, [markupUrl]);
+  
+  const shouldShowTab = (language) => {
+    switch (language) {
+      case 'html':
+        return !!htmlCode.trim();
+      case 'css':
+        return !!cssCode.trim();
+      case 'javascript':
+        return !!jsCode.trim();
+      default:
+        return false;
+    }
+  };
 
-  // Split pane sizes
-  const [sizes, setSizes] = useState(["50%", "50%"]);
+  const changeTab = (newActiveTab) => {
+    setActiveTab(newActiveTab);
+  };
 
   const handleCodeChange = (language, newCode) => {
     if (language === "html") {
@@ -47,6 +56,15 @@ export const CodeEditorContainer = ({
       onJsChange(newCode);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(markupUrl);
+    };
+  }, [markupUrl]);
+
+  // Split pane sizes
+  const [sizes, setSizes] = useState(["50%", "50%"]);
 
   useEffect(() => {
     setHtmlCode(initialHtml);
@@ -64,6 +82,7 @@ export const CodeEditorContainer = ({
             value={htmlCode}
             onChange={(newCode) => handleCodeChange("html", newCode)}
             onTabChange={changeTab}
+            shouldShowTab={shouldShowTab} 
           />
         );
       case "css":
@@ -74,6 +93,7 @@ export const CodeEditorContainer = ({
             value={cssCode}
             onChange={(newCode) => handleCodeChange("css", newCode)}
             onTabChange={changeTab}
+            shouldShowTab={shouldShowTab}
           />
         );
       case "js":
@@ -84,15 +104,12 @@ export const CodeEditorContainer = ({
             value={jsCode}
             onChange={(newCode) => handleCodeChange("js", newCode)}
             onTabChange={changeTab}
+            shouldShowTab={shouldShowTab} 
           />
         );
       default:
         return null;
     }
-  };
-
-  const changeTab = (newActiveTab) => {
-    setActiveTab(newActiveTab);
   };
 
   return (

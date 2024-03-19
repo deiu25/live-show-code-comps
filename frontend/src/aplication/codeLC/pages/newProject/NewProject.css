@@ -193,51 +193,26 @@
   justify-content: space-between;
   height: 30px;
 }
-.language-icons-btn {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  background-color: #282c34;
-  padding: 5px;
-  border-radius: 0 5px 0 0;
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0;
-}
 
 .lang-icon {
   min-width: min-content;
-  width: 90px;
-  height: 30px;
   background-color: #282c34;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 15px;
-  border-top: 3px solid dimgrey;
-  padding: 0 15px;
-  cursor: pointer;
-}
-
-.lang-icon:hover {
-  background-color: #282c34;
-  border-top: 3px solid white;
-}
-
-.lang-icon p {
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0;
+  padding: 15px;
 }
 
 .lang-icon svg {
-  width: 23px;
-  height: 23px;
+  width: 30px;
+  height: 30px;
+}
+
+.lang-icon svg:hover {
+  cursor: pointer;
+  background-color: black;
 }
 
 .right-tools {
@@ -269,6 +244,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;  
+  height: 100%;
 }
 
 .language-switcher {
@@ -303,9 +279,22 @@
   height: 100%; 
 }
 
+.code-editor-component {
+  height: 100%;
+  width: 100%;
+  background-color: #282c34;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
 .code-editor {
-  background-color: rgb(61, 61, 61);
+  background-color: #282c34;
   overflow: auto;
+  padding: 0;
+  margin: 0;
+  border: none;
+  margin: 0;
 }
 
 .code-editor .cm-scroller::-webkit-scrollbar {
@@ -322,10 +311,13 @@
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
+/* Output */
+
 .output-section {
   background-color: #282c34;
   width: 100%;
   height: 83vh;
+  border-left: 30px solid #000000;
 }
 
 iframe {
@@ -340,8 +332,9 @@ iframe {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: black;
-  margin: 0 14px;
+  background-color: #282c34;
+  margin-left: 30px;
+  padding: 0 10px;
 }
 
 .output-footer-bar-left button {
@@ -359,11 +352,7 @@ iframe {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  color: white;
-  margin-right: 4px;
 }
-
-/* Output */
 
 .output-footer-bar-left svg {
   width: 25px;
