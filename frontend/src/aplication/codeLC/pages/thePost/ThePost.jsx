@@ -22,10 +22,12 @@ export const ThePost = () => {
   const [editorLayout, setEditorLayout] = useState(
     window.innerWidth > 768 ? "vertical" : "horizontal"
   );
-
   const toggleEditorLayout = () => {
-    setEditorLayout(editorLayout === "horizontal" ? "vertical" : "horizontal");
+    setEditorLayout((prevLayout) =>
+      prevLayout === "horizontal" ? "vertical" : "horizontal"
+    );
   };
+
 
   const {
     title: initialTitle,
@@ -72,6 +74,17 @@ export const ThePost = () => {
     }
   }, [post]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const newLayout = window.innerWidth > 768 ? "vertical" : "horizontal";
+      setEditorLayout(newLayout);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleSavePost = () => {
     if (!isLoggedIn) {
       setError("You must be logged in to save a snippet");
@@ -99,13 +112,7 @@ export const ThePost = () => {
   };
 
   return (
-    <div
-      className={`new-proj-container ${
-        editorLayout === "vertical"
-          ? "new-proj-container-horizontal"
-          : "new-proj-container"
-      }`}
-    >
+    <div className="new-proj-container-wrapper">
       <PostNavigation
         title={title || "Untitled"}
         isEditingTitle={isEditingTitle}
@@ -117,16 +124,17 @@ export const ThePost = () => {
         error={error}
         toggleEditorLayout={toggleEditorLayout}
       />
-      <CodeEditorContainer
-        initialHtml={code.html}
-        initialCss={code.css}
-        initialJs={code.js}
-        onHtmlChange={(value) => updateCode("html", value)}
-        onCssChange={(value) => updateCode("css", value)}
-        onJsChange={(value) => updateCode("js", value)}
-        editorLayout={editorLayout}
-        setEditorLayout={setEditorLayout}
-      />
+      <div className="new-proj-container">
+        <CodeEditorContainer
+          initialHtml={code.html}
+          initialCss={code.css}
+          initialJs={code.js}
+          onHtmlChange={(value) => updateCode("html", value)}
+          onCssChange={(value) => updateCode("css", value)}
+          onJsChange={(value) => updateCode("js", value)}
+          layoutDirection={editorLayout}
+        />
+      </div>
     </div>
   );
 };

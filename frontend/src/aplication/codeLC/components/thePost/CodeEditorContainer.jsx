@@ -18,6 +18,7 @@ export const CodeEditorContainer = ({
   onHtmlChange,
   onCssChange,
   onJsChange,
+  layoutDirection,
 }) => {
   const [activeTab, setActiveTab] = useState("html");
   const [htmlCode, setHtmlCode] = useState(initialHtml);
@@ -26,14 +27,16 @@ export const CodeEditorContainer = ({
 
   const markupUrl = useIframeUrl(htmlCode, cssCode, jsCode);
 
-  
+  // Split pane sizes
+  const [sizes, setSizes] = useState(["50%", "50%"]);
+
   const shouldShowTab = (language) => {
     switch (language) {
-      case 'html':
+      case "html":
         return !!htmlCode.trim();
-      case 'css':
+      case "css":
         return !!cssCode.trim();
-      case 'javascript':
+      case "javascript":
         return !!jsCode.trim();
       default:
         return false;
@@ -63,14 +66,19 @@ export const CodeEditorContainer = ({
     };
   }, [markupUrl]);
 
-  // Split pane sizes
-  const [sizes, setSizes] = useState(["50%", "50%"]);
-
   useEffect(() => {
     setHtmlCode(initialHtml);
     setCssCode(initialCss);
     setJsCode(initialJs);
   }, [initialHtml, initialCss, initialJs]);
+
+  useEffect(() => {
+    if (layoutDirection === "horizontal") {
+      setSizes(["50%", "50%"]);
+    } else {
+      setSizes(["50%", "50%"]);
+    }
+  }, [layoutDirection]);
 
   const getActiveEditor = () => {
     switch (activeTab) {
@@ -82,7 +90,7 @@ export const CodeEditorContainer = ({
             value={htmlCode}
             onChange={(newCode) => handleCodeChange("html", newCode)}
             onTabChange={changeTab}
-            shouldShowTab={shouldShowTab} 
+            shouldShowTab={shouldShowTab}
           />
         );
       case "css":
@@ -104,7 +112,7 @@ export const CodeEditorContainer = ({
             value={jsCode}
             onChange={(newCode) => handleCodeChange("js", newCode)}
             onTabChange={changeTab}
-            shouldShowTab={shouldShowTab} 
+            shouldShowTab={shouldShowTab}
           />
         );
       default:
@@ -114,19 +122,15 @@ export const CodeEditorContainer = ({
 
   return (
     <SplitPane
+      split={layoutDirection}
       sizes={sizes}
       onChange={(sizes) => setSizes(sizes)}
     >
-      <div className="code-editor-container">
-        {getActiveEditor()}
-      </div>
-
+      {getActiveEditor()}
       <div>
-        <CodeEditorToolbar />
-        <div className="output-section">
-          <div>
+      <CodeEditorToolbar layoutDirection={layoutDirection} />
+        <div className={`output-section ${layoutDirection}`}>
             <iframe title={title} src={markupUrl}></iframe>
-          </div>
         </div>
       </div>
     </SplitPane>

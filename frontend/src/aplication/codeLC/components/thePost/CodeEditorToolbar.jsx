@@ -11,10 +11,10 @@ import { ReactComponent as Warnings } from "../../assets/icons/warnings.svg";
 // import { ReactComponent as Dislike } from "../../assets/icons/dislike-icon.svg";
 // import { useLikes } from "../../customHooks/useLikes";
 
-export const CodeEditorToolbar = (id) => {
+export const CodeEditorToolbar = ({ layoutDirection }) => {
   // const { likes, userWhoLiked, handleLike } = useLikes(id);
   return (
-    <div className="output-footer-bar">
+    <div className={`output-footer-bar ${layoutDirection}`}>
       <div className="output-footer-bar-left">
         <Terminal />
         <Assets />

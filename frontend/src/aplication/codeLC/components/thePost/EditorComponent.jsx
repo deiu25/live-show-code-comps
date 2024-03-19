@@ -31,22 +31,13 @@ const EditorComponent = ({ language, value, onChange, onTabChange }) => {
     return baseExtensions;
   }, [language]);
 
-  const getIconStyle = (iconLanguage) => {
-    return {
-      width: "30px",
-      height: "30px",
-      cursor: "pointer",
-      backgroundColor: language === iconLanguage ? "black" : "transparent",
-    };
-  };
-
   return (
     <div className="code-editor-component">
       <div className="code-editor-head">
         <div className="lang-icon">
-          <HtmlIcon style={getIconStyle("html")} onClick={() => onTabChange("html")} />
-          <CssIcon style={getIconStyle("css")} onClick={() => onTabChange("css")} />
-          <JsIcon style={getIconStyle("javascript")} onClick={() => onTabChange("js")} />
+          <HtmlIcon onClick={() => onTabChange("html")} />
+          <CssIcon onClick={() => onTabChange("css")} />
+          <JsIcon onClick={() => onTabChange("js")} />
         </div>
         <div className="right-tools">
           <SetingsIcon />

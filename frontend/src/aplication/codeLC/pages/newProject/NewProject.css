@@ -1,7 +1,9 @@
+.new-proj-container-wrapper {
+  height: 100vh;
+  background-color: #000000;
+}
 .new-proj-container,
-.new-proj-container-horizontal,
 .new-proj-nav {
-  width: 100vw;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -10,25 +12,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-.new-proj-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  width: auto;
-  background-color: black;
-}
-.new-proj-container-horizontal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  background-color: black;
 }
 
 /* Nav */
@@ -148,6 +131,16 @@
   cursor: pointer;
   border: #ddd 1.8px solid;
 }
+
+.new-proj-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 83vh;
+  background-color: #000000;
+}
+
 .editor {
   background-color: black;
   color: white;
@@ -239,14 +232,6 @@
   cursor: pointer;
 }
 
-.code-editor-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;  
-  height: 100%;
-}
-
 .language-switcher {
   display: flex;
   flex-direction: row;
@@ -274,9 +259,10 @@
   padding: 5px 10px;
 }
 
-.code-editor, .output-section {
-  width: 100%; 
-  height: 100%; 
+.code-editor,
+.output-section {
+  width: 100%;
+  height: 100%;
 }
 
 .code-editor-component {
@@ -294,7 +280,7 @@
   padding: 0;
   margin: 0;
   border: none;
-  margin: 0;
+  padding: 2vh 0 8vh 0;
 }
 
 .code-editor .cm-scroller::-webkit-scrollbar {
@@ -317,7 +303,14 @@
   background-color: #282c34;
   width: 100%;
   height: 83vh;
+}
+
+.output-section.vertical {
   border-left: 30px solid #000000;
+}
+
+.output-section.horizontal {
+  border-top: none;
 }
 
 iframe {
@@ -333,8 +326,15 @@ iframe {
   align-items: center;
   justify-content: space-between;
   background-color: #282c34;
+  padding: 0 25px;
+}
+
+.output-footer-bar.horizontal {
+  margin-top: 10px;
+}
+
+.output-footer-bar.vertical {
   margin-left: 30px;
-  padding: 0 10px;
 }
 
 .output-footer-bar-left button {
@@ -413,7 +413,6 @@ iframe {
   font-weight: 600;
   outline: none;
 }
-
 
 @media (max-width: 768px) {
   .new-proj-nav {

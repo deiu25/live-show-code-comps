@@ -1,5 +1,5 @@
 //NewProject.jsx
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./NewProject.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,15 @@ export const NewProject = () => {
   const [error, setError] = useState("");
   const [code, setCode] = useState({ html: "", css: "", js: "" });
 
+  const [editorLayout, setEditorLayout] = useState(
+    window.innerWidth > 768 ? "vertical" : "horizontal"
+  );
+  const toggleEditorLayout = () => {
+    setEditorLayout((prevLayout) =>
+      prevLayout === "horizontal" ? "vertical" : "horizontal"
+    );
+  };
+
   const {
     title,
     tempTitle,
@@ -24,15 +33,17 @@ export const NewProject = () => {
     handleTitleSave,
   } = useProjectTitle();
 
-  
-  const [editorLayout, setEditorLayout] = useState(
-    window.innerWidth > 768 ? "vertical" : "horizontal"
-  );
+  useEffect(() => {
+    const handleResize = () => {
+      const newLayout = window.innerWidth > 768 ? "vertical" : "horizontal";
+      setEditorLayout(newLayout);
+    };
 
-  const toggleEditorLayout = () => {
-    setEditorLayout(editorLayout === "horizontal" ? "vertical" : "horizontal");
-  };
-  
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleErrors = useCallback(() => {
     if (!isLoggedIn) {
       return "You must be logged in to save a snippet";
@@ -49,14 +60,16 @@ export const NewProject = () => {
       setError(errorMsg);
       return;
     }
-    dispatch(savePost({
-      title: title || "Untitled",
-      content: {
-        htmlCode: code.html,
-        cssCode: code.css,
-        jsCode: code.js,
-      },
-    }));
+    dispatch(
+      savePost({
+        title: title || "Untitled",
+        content: {
+          htmlCode: code.html,
+          cssCode: code.css,
+          jsCode: code.js,
+        },
+      })
+    );
     navigate("/");
   }, [dispatch, navigate, code, title, handleErrors]);
 
@@ -68,33 +81,29 @@ export const NewProject = () => {
   };
 
   return (
-    <div
-      className={`new-proj-container ${
-        editorLayout === "vertical"
-          ? "new-proj-container-horizontal"
-          : "new-proj-container"
-      }`}
-    >
-        <PostNavigation
-          title={title || "Untitled"}
-          isEditingTitle={isEditingTitle}
-          handleTitleEdit={handleTitleEdit}
-          projectTitle={tempTitle}
-          setProjectTitle={setProjectTitle}
-          handleTitleSave={handleTitleSave}
-          handleSavePost={handleSavePost}
-          error={error}
-          toggleEditorLayout={toggleEditorLayout}
-        />
+    <div className="new-proj-container-wrapper">
+      <PostNavigation
+        title={title || "Untitled"}
+        isEditingTitle={isEditingTitle}
+        handleTitleEdit={handleTitleEdit}
+        projectTitle={tempTitle}
+        setProjectTitle={setProjectTitle}
+        handleTitleSave={handleTitleSave}
+        handleSavePost={handleSavePost}
+        error={error}
+        toggleEditorLayout={toggleEditorLayout}
+      />
+      <div className="new-proj-container">
         <CodeEditorContainer
           code={code}
           setCode={setCode}
           title={title}
-          onHtmlChange={(value) => updateCode('html', value)}
-          onCssChange={(value) => updateCode('css', value)}
-          onJsChange={(value) => updateCode('js', value)}
-          setEditorLayout={setEditorLayout}
+          onHtmlChange={(value) => updateCode("html", value)}
+          onCssChange={(value) => updateCode("css", value)}
+          onJsChange={(value) => updateCode("js", value)}
+          layoutDirection={editorLayout}
         />
       </div>
+    </div>
   );
 };
