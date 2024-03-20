@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,9 @@ import {
   ShowOnLogout,
 } from "../../../auth/components/protect/hiddenLink";
 import { updateTheme } from "../../../../redux/features/auth/authSlice";
+import useWindowWidth from "../../customHooks/useWindowWidth";
+import ThemeDropdown from "../dropdown/ThemeDropdown";
+import ThemeButtons from "../theme-buttons/ThemeButtons";
 
 export const HomeSidebar = ({
   onTabChange,
@@ -18,8 +21,12 @@ export const HomeSidebar = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const windowWidth = useWindowWidth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const toggleThemeDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
   const handleChangeTheme = (theme) => {
-    localStorage.setItem('theme', theme);
+    localStorage.setItem("theme", theme);
     dispatch(updateTheme({ theme }));
     document.body.className = theme;
   };
@@ -78,82 +85,12 @@ export const HomeSidebar = ({
         </div>
       </div>
 
-      <ul className="nav flex-row theme-buttons">
-        <li key="light" className="nav-item">
-          <button
-            className="anchor-btn"
-            onClick={() => handleChangeTheme("light")}
-          >
-            <i className="fas fa-sun"></i>
-          </button>
-        </li>
-        <li key="dark" className="nav-item">
-          <button
-            className="anchor-btn"
-            onClick={() => handleChangeTheme("dark")}
-          >
-            <i className="fas fa-moon"></i>
-          </button>
-        </li>
-        <li key="rainbow" className="nav-item">
-          <button
-            className="anchor-btn"
-            onClick={() => handleChangeTheme("rainbow")}
-          >
-            <i className="fas fa-rainbow"></i>
-          </button>
-        </li>
-        <li key="green" className="nav-item">
-          <button
-            className="anchor-btn"
-            onClick={() => handleChangeTheme("green")}
-          >
-            <i className="fas fa-leaf"></i>
-          </button>
-        </li>
-        <li key="calm" className="nav-item">
-          <button
-            className="anchor-btn"
-            onClick={() => handleChangeTheme("calm")}
-          >
-            <i className="fas fa-water"></i>
-          </button>
-        </li>
-        <li key="purple" className="nav-item">
-          <button
-            className="anchor-btn"
-            onClick={() => handleChangeTheme("purple")}
-          >
-            <i className="fas fa-dragon"></i>
-          </button>
-        </li>
-        <li key="orange" className="nav-item">
-          <button
-            className="anchor-btn"
-            onClick={() => handleChangeTheme("orange")}
-          >
-            <i className="fas fa-fire"></i>
-          </button>
-        </li>
-        <li key="red" className="nav-item">
-          <button
-            className="anchor-btn"
-            onClick={() => handleChangeTheme("red")}
-          >
-            <i className="fas fa-heart"></i>
-          </button>
-        </li>
-      </ul>
-
       <ul className="nav flex-column">
         <li
           key="home"
           className={`nav-item ${currentTab === "home" ? "active" : ""}`}
         >
-          <button
-            className="anchor-btn"
-            onClick={() => onTabChange("home")}
-          >
+          <button className="anchor-btn" onClick={() => onTabChange("home")}>
             <i className="fas fa-home"></i>
             {isSidebarOpen && <span className="nav-text"> Home</span>}
           </button>
@@ -162,10 +99,7 @@ export const HomeSidebar = ({
           key="posts"
           className={`nav-item ${currentTab === "posts" ? "active" : ""}`}
         >
-          <button
-            className="anchor-btn"
-            onClick={() => onTabChange("posts")}
-          >
+          <button className="anchor-btn" onClick={() => onTabChange("posts")}>
             <i className="fas fa-tasks"></i>
             {isSidebarOpen && <span className="nav-text"> Snippets</span>}
           </button>
@@ -174,10 +108,7 @@ export const HomeSidebar = ({
           key="blog"
           className={`nav-item ${currentTab === "blog" ? "active" : ""}`}
         >
-          <button
-            className="anchor-btn"
-            onClick={() => onTabChange("blog")}
-          >
+          <button className="anchor-btn" onClick={() => onTabChange("blog")}>
             <i className="fas fa-blog"></i>
             {isSidebarOpen && <span className="nav-text"> Blog</span>}
           </button>
@@ -186,10 +117,7 @@ export const HomeSidebar = ({
           key="learn"
           className={`nav-item ${currentTab === "learn" ? "active" : ""}`}
         >
-          <button
-            className="anchor-btn"
-            onClick={() => onTabChange("learn")}
-          >
+          <button className="anchor-btn" onClick={() => onTabChange("learn")}>
             <i className="fas fa-book"></i>
             {isSidebarOpen && <span className="nav-text"> Learn</span>}
           </button>
@@ -198,14 +126,21 @@ export const HomeSidebar = ({
           key="about"
           className={`nav-item ${currentTab === "about" ? "active" : ""}`}
         >
-          <button
-            className="anchor-btn"
-            onClick={() => onTabChange("about")}
-          >
+          <button className="anchor-btn" onClick={() => onTabChange("about")}>
             <i className="fas fa-info-circle"></i>
             {isSidebarOpen && <span className="nav-text"> About</span>}
           </button>
         </li>
+              {/* theme */}
+      {windowWidth < 768 ? (
+        <ThemeDropdown
+          handleChangeTheme={handleChangeTheme}
+          isDropdownOpen={isDropdownOpen}
+          toggleDropdown={toggleThemeDropdown}
+        />
+      ) : (
+        <ThemeButtons handleChangeTheme={handleChangeTheme} />
+      )}
         {isAdmin && (
           <div className="add-section-buttons">
             <li key="addPost" className="nav-item">
