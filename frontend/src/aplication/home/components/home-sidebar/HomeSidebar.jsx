@@ -51,12 +51,28 @@ export const HomeSidebar = ({
     <div className={sidebarClass} id="sidebar">
       {isSidebarOpen ? (
         <div
-          className="sidebar-switch far fa-chevron-double-left"
+          className={`sidebar-switch ${
+            windowWidth < 768
+              ? isSidebarOpen
+                ? "fas far fa-chevron-double-up"
+                : "fas far fa-chevron-double-down"
+              : isSidebarOpen
+              ? "far fa-chevron-double-left"
+              : "far fa-chevron-double-right"
+          }`}
           onClick={toggleSidebar}
         />
       ) : (
         <div
-          className="sidebar-switch far fa-chevron-double-right"
+          className={`sidebar-switch ${
+            windowWidth < 768
+              ? isSidebarOpen
+                ? "fas far fa-chevron-double-up"
+                : "fas far fa-chevron-double-down"
+              : isSidebarOpen
+              ? "far fa-chevron-double-left"
+              : "far fa-chevron-double-right"
+          }`}
           onClick={toggleSidebar}
         />
       )}
@@ -131,16 +147,16 @@ export const HomeSidebar = ({
             {isSidebarOpen && <span className="nav-text"> About</span>}
           </button>
         </li>
-              {/* theme */}
-      {windowWidth < 768 ? (
-        <ThemeDropdown
-          handleChangeTheme={handleChangeTheme}
-          isDropdownOpen={isDropdownOpen}
-          toggleDropdown={toggleThemeDropdown}
-        />
-      ) : (
-        <ThemeButtons handleChangeTheme={handleChangeTheme} />
-      )}
+        {/* theme */}
+        {windowWidth < 768 ? (
+          <ThemeDropdown
+            handleChangeTheme={handleChangeTheme}
+            isDropdownOpen={isDropdownOpen}
+            toggleDropdown={toggleThemeDropdown}
+          />
+        ) : (
+          <ThemeButtons handleChangeTheme={handleChangeTheme} />
+        )}
         {isAdmin && (
           <div className="add-section-buttons">
             <li key="addPost" className="nav-item">
