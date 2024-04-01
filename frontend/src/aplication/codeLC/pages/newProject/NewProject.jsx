@@ -79,7 +79,7 @@ export const NewProject = () => {
       [type]: value,
     }));
   };
-
+  
   return (
     <div className="new-proj-container-wrapper">
       <PostNavigation

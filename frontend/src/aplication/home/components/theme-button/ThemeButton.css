@@ -1,0 +1,110 @@
+.theme-menu {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.theme-menu .theme-toggle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 60px;
+  width: 60px;
+  background: var(--rainbow);
+  border-radius: 50%;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: 1.25s;
+  z-index: 5;
+}
+.theme-menu.theme-active .theme-toggle{
+    background: var(--rainbow); 
+    transform: translate(-50%, -50%) rotate(360deg);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+  }
+  
+  .theme-menu .theme-toggle:hover,
+  .theme-menu .theme-toggle:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8), 
+                0 0 15px rgba(255, 255, 255, 0.2); 
+  }
+  
+  .theme-menu li {
+    position: absolute;
+    transition: 0.5s;
+    transform-origin: center;
+    scale: 0;
+  }
+.theme-menu .theme-button {
+  position: relative;
+  display: flex;
+  transform: rotate(calc(360deg / -8 * var(--i)));
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  color: var(--clr);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+  transition: 0.5s;
+}
+
+.theme-menu li a {
+  position: relative;
+  display: flex;
+  transform: rotate(calc(360deg / -8 * var(--i)));
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  color: var(--clr);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+  transition: 0.5s;
+}
+.theme-menu li:hover a {
+  font-size: 2.5rem;
+  box-shadow: 0 0 0 2px var(--clr), 0 0 0 6px #fff;
+}
+
+.theme-menu li {
+  position: absolute;
+  left: 0;
+  list-style: none;
+  transition: 0.5s;
+  transform: rotate(calc(360deg / 8 * var(--i)));
+  transform-origin: 140px;
+  scale: 0;
+  transition-delay: calc(0.05s * var(--i));
+}
+
+.theme-menu.theme-active li {
+  scale: 1;
+}
+
+.theme-menu .theme-button:hover {
+  font-size: 2.5rem;
+  box-shadow: 0 0 0 2px var(--clr), 0 0 0 6px #fff;
+}
+
+.theme-buttons .li-light { --i: 1; }
+.theme-buttons .li-dark { --i: 2; }
+.theme-buttons .li-rainbow { --i: 3; }
+.theme-buttons .li-green { --i: 4; }
+.theme-buttons .li-calm { --i: 5; }
+.theme-buttons .li-purple { --i: 6; }
+.theme-buttons .li-orange { --i: 7; }
+.theme-buttons .li-red { --i: 8; }

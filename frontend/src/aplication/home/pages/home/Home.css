@@ -1032,3 +1032,30 @@
     max-width: 1140px;
   }
 }
+
+@media only screen and (min-width: 768px) and (max-width: 1345px) {
+  .dropdown-menu {
+    background-clip: padding-box;
+    background-color: var(--secondary-color);
+    border: 1px solid #00000026;
+    border-radius: .25rem;
+    color: var(--text-color);
+    font-size: 1rem;
+    left: 25%;
+    margin: 0;
+    padding: .5rem 0;
+    text-align: center;
+    width: 50%;
+}
+  .dropdown-item {
+    background-color: transparent;
+    border: 0;
+    color: var(--text-color);
+    display: block;
+    font-weight: 400;
+    padding: .25rem 1.5rem;
+    text-align: inherit;
+    white-space: nowrap;
+    width: 100%;
+  }
+}

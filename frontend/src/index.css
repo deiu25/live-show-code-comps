@@ -48,6 +48,7 @@
   --blog-card-overlay-end: rgba(0, 0, 0, 0.5);
   --blog-card-overlay: rgba(0, 0, 0, 0.5);
   --blog-card-hover-button: linear-gradient(to right, blue, rgb(245, 83, 110));
+  --rainbow: linear-gradient(to right, blue, rgb(245, 83, 110));
 
   --background-color: linear-gradient(to right, blue, rgb(245, 83, 110));
 }

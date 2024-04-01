@@ -9,7 +9,7 @@ import {
 import { updateTheme } from "../../../../redux/features/auth/authSlice";
 import useWindowWidth from "../../customHooks/useWindowWidth";
 import ThemeDropdown from "../dropdown/ThemeDropdown";
-import ThemeButtons from "../theme-buttons/ThemeButtons";
+import ThemeButton from "../theme-button/ThemeButton";
 
 export const HomeSidebar = ({
   onTabChange,
@@ -148,14 +148,14 @@ export const HomeSidebar = ({
           </button>
         </li>
         {/* theme */}
-        {windowWidth < 768 ? (
+        {windowWidth < 1345 ? (
           <ThemeDropdown
             handleChangeTheme={handleChangeTheme}
             isDropdownOpen={isDropdownOpen}
             toggleDropdown={toggleThemeDropdown}
           />
         ) : (
-          <ThemeButtons handleChangeTheme={handleChangeTheme} />
+          <ThemeButton handleChangeTheme={handleChangeTheme} />
         )}
         {isAdmin && (
           <div className="add-section-buttons">

@@ -46,6 +46,7 @@ export const CodeEditorContainer = ({
   const changeTab = (newActiveTab) => {
     setActiveTab(newActiveTab);
   };
+  
 
   const handleCodeChange = (language, newCode) => {
     if (language === "html") {
@@ -110,7 +111,7 @@ export const CodeEditorContainer = ({
             language="javascript"
             icon={JsIcon}
             value={jsCode}
-            onChange={(newCode) => handleCodeChange("js", newCode)}
+            onChange={(newCode) => handleCodeChange("javascript", newCode)}
             onTabChange={changeTab}
             shouldShowTab={shouldShowTab}
           />
