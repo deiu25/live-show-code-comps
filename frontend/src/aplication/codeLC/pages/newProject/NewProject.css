@@ -25,39 +25,6 @@
   justify-content: space-between;
   padding: 20px;
 }
-.new-proj-nav-logo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-left: 10px;
-}
-.logo {
-  width: 200px;
-  height: 100px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-.logo p {
-  color: white;
-  font-size: 1.6rem;
-  font-weight: 600;
-  margin: 0;
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-}
-.new-proj-nav-logo svg {
-  width: 40px;
-  height: 40px;
-}
 .new-proj-nav-left {
   display: flex;
   flex-direction: row;
@@ -418,11 +385,23 @@ iframe {
   outline: none;
 }
 
+.nav-logo1 {
+  width: 100px;
+  cursor: pointer;
+  margin: auto;
+}
+
 @media (max-width: 768px) {
   .new-proj-nav {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     height: auto;
     padding: 10px;
+  }
+
+  .nav-logo1 {
+    margin: 0 20px;
   }
 
   .new-proj-nav-left {
@@ -436,11 +415,6 @@ iframe {
     margin-left: 0;
     justify-content: center;
     gap: 5px;
-  }
-
-  .new-proj-nav-left-logo img {
-    width: 90px;
-    height: auto;
   }
 
   .save-proj-button,
@@ -485,5 +459,11 @@ iframe {
     font-size: 0.8rem;
     font-weight: 600;
     outline: none;
+  }
+}
+
+@media (max-width: 340px) {
+  .nav-logo1 {
+    display: none;
   }
 }

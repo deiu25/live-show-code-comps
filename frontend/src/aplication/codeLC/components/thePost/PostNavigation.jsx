@@ -1,12 +1,15 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import livecodeshowlogo1 from "../../assets/logo/livecodeshowlogo1.png";
 import { ReactComponent as Edit } from "../../assets/icons/edit.svg";
 import { ReactComponent as SaveTitle } from "../../assets/icons/check-circle.svg";
 import { ReactComponent as Save } from "../../assets/icons/save-project.svg";
-import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
+import {
+  ShowOnLogin,
+  ShowOnLogout,
+} from "../../../auth/components/protect/hiddenLink";
 import { shortenText } from "../../../customHooks/shortenText";
+import SpiralAnimation from "../../../home/components/logo/SpiralAnimation";
 
 export const PostNavigation = ({
   title,
@@ -35,17 +38,19 @@ export const PostNavigation = ({
   return (
     <div className="new-proj-nav">
       <div className="new-proj-nav-left">
-        <div className="new-proj-nav-left-logo">
-          <Link to='/' className=''>
-            <img src={livecodeshowlogo1} alt='logo' className='editor-nav-logo' />
-          </Link>
+          <div className="nav-logo1" onClick={() => navigate("/")}>
+            <SpiralAnimation />
         </div>
         <div className="new-proj-nav-title">
           {!isEditingTitle ? (
             <>
               <h5 className="new-proj-title">{shortenText(title, 20)}</h5>
               {isUserLoggedIn && isAdmin && (
-                <div onClick={handleTitleEdit} className="new-proj-nav-title-icon" aria-label="Edit title">
+                <div
+                  onClick={handleTitleEdit}
+                  className="new-proj-nav-title-icon"
+                  aria-label="Edit title"
+                >
                   <Edit />
                 </div>
               )}
@@ -59,7 +64,10 @@ export const PostNavigation = ({
                 autoFocus
                 aria-label="Project title"
               />
-              <div className="new-proj-nav-title-icon" onClick={handleTitleSave}>
+              <div
+                className="new-proj-nav-title-icon"
+                onClick={handleTitleSave}
+              >
                 <SaveTitle />
               </div>
             </>
@@ -69,14 +77,14 @@ export const PostNavigation = ({
               <Save /> Save
             </button>
           )}
-          {error && (
-            <div className="create-proj-error-message">{error}</div>
-          )}
+          {error && <div className="create-proj-error-message">{error}</div>}
         </div>
       </div>
-      
+
       <div className="new-proj-nav-right">
-      <button className="layot-button" onClick={toggleEditorLayout}>Change Layout</button>
+        <button className="layot-button" onClick={toggleEditorLayout}>
+          Change Layout
+        </button>
         <ShowOnLogout>
           <Link to="/login">
             {" "}

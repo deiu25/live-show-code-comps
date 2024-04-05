@@ -1,9 +1,9 @@
 import React from "react";
 import "../new-blog-navbar/NewBlogNavbar.css";
 import { Link, useNavigate } from "react-router-dom";
-import livecodeshowlogo1 from "../../../codeLC/assets/logo/livecodeshowlogo1.png";
 import { useSelector } from "react-redux";
 import { ShowOnLogin, ShowOnLogout } from "../../../auth/components/protect/hiddenLink";
+import SpiralAnimation from "../../../home/components/logo/SpiralAnimation";
 
 export const BlogPostNavbar = () => {
   const navigate = useNavigate();
@@ -15,9 +15,9 @@ export const BlogPostNavbar = () => {
 
   return (
     <div className="editor-nav">
-      <Link to="/" className="">
-        <img src={livecodeshowlogo1} alt="logo" className="editor-nav-logo" />
-      </Link>
+        <div className="nav-logo-blog" onClick={() => navigate("/")}>
+            <SpiralAnimation />
+        </div>
       <div className="editor-nav-right">
         <div className="editor-nav-buttons">
         </div>
