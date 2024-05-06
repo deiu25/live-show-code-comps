@@ -1,12 +1,12 @@
 import React from "react";
 import "./NewBlogNavbar.css";
 import { Link, useNavigate } from "react-router-dom";
-import livecodeshowlogo1 from "../../assets/logo/livecodeshowlogo1.png";
 import {
   ShowOnLogin,
   ShowOnLogout,
 } from "../../../auth/components/protect/hiddenLink";
 import { useSelector } from "react-redux";
+import SpiralAnimation from "../../../home/components/logo/SpiralAnimation";
 
 export const NewBlogNavbar = () => {
   const navigate = useNavigate();
@@ -18,9 +18,9 @@ export const NewBlogNavbar = () => {
 
   return (
     <div className="editor-nav">
-      <Link to="/" className="">
-        <img src={livecodeshowlogo1} alt="logo" className="editor-nav-logo" />
-      </Link>
+        <div className="nav-logo-blog" onClick={() => navigate("/")}>
+            <SpiralAnimation />
+        </div>
       <div className="editor-nav-right">
         <div className="editor-nav-buttons">
           <button className="editor-nav-button-draft">Save Draft</button>
